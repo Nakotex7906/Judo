@@ -13,10 +13,10 @@ public class GestionarCompetencia {
         competencias.add(competencia);
     }
 
-    public void registrarGanador(String nombreCompetencia, Atleta atleta) {
+    public void registrarGanador(String nombreCompetencia, String nombreAtleta) {
         for (Competencia competencia : competencias) {
             if (competencia.getNombre().equalsIgnoreCase(nombreCompetencia)) {
-                competencia.registrarGanador(atleta);
+                competencia.registrarGanador(nombreAtleta);
                 break;
             }
         }
