@@ -15,9 +15,6 @@ public class Competencia {
     }
 
     public String getNombre() {return nombre;}
-    public String getFecha() {return fecha;}
-    public List<String> getParticipantes() {return participantes;}
-    public String getGanador() {return ganador;}
 
     public void registrarGanador(String nombreAtleta) {
         if (participantes.contains(nombreAtleta)) {
@@ -27,14 +24,4 @@ public class Competencia {
         }
     }
 
-    public void mostrarCompetencia() {
-        System.out.println("Competencia: " + nombre + " - Fecha: " + fecha);
-        System.out.println("Participantes:");
-        for (String participante : participantes) {
-            System.out.println("- " + participante);
-        }
-        if (ganador != null) {
-            System.out.println("Ganador: " + ganador);
-        }
-    }
 }
