@@ -1,4 +1,4 @@
-package org;
+package org.example;
 
 public class AtletaEstadisticas {
     private String nombreAtleta;
