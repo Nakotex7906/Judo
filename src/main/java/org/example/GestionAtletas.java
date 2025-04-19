@@ -25,7 +25,6 @@ public class GestionAtletas {
         return null;  // Retorna null si no encuentra al atleta
     }
 
-    // Actualizar estadísticas de un atleta
     public void actualizarAtleta(String nombre, String resultado) {
         Atleta atleta = obtenerAtleta(nombre);
         if (atleta != null) {
