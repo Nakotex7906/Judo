@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GestionarCompetencia {
+
     private List<Competencia> competencias;
 
     public GestionarCompetencia() {
         competencias = new ArrayList<>();
+    }
+
+    public List<Competencia> getCompetencias() {
+        return competencias;
     }
 
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {

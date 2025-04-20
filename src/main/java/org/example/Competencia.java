@@ -16,6 +16,12 @@ public class Competencia {
 
     public String getNombre() {return nombre;}
 
+    public String getFecha() {return fecha;}
+
+    public List<String> getParticipantes() {return participantes;}
+
+    public String getGanador() {return ganador;}
+
     public void registrarGanador(String nombreAtleta) {
         if (participantes.contains(nombreAtleta)) {
             this.ganador = nombreAtleta;

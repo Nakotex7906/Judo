@@ -81,6 +81,7 @@ public class GestionAtletas {
         }
 
     }
+
     // Guardar lista de atletas en un archivo CSV
     public void guardarAtletasCSV(String rutaArchivo) {
         try (FileWriter fw = new FileWriter(rutaArchivo)) {

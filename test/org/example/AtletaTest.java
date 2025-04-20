@@ -1,15 +1,20 @@
 package org.example;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AtletaTest {
 
-    Atleta atleta;
+    private Atleta atleta;
+
+    @BeforeEach
+    void setUp() {
+        atleta = new Atleta("Ignacio", "Essus", "66kg", "2004-05-12");
+    }
 
     @Test
     void testAumentarVictoria() {
-
         atleta.aumentarVictoria();
         assertEquals(1, atleta.getVictorias());
     }
@@ -20,13 +25,12 @@ class AtletaTest {
         assertEquals(1, atleta.getDerrotas());
     }
 
-
     @Test
     void testMostrarInformacion() {
         atleta.aumentarVictoria();
         String info = atleta.mostrarInformacion();
-        assertTrue(info.contains("Nombre: Juan Pérez"));
-        assertTrue(info.contains("Categoria: Senior"));
+        assertTrue(info.contains("Nombre: Ignacio Essus"));
+        assertTrue(info.contains("Categoria: 66kg"));
         assertTrue(info.contains("Victorias: 1"));
         assertTrue(info.contains("% Victorias: 100.00"));
     }
