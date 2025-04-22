@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Locale;
+
 public class Atleta {
     private String nombre;
     private String apellido;
@@ -42,6 +44,6 @@ public class Atleta {
     public String mostrarInformacion() {
         return "Nombre: " + nombre + " " + apellido + ", Categoria: " + categoria +
                 ", Victorias: " + victorias + ", Derrotas: " + derrotas + ", Empates: " + empates +
-                ", % Victorias: " + String.format("%.2f", calcularPorcentajeVictorias());
+                ", % Victorias: " + String.format(Locale.US, "%.2f", calcularPorcentajeVictorias());
     }
 }
