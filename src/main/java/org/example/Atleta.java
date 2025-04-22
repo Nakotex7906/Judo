@@ -25,6 +25,9 @@ public class Atleta {
     public int getVictorias() { return victorias; }
     public int getDerrotas() { return derrotas; }
     public int getEmpates() { return empates; }
+    public void setVictorias(int victorias) {this.victorias = victorias;}
+    public void setDerrotas(int derrotas) {this.derrotas = derrotas;}
+    public void setEmpates(int empates) {this.empates = empates;}
     public String getFechaNacimiento() { return fechaNacimiento; }
 
     public void aumentarVictoria() { victorias++; }

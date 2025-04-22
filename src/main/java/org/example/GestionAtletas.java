@@ -26,9 +26,49 @@ public class GestionAtletas {
         Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
         if (obtenerAtleta(nombre) == null) {
             listaAtletas.add(atleta);
+            guardarAtletasCSV("atletas.csv");
             System.out.println("Atleta agregado con exito");
         } else {
             System.out.println("Error, El atleta ya esta registrado");
+        }
+    }
+
+    public void cargarAtletasDesdeCSV(String rutaArchivo) {
+        File archivo = new File(rutaArchivo);
+        if (!archivo.exists()) {
+            System.out.println(rutaArchivo + " archivo encontrado");
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+
+                if (datos.length == 7) {
+                    String nombre = datos[0];
+                    String apellido = datos[1];
+                    String categoria = datos[2];
+                    int victorias = Integer.parseInt(datos[3]);
+                    int derrotas = Integer.parseInt(datos[4]);
+                    int empates = Integer.parseInt(datos[5]);
+                    String fechaNacimiento = datos[6];
+
+                    Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
+                    atleta.setVictorias(victorias);
+                    atleta.setDerrotas(derrotas);
+                    atleta.setEmpates(empates);
+
+                    if (obtenerAtleta(nombre) == null) {
+                        listaAtletas.add(atleta);
+                    }
+                }
+            }
+            System.out.println("Atletas cargados correctamente desde " + rutaArchivo);
+        } catch (IOException e) {
+            System.err.println("Error al cargar atletas: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error al interpretar datos numéricos: " + e.getMessage());
         }
     }
 
@@ -53,10 +93,12 @@ public class GestionAtletas {
                 default:
                     System.out.println("Resultado no valido");
             }
+            guardarAtletasCSV("atletas.csv");
             System.out.println("Resultado actualizado");
         } else {
             System.out.println("Atleta no encontrado");
         }
+
     }
 
     public List<Atleta> getListaAtletas() {
