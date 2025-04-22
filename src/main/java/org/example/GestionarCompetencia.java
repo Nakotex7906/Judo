@@ -7,8 +7,10 @@ import java.util.Scanner;
 public class GestionarCompetencia {
 
     private List<Competencia> competencias;
+    private GestionAtletas gestionAtletas;
 
-    public GestionarCompetencia() {
+    public GestionarCompetencia(GestionAtletas gestionAtletas) {
+        this.gestionAtletas = gestionAtletas;
         competencias = new ArrayList<>();
     }
 
@@ -24,7 +26,22 @@ public class GestionarCompetencia {
 
         System.out.println("Ingrese los nombres de los participantes (separados por comas): ");
         String participantesInput = scanner.nextLine();
-        List<String> participantes = Arrays.asList(participantesInput.split(","));
+        List<String> nombresParticipantes = Arrays.asList(participantesInput.split(","));
+        List<Atleta> participantes = new ArrayList<>();
+
+        for (String nombreParticipante : nombresParticipantes) {
+            Atleta atleta = gestionAtletas.obtenerAtleta(nombreParticipante.trim());
+            if (atleta != null) {
+                participantes.add(atleta);
+            } else {
+                System.out.println("Atleta no encontrado: " + nombreParticipante.trim());
+            }
+        }
+
+        if (participantes.isEmpty()) {
+            System.out.println("No se agregaron participantes validos, competencia no creada");
+            return;
+        }
 
         Competencia competencia = new Competencia(nombre, fecha, participantes);
         competencias.add(competencia);
@@ -46,5 +63,4 @@ public class GestionarCompetencia {
         }
         System.out.println("Competencia no encontrada");
     }
-
 }

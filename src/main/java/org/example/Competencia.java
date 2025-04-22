@@ -5,29 +5,30 @@ import java.util.List;
 public class Competencia {
     private String nombre;
     private String fecha;
-    private List<String> participantes;
-    private String ganador;
+    private List<Atleta> participantes;
+    private Atleta ganador;
 
-    public Competencia(String nombre, String fecha, List<String> participantes) {
+    public Competencia(String nombre, String fecha, List<Atleta> participantes) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.participantes = participantes;
     }
 
-    public String getNombre() {return nombre;}
+    public String getNombre() { return nombre; }
 
-    public String getFecha() {return fecha;}
+    public String getFecha() { return fecha; }
 
-    public List<String> getParticipantes() {return participantes;}
+    public List<Atleta> getParticipantes() { return participantes; }
 
-    public String getGanador() {return ganador;}
+    public Atleta getGanador() { return ganador; }
 
     public void registrarGanador(String nombreAtleta) {
-        if (participantes.contains(nombreAtleta)) {
-            this.ganador = nombreAtleta;
-        } else {
-            System.out.println("El atleta no esta inscrito en esta competencia.");
+        for (Atleta atleta : participantes) {
+            if (atleta.getNombre().equalsIgnoreCase(nombreAtleta)) {
+                this.ganador = atleta;
+                return;
+            }
         }
+        System.out.println("El atleta no esta inscrito en esta competencia");
     }
-
 }

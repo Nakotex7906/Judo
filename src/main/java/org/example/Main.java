@@ -6,12 +6,11 @@ public class Main {
     public static void main(String[] args) {
         GestionAtletas gestionAtletas = new GestionAtletas();
         gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");
-        GestionarCompetencia gestionarCompetencia = new GestionarCompetencia();
+        GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionAtletas);
         EstadisticasRanking estadisticasRanking = new EstadisticasRanking(gestionAtletas);
 
         Scanner scanner = new Scanner(System.in);
         int opcion;
-
 
         do {
             System.out.println("\n=== Sistema de Gestión de Judo ===");
