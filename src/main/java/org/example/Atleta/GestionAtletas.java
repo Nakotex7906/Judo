@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Atleta;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Ranking;
+
+import org.example.Atleta.Atleta;
+import org.example.Atleta.GestionAtletas;
 
 import java.util.Comparator;
 import java.util.List;

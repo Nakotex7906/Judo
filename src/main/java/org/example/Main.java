@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Atleta.GestionAtletas;
+import org.example.Competencia.GestionarCompetencia;
+import org.example.Ranking.EstadisticasRanking;
+
 import java.util.Scanner;
 
 public class Main {

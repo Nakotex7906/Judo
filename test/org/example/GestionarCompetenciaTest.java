@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Atleta.Atleta;
+import org.example.Atleta.GestionAtletas;
+import org.example.Competencia.Competencia;
+import org.example.Competencia.GestionarCompetencia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

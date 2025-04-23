@@ -1,10 +1,11 @@
 package org.example;
 
+import org.example.Atleta.Atleta;
+import org.example.Atleta.GestionAtletas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 

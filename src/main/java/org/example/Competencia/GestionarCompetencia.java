@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Competencia;
+import org.example.Atleta.Atleta;
+import org.example.Atleta.GestionAtletas;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

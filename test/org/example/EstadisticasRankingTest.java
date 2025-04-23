@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Atleta.Atleta;
+import org.example.Atleta.GestionAtletas;
+import org.example.Ranking.EstadisticasRanking;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
