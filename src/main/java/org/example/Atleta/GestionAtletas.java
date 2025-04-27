@@ -1,9 +1,14 @@
 package org.example.Atleta;
 
+import org.example.Competencia.GestionarCompetencia;
+import org.example.Example.LoggerManager;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GestionAtletas {
 
@@ -13,30 +18,32 @@ public class GestionAtletas {
         listaAtletas = new ArrayList<>();
     }
 
+    private static final Logger logger = LoggerManager.getLogger(GestionAtletas.class);
+
     public void agregarAtletaDesdeConsola(Scanner scanner) {
-        System.out.print("Nombre: ");
+        logger.log(Level.INFO,"Nombre: ");
         String nombre = scanner.nextLine();
-        System.out.print("Apellido: ");
+        logger.log(Level.INFO,"Apellido: ");
         String apellido = scanner.nextLine();
-        System.out.print("Categoría: ");
+        logger.log(Level.INFO,"Categoría: ");
         String categoria = scanner.nextLine();
-        System.out.print("Fecha de Nacimiento (DD-MM-YYYY): ");
+        logger.log(Level.INFO,"Fecha de Nacimiento (DD-MM-YYYY): ");
         String fechaNacimiento = scanner.nextLine();
 
         Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
         if (obtenerAtleta(nombre) == null) {
             listaAtletas.add(atleta);
             guardarAtletasCSV("atletas.csv");
-            System.out.println("Atleta agregado con exito");
+            logger.log(Level.INFO,"Atleta agregado con exito");
         } else {
-            System.out.println("Error, El atleta ya esta registrado");
+            logger.log(Level.WARNING,"Error, El atleta ya esta registrado");
         }
     }
 
     public void cargarAtletasDesdeCSV(String rutaArchivo) {
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
-            System.out.println(rutaArchivo + " archivo encontrado");
+            logger.log(Level.INFO,rutaArchivo + " archivo encontrado");
             return;
         }
 
@@ -64,18 +71,18 @@ public class GestionAtletas {
                     }
                 }
             }
-            System.out.println("Atletas cargados correctamente desde " + rutaArchivo);
+            logger.log(Level.INFO,"Atletas cargados correctamente desde " + rutaArchivo);
         } catch (IOException e) {
-            System.err.println("Error al cargar atletas: " + e.getMessage());
+            logger.log(Level.WARNING,"Error al cargar atletas: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.err.println("Error al interpretar datos numéricos: " + e.getMessage());
+            logger.log(Level.WARNING,"Error al interpretar datos numéricos: " + e.getMessage());
         }
     }
 
     public void registrarResultadoAtleta(Scanner scanner) {
-        System.out.print("Nombre del Atleta: ");
+        logger.log(Level.INFO,"Nombre del Atleta: ");
         String nombre = scanner.nextLine();
-        System.out.print("Resultado (victoria / derrota / empate): ");
+        logger.log(Level.INFO,"Resultado (victoria / derrota / empate): ");
         String resultado = scanner.nextLine();
         Atleta atleta = obtenerAtleta(nombre);
 
@@ -91,12 +98,12 @@ public class GestionAtletas {
                     atleta.aumentarEmpate();
                     break;
                 default:
-                    System.out.println("Resultado no valido");
+                    logger.log(Level.WARNING,"Resultado no valido");
             }
             guardarAtletasCSV("atletas.csv");
-            System.out.println("Resultado actualizado");
+            logger.log(Level.INFO,"Resultado actualizado");
         } else {
-            System.out.println("Atleta no encontrado");
+            logger.log(Level.WARNING,"Atleta no encontrado");
         }
 
     }
@@ -117,7 +124,7 @@ public class GestionAtletas {
 
     public void mostrarAtletas() {
         if (listaAtletas.isEmpty()) {
-            System.out.println("No hay atletas registrados");
+            logger.log(Level.INFO,"No hay atletas registrados");
         } else {
             listaAtletas.forEach(atleta -> System.out.println(atleta.mostrarInformacion()));
         }
@@ -132,9 +139,9 @@ public class GestionAtletas {
                         atleta.getVictorias() + "," + atleta.getDerrotas() + "," + atleta.getEmpates() + "," +
                         atleta.getFechaNacimiento() + "\n");
             }
-            System.out.println("Datos de atletas guardados en " + rutaArchivo);
+            logger.log(Level.INFO,"Datos de atletas guardados en " + rutaArchivo);
         } catch (IOException e) {
-            System.err.println("Error al guardar atletas: " + e.getMessage());
+            logger.log(Level.WARNING,"Error al guardar atletas: " + e.getMessage());
         }
     }
 

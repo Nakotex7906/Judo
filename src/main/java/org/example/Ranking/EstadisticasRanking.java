@@ -2,12 +2,17 @@ package org.example.Ranking;
 
 import org.example.Atleta.Atleta;
 import org.example.Atleta.GestionAtletas;
+import org.example.Example.LoggerManager;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EstadisticasRanking {
+
+    private static final Logger logger = LoggerManager.getLogger(EstadisticasRanking.class);
 
     private GestionAtletas gestorAtletas;
 
@@ -16,14 +21,14 @@ public class EstadisticasRanking {
     }
 
     public void mostrarEstadisticasDesdeConsola(Scanner scanner) {
-        System.out.print("Nombre del Atleta: ");
+        logger.log(Level.INFO,"Nombre del Atleta: ");
         String nombre = scanner.nextLine();
 
         Atleta atleta = gestorAtletas.obtenerAtleta(nombre);
         if (atleta != null) {
-            System.out.println(atleta.mostrarInformacion());
+            logger.log(Level.INFO,atleta.mostrarInformacion());
         } else {
-            System.out.println("El atleta no esta registrado.");
+            logger.log(Level.INFO,"El atleta no esta registrado.");
         }
     }
 
@@ -32,9 +37,9 @@ public class EstadisticasRanking {
 
         atletas.sort(Comparator.comparingInt(Atleta::getVictorias).reversed());
 
-        System.out.println("Ranking de Atletas (por numero de victorias):");
+        logger.log(Level.INFO,"Ranking de Atletas (por numero de victorias):");
         for (Atleta a : atletas) {
-            System.out.println(a.getNombre() + " " + a.getApellido() + " - Victorias: " + a.getVictorias() +
+            logger.log(Level.INFO,a.getNombre() + " " + a.getApellido() + " - Victorias: " + a.getVictorias() +
                     ", Derrotas: " + a.getDerrotas() + ", Empates: " + a.getEmpates());
         }
     }

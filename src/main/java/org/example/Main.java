@@ -2,11 +2,15 @@ package org.example;
 
 import org.example.Atleta.GestionAtletas;
 import org.example.Competencia.GestionarCompetencia;
+import org.example.Example.LoggerManager;
 import org.example.Ranking.EstadisticasRanking;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
+    private static final Logger logger = LoggerManager.getLogger(Main.class);
     public static void main(String[] args) {
         GestionAtletas gestionAtletas = new GestionAtletas();
         gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");
@@ -17,17 +21,17 @@ public class Main {
         int opcion;
 
         do {
-            System.out.println("\n=== Sistema de Gestión de Judo ===");
-            System.out.println("1. Agregar Atleta");
-            System.out.println("2. Mostrar Atletas");
-            System.out.println("3. Guardar Atletas en un Archivo CSV");
-            System.out.println("4. Registrar Resultado de Atleta");
-            System.out.println("5. Agregar Competencia");
-            System.out.println("6. Registrar Ganador de Competencia");
-            System.out.println("7. Mostrar Estadisticas de un Atleta");
-            System.out.println("8. Mostrar Ranking");
-            System.out.println("9. Salir");
-            System.out.print("Seleccione una opcion: ");
+            logger.log(Level.INFO,"\n=== Sistema de Gestión de Judo ===");
+            logger.log(Level.INFO,"1. Agregar Atleta");
+            logger.log(Level.INFO,"2. Mostrar Atletas");
+            logger.log(Level.INFO,"3. Guardar Atletas en un Archivo CSV");
+            logger.log(Level.INFO,"4. Registrar Resultado de Atleta");
+            logger.log(Level.INFO,"5. Agregar Competencia");
+            logger.log(Level.INFO,"6. Registrar Ganador de Competencia");
+            logger.log(Level.INFO,"7. Mostrar Estadisticas de un Atleta");
+            logger.log(Level.INFO,"8. Mostrar Ranking");
+            logger.log(Level.INFO,"9. Salir");
+            logger.log(Level.INFO,"Seleccione una opcion: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
 
@@ -57,10 +61,10 @@ public class Main {
                     estadisticasRanking.calcularRanking();
                     break;
                 case 9:
-                    System.out.println("Saliendo del sistema");
+                    logger.log(Level.INFO,"Saliendo del sistema");
                     break;
                 default:
-                    System.out.println("Opcion no valida, intente nuevamente");
+                    logger.log(Level.INFO,"Opcion no valida, intente nuevamente");
             }
         } while (opcion != 9);
 
