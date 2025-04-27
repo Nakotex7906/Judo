@@ -1,0 +1,24 @@
+abr 26, 2025 11:35:10 P. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Nombre de la Competencia: 
+abr 26, 2025 11:35:45 P. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Fecha de la Competencia (YYYY-MM-DD): 
+abr 26, 2025 11:36:00 P. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Ingrese los nombres de los participantes (separados por comas): 
+abr 27, 2025 12:01:46 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Nombre de la Competencia: 
+abr 27, 2025 12:02:00 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Nombre de la Competencia: 
+abr 27, 2025 12:02:05 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Fecha de la Competencia (YYYY-MM-DD): 
+abr 27, 2025 12:02:09 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+INFO: Ingrese los nombres de los participantes (separados por comas): 
+abr 27, 2025 12:02:11 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+WARNING: Atleta no encontrado: fkdf
+abr 27, 2025 12:02:11 A. M. org.example.Competencia.GestionarCompetencia agregarCompetenciaDesdeConsola
+WARNING: No se agregaron participantes validos, competencia no creada
+2025-04-27 00:09:39 - [INFO] - Nombre de la Competencia: 
+2025-04-27 00:09:45 - [INFO] - Fecha de la Competencia (YYYY-MM-DD): 
+2025-04-27 00:09:57 - [INFO] - Ingrese los nombres de los participantes (separados por comas): 
+2025-04-27 00:10:05 - [WARNING] - Atleta no encontrado: Benja
+2025-04-27 00:10:05 - [WARNING] - Atleta no encontrado: Alonso
+2025-04-27 00:10:05 - [INFO] - Competencia agregada con exito.
