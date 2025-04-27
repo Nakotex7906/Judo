@@ -27,6 +27,7 @@ class CompetenciaTest {
         assertEquals(atleta1, competencia.getGanador());
     }
 
+
     @Test
     void testRegistrarGanadorInvalido() {
         competencia.registrarGanador("Alonso Romero");
