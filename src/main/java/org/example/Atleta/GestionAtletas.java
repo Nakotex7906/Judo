@@ -21,29 +21,36 @@ public class GestionAtletas {
     private static final Logger logger = LoggerManager.getLogger(GestionAtletas.class);
 
     public void agregarAtletaDesdeConsola(Scanner scanner) {
-        logger.log(Level.INFO,"Nombre: ");
-        String nombre = scanner.nextLine();
-        logger.log(Level.INFO,"Apellido: ");
-        String apellido = scanner.nextLine();
-        logger.log(Level.INFO,"Categoría: ");
-        String categoria = scanner.nextLine();
-        logger.log(Level.INFO,"Fecha de Nacimiento (DD-MM-YYYY): ");
-        String fechaNacimiento = scanner.nextLine();
+        try {
+            logger.log(Level.INFO, "Nombre: ");
+            String nombre = scanner.nextLine();
+            logger.log(Level.INFO, "Apellido: ");
+            String apellido = scanner.nextLine();
+            logger.log(Level.INFO, "Categoría: ");
+            String categoria = scanner.nextLine();
+            logger.log(Level.INFO, "Fecha de Nacimiento (DD-MM-YYYY): ");
+            String fechaNacimiento = scanner.nextLine();
 
-        Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
-        if (obtenerAtleta(nombre) == null) {
+            Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
+            if (existeAtleta(nombre)) {
+                throw new IllegalArgumentException("El atleta " + nombre + " ya está registrado");
+            }
+
             listaAtletas.add(atleta);
             guardarAtletasCSV("atletas.csv");
-            logger.log(Level.INFO,"Atleta agregado con exito");
-        } else {
-            logger.log(Level.WARNING,"Error, El atleta ya esta registrado");
+            logger.log(Level.INFO, "Atleta agregado con éxito");
+
+        } catch (IllegalArgumentException e) {
+            logger.log(Level.WARNING, e.getMessage());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error inesperado al agregar atleta: " + e.getMessage(), e);
         }
     }
 
-    public void cargarAtletasDesdeCSV(String rutaArchivo) {
+    public void cargarAtletasDesdeCSV(String rutaArchivo) throws IOException {
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
-            logger.log(Level.INFO,rutaArchivo + " archivo encontrado");
+            logger.log(Level.INFO, rutaArchivo + " archivo encontrado");
             return;
         }
 
@@ -66,27 +73,26 @@ public class GestionAtletas {
                     atleta.setDerrotas(derrotas);
                     atleta.setEmpates(empates);
 
-                    if (obtenerAtleta(nombre) == null) {
+                    if (!existeAtleta(nombre)) {
                         listaAtletas.add(atleta);
                     }
                 }
             }
-            logger.log(Level.INFO,"Atletas cargados correctamente desde " + rutaArchivo);
-        } catch (IOException e) {
-            logger.log(Level.WARNING,"Error al cargar atletas: " + e.getMessage());
+            logger.log(Level.INFO, "Atletas cargados correctamente desde " + rutaArchivo);
         } catch (NumberFormatException e) {
-            logger.log(Level.WARNING,"Error al interpretar datos numéricos: " + e.getMessage());
+            throw new IOException("Error en el formato " + rutaArchivo, e);
         }
     }
 
     public void registrarResultadoAtleta(Scanner scanner) {
-        logger.log(Level.INFO,"Nombre del Atleta: ");
-        String nombre = scanner.nextLine();
-        logger.log(Level.INFO,"Resultado (victoria / derrota / empate): ");
-        String resultado = scanner.nextLine();
-        Atleta atleta = obtenerAtleta(nombre);
+        try {
+            logger.log(Level.INFO, "Nombre del Atleta: ");
+            String nombre = scanner.nextLine();
+            logger.log(Level.INFO, "Resultado (victoria / derrota / empate): ");
+            String resultado = scanner.nextLine();
 
-        if (atleta != null) {
+            Atleta atleta = obtenerAtleta(nombre);
+
             switch (resultado.toLowerCase()) {
                 case "victoria":
                     atleta.aumentarVictoria();
@@ -98,52 +104,57 @@ public class GestionAtletas {
                     atleta.aumentarEmpate();
                     break;
                 default:
-                    logger.log(Level.WARNING,"Resultado no valido");
+                    throw new IllegalArgumentException("Resultado no válido: " + resultado);
             }
-            guardarAtletasCSV("atletas.csv");
-            logger.log(Level.INFO,"Resultado actualizado");
-        } else {
-            logger.log(Level.WARNING,"Atleta no encontrado");
-        }
 
+            guardarAtletasCSV("atletas.csv");
+            logger.log(Level.INFO, "Resultado actualizado");
+
+        } catch (IllegalArgumentException e) {
+            logger.log(Level.WARNING, e.getMessage());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error inesperado al registrar resultado: " + e.getMessage(), e);
+        }
     }
 
     public List<Atleta> getListaAtletas() {
-        return listaAtletas;
+        return new ArrayList<>(listaAtletas);
     }
 
-    // Leer información de un atleta (por nombre)
-    public Atleta obtenerAtleta(String nombre) {
+    public Atleta obtenerAtleta(String nombre) throws IllegalArgumentException {
         for (Atleta atleta : listaAtletas) {
             if (atleta.getNombre().equalsIgnoreCase(nombre)) {
                 return atleta;
             }
         }
-        return null;  // Retorna null si no encuentra al atleta
+        throw new IllegalArgumentException("Atleta " + nombre + " no encontrado");
+    }
+
+    private boolean existeAtleta(String nombre) {
+        for (Atleta atleta : listaAtletas) {
+            if (atleta.getNombre().equalsIgnoreCase(nombre)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void mostrarAtletas() {
         if (listaAtletas.isEmpty()) {
-            logger.log(Level.INFO,"No hay atletas registrados");
+            logger.log(Level.INFO, "No hay atletas registrados");
         } else {
-            listaAtletas.forEach(atleta -> System.out.println(atleta.mostrarInformacion()));
+            listaAtletas.forEach(atleta -> logger.log(Level.INFO,atleta.mostrarInformacion()));
         }
-
     }
 
-    // Guardar lista de atletas en un archivo CSV
-    public void guardarAtletasCSV(String rutaArchivo) {
+    public void guardarAtletasCSV(String rutaArchivo) throws IOException {
         try (FileWriter fw = new FileWriter(rutaArchivo)) {
             for (Atleta atleta : listaAtletas) {
                 fw.write(atleta.getNombre() + "," + atleta.getApellido() + "," + atleta.getCategoria() + "," +
                         atleta.getVictorias() + "," + atleta.getDerrotas() + "," + atleta.getEmpates() + "," +
                         atleta.getFechaNacimiento() + "\n");
             }
-            logger.log(Level.INFO,"Datos de atletas guardados en " + rutaArchivo);
-        } catch (IOException e) {
-            logger.log(Level.WARNING,"Error al guardar atletas: " + e.getMessage());
+            logger.log(Level.INFO, "Datos de atletas guardados en " + rutaArchivo);
         }
     }
-
-
 }
