@@ -15,6 +15,9 @@ public class GestionarCompetencia {
     private static final Logger logger = LoggerManager.getLogger(GestionarCompetencia.class);
     private List<Competencia> competencias;
     private GestionAtletas gestionAtletas;
+    public List<Competencia> getCompetencias() {
+        return competencias;
+    }
 
     public GestionarCompetencia(GestionAtletas gestionAtletas) {
         this.gestionAtletas = gestionAtletas;
