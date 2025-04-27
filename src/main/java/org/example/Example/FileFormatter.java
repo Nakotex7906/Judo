@@ -12,6 +12,7 @@ public class FileFormatter extends Formatter {
     @Override
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
+
         builder.append(dateFormat.format(new Date(record.getMillis())))
                 .append(" - [")
                 .append(record.getLevel().getName())

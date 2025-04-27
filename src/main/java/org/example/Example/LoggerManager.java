@@ -11,14 +11,13 @@ public class LoggerManager {
         Logger logger = Logger.getLogger(clazz.getName());
         logger.setUseParentHandlers(false);
 
-        if (logger.getHandlers().length == 0) { // Evita agregar handlers múltiples veces
+        if (logger.getHandlers().length == 0) {
             try {
-                // FileHandler
+
                 FileHandler fileHandler = new FileHandler("competencias.log", true);
                 fileHandler.setFormatter(new FileFormatter());
                 logger.addHandler(fileHandler);
 
-                // ConsoleHandler
                 ConsoleHandler consoleHandler = new ConsoleHandler();
                 consoleHandler.setFormatter(new ColorFormatter());
                 logger.addHandler(consoleHandler);

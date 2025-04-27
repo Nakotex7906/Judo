@@ -16,6 +16,7 @@ public class ColorFormatter extends Formatter {
     public String format(LogRecord record) {
         String color;
 
+
         switch (record.getLevel().getName()) {
             case "SEVERE":
                 color = RED;

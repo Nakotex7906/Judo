@@ -62,6 +62,7 @@ public class GestionarCompetencia {
                 competencia.registrarGanador(nombreGanador);
                 logger.log(Level.INFO,"Ganador registrado");
                 return;
+
             }
         }
         logger.log(Level.INFO,"Competencia no encontrada");
