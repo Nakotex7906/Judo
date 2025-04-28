@@ -26,7 +26,9 @@ public class EstadisticasRanking {
 
         Atleta atleta = gestorAtletas.obtenerAtleta(nombre);
         if (atleta != null) {
-            logger.log(Level.INFO,atleta.mostrarInformacion());
+            if (logger.isLoggable(Level.INFO)) {
+                logger.log(Level.INFO, atleta.mostrarInformacion());
+            }
         } else {
             logger.log(Level.INFO,"El atleta no esta registrado.");
         }
@@ -39,8 +41,8 @@ public class EstadisticasRanking {
 
         logger.log(Level.INFO,"Ranking de Atletas (por numero de victorias):");
         for (Atleta a : atletas) {
-            logger.log(Level.INFO,a.getNombre() + " " + a.getApellido() + " - Victorias: " + a.getVictorias() +
-                    ", Derrotas: " + a.getDerrotas() + ", Empates: " + a.getEmpates());
+            logger.log(Level.INFO, "{0} {1} - Victorias: {2}, Derrotas: {3}, Empates: {4}",
+         new Object[]{a.getNombre(), a.getApellido(), a.getVictorias(), a.getDerrotas(), a.getEmpates()});
         }
     }
 }

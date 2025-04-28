@@ -5,6 +5,7 @@ import org.example.competencia.GestionarCompetencia;
 import org.example.example.LoggerManager;
 import org.example.ranking.EstadisticasRanking;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +14,13 @@ public class Main {
     private static final Logger logger = LoggerManager.getLogger(Main.class);
     public static void main(String[] args) {
         GestionAtletas gestionAtletas = new GestionAtletas();
+
+        try {
+            gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionAtletas);
         EstadisticasRanking estadisticasRanking = new EstadisticasRanking(gestionAtletas);
 
