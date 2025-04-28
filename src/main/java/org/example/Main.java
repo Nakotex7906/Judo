@@ -18,7 +18,7 @@ public class Main {
         try {
             gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error al cargar atletas desde CSV: %s", e.getMessage()), e);
         }
 
         GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionAtletas);
