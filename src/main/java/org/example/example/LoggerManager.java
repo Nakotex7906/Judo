@@ -5,7 +5,10 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LoggerManager {
+public final class LoggerManager {  //
+
+    private LoggerManager() {
+    }
 
     public static Logger getLogger(Class<?> clazz) {
         Logger logger = Logger.getLogger(clazz.getName());
@@ -13,7 +16,6 @@ public class LoggerManager {
 
         if (logger.getHandlers().length == 0) {
             try {
-
                 FileHandler fileHandler = new FileHandler("competencias.log", true);
                 fileHandler.setFormatter(new FileFormatter());
                 logger.addHandler(fileHandler);
@@ -24,7 +26,7 @@ public class LoggerManager {
 
                 logger.setLevel(Level.ALL);
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error al configurar el logger", e);
+                logger.log(Level.SEVERE, String.format("Error al configurar el logger: %s", e.getMessage()), e);
             }
         }
         return logger;

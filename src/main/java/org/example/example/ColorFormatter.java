@@ -5,7 +5,6 @@ import java.util.logging.LogRecord;
 
 public class ColorFormatter extends Formatter {
 
-
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
     public static final String YELLOW = "\u001B[33m";
@@ -13,25 +12,14 @@ public class ColorFormatter extends Formatter {
     public static final String CYAN = "\u001B[36m";
 
     @Override
-    public String format(LogRecord record) {
-        String color;
+    public String format(LogRecord logRecord) {
+        String color = switch (logRecord.getLevel().getName()) {
+            case "SEVERE" -> RED;
+            case "WARNING" -> YELLOW;
+            case "INFO" -> CYAN;
+            default -> GREEN;
+        };
 
-
-        switch (record.getLevel().getName()) {
-            case "SEVERE":
-                color = RED;
-                break;
-            case "WARNING":
-                color = YELLOW;
-                break;
-            case "INFO":
-                color = CYAN;
-                break;
-            default:
-                color = GREEN;
-                break;
-        }
-
-        return color + "[" + record.getLevel() + "] " + formatMessage(record) + RESET + "\n";
+        return color + "[" + logRecord.getLevel() + "] " + formatMessage(logRecord) + RESET + "\n";
     }
 }

@@ -79,7 +79,7 @@ public class GestionAtletas {
                     }
                 }
             }
-            logger.log(Level.INFO, "Atletas cargados correctamente desde " + rutaArchivo);
+            logger.log(Level.INFO, "Atletas cargados correctamente desde {0}", rutaArchivo);
         } catch (NumberFormatException e) {
             throw new IOException("Error en el formato " + rutaArchivo, e);
         }
@@ -114,7 +114,9 @@ public class GestionAtletas {
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, e.getMessage());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error inesperado al registrar resultado: " + e.getMessage(), e);
+            if (logger.isLoggable(Level.SEVERE)) {
+                logger.log(Level.SEVERE, String.format("Error inesperado al registrar resultado: %s", e.getMessage()), e);
+            }
         }
     }
 
@@ -155,7 +157,7 @@ public class GestionAtletas {
                         atleta.getVictorias() + "," + atleta.getDerrotas() + "," + atleta.getEmpates() + "," +
                         atleta.getFechaNacimiento() + "\n");
             }
-            logger.log(Level.INFO, "Datos de atletas guardados en " + rutaArchivo);
+            logger.log(Level.INFO, "Datos de atletas guardados en {0}", rutaArchivo);
         }
     }
 }

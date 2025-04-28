@@ -7,21 +7,21 @@ import java.util.logging.LogRecord;
 
 public class FileFormatter extends Formatter {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public String format(LogRecord record) {
+    public String format(LogRecord logRecord) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(dateFormat.format(new Date(record.getMillis())))
+        builder.append(dateFormat.format(new Date(logRecord.getMillis())))
                 .append(" - [")
-                .append(record.getLevel().getName())
+                .append(logRecord.getLevel().getName())
                 .append("] - ")
-                .append(record.getSourceClassName())
+                .append(logRecord.getSourceClassName())
                 .append(".")
-                .append(record.getSourceMethodName())
+                .append(logRecord.getSourceMethodName())
                 .append(" - ")
-                .append(formatMessage(record))
+                .append(formatMessage(logRecord))
                 .append(System.lineSeparator());
         return builder.toString();
     }

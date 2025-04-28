@@ -41,7 +41,7 @@ public class GestionarCompetencia {
             if (atleta != null) {
                 participantes.add(atleta);
             } else {
-                logger.log(Level.WARNING,"Atleta no encontrado: " + nombreParticipante.trim());
+                logger.log(Level.WARNING, "Atleta no encontrado: {0}", nombreParticipante.trim());
             }
         }
 
