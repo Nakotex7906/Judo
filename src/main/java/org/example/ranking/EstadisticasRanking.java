@@ -1,8 +1,8 @@
-package org.example.Ranking;
+package org.example.ranking;
 
-import org.example.Atleta.Atleta;
-import org.example.Atleta.GestionAtletas;
-import org.example.Example.LoggerManager;
+import org.example.atleta.Atleta;
+import org.example.atleta.GestionAtletas;
+import org.example.example.LoggerManager;
 
 import java.util.Comparator;
 import java.util.List;

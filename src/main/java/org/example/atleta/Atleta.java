@@ -1,4 +1,4 @@
-package org.example.Atleta;
+package org.example.atleta;
 
 import java.util.Locale;
 

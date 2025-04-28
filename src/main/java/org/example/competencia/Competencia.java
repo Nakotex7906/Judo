@@ -1,8 +1,7 @@
-package org.example.Competencia;
+package org.example.competencia;
 
-import org.example.Atleta.Atleta;
-import org.example.Atleta.GestionAtletas;
-import org.example.Example.LoggerManager;
+import org.example.atleta.Atleta;
+import org.example.example.LoggerManager;
 
 import java.util.List;
 import java.util.logging.Level;

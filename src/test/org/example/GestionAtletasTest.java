@@ -1,11 +1,12 @@
 package org.example;
 
-import org.example.Atleta.Atleta;
-import org.example.Atleta.GestionAtletas;
+import org.example.atleta.Atleta;
+import org.example.atleta.GestionAtletas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +65,7 @@ public class GestionAtletasTest {
     }
 
     @Test
-    public void testGuardarCSV() {
+    public void testGuardarCSV() throws IOException {
         String ruta = "test_atletas.csv";
         gestion.guardarAtletasCSV(ruta);
         File archivo = new File(ruta);

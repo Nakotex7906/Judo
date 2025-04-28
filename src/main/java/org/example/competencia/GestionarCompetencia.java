@@ -1,13 +1,13 @@
-package org.example.Competencia;
-import org.example.Atleta.Atleta;
-import org.example.Atleta.GestionAtletas;
+package org.example.competencia;
+import org.example.atleta.Atleta;
+import org.example.atleta.GestionAtletas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import org.example.Example.LoggerManager;
+import org.example.example.LoggerManager;
 
 
 public class GestionarCompetencia {
@@ -19,6 +19,10 @@ public class GestionarCompetencia {
     public GestionarCompetencia(GestionAtletas gestionAtletas) {
         this.gestionAtletas = gestionAtletas;
         competencias = new ArrayList<>();
+    }
+
+    public List<Competencia> getCompetencias() {
+        return competencias;
     }
 
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {

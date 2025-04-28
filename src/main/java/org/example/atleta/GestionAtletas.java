@@ -1,7 +1,6 @@
-package org.example.Atleta;
+package org.example.atleta;
 
-import org.example.Competencia.GestionarCompetencia;
-import org.example.Example.LoggerManager;
+import org.example.example.LoggerManager;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -43,14 +42,16 @@ public class GestionAtletas {
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, e.getMessage());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error inesperado al agregar atleta: " + e.getMessage(), e);
+            logger.log(Level.SEVERE, String.format("Error inesperado al agregar atleta: %s", e.getMessage()), e);
         }
     }
 
     public void cargarAtletasDesdeCSV(String rutaArchivo) throws IOException {
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
-            logger.log(Level.INFO, rutaArchivo + " archivo encontrado");
+            if (logger.isLoggable(Level.INFO)) {
+                logger.log(Level.INFO, String.format("Archivo %s no encontrado", rutaArchivo));
+            }
             return;
         }
 
