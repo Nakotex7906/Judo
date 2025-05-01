@@ -1,6 +1,6 @@
-package org.example.atleta;
+package org.example.model.atleta;
 
-import org.example.example.LoggerManager;
+import org.example.model.example.LoggerManager;
 
 import java.io.*;
 import java.util.ArrayList;

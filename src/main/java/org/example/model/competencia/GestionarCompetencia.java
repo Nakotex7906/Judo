@@ -1,13 +1,13 @@
-package org.example.competencia;
-import org.example.atleta.Atleta;
-import org.example.atleta.GestionAtletas;
+package org.example.model.competencia;
+import org.example.model.atleta.Atleta;
+import org.example.model.atleta.GestionAtletas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import org.example.example.LoggerManager;
+import org.example.model.example.LoggerManager;
 
 
 public class GestionarCompetencia {

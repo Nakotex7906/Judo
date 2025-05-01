@@ -1,8 +1,22 @@
-package org.example.atleta;
+package org.example.model.atleta;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
 import java.util.Locale;
-
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Atleta {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String nombre;
     private String apellido;
     private String categoria;
@@ -16,21 +30,7 @@ public class Atleta {
         this.apellido = apellido;
         this.categoria = categoria;
         this.fechaNacimiento = fechaNacimiento;
-        this.victorias = 0;
-        this.derrotas = 0;
-        this.empates = 0;
     }
-
-    public String getNombre() { return nombre; }
-    public String getApellido() { return apellido; }
-    public String getCategoria() { return categoria; }
-    public int getVictorias() { return victorias; }
-    public int getDerrotas() { return derrotas; }
-    public int getEmpates() { return empates; }
-    public void setVictorias(int victorias) {this.victorias = victorias;}
-    public void setDerrotas(int derrotas) {this.derrotas = derrotas;}
-    public void setEmpates(int empates) {this.empates = empates;}
-    public String getFechaNacimiento() { return fechaNacimiento; }
 
     public void aumentarVictoria() { victorias++; }
     public void aumentarDerrota() { derrotas++; }

@@ -1,4 +1,4 @@
-package org.example.example;
+package org.example.model.example;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;

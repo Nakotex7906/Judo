@@ -1,4 +1,4 @@
-package org.example.example;
+package org.example.model.example;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;

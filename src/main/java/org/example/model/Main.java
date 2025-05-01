@@ -1,9 +1,9 @@
-package org.example;
+package org.example.model;
 
-import org.example.atleta.GestionAtletas;
-import org.example.competencia.GestionarCompetencia;
-import org.example.example.LoggerManager;
-import org.example.ranking.EstadisticasRanking;
+import org.example.model.atleta.GestionAtletas;
+import org.example.model.competencia.GestionarCompetencia;
+import org.example.model.example.LoggerManager;
+import org.example.model.ranking.EstadisticasRanking;
 
 import java.io.IOException;
 import java.util.Scanner;

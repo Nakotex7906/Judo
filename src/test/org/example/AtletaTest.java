@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.atleta.Atleta;
+import org.example.model.atleta.Atleta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
