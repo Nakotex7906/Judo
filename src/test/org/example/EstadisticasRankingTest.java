@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.model.atleta.Atleta;
-import org.example.model.atleta.GestionAtletas;
+import org.example.model.judoka.Judoka;
+import org.example.model.judoka.GestionJudokas;
 import org.example.model.ranking.EstadisticasRanking;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,25 +12,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EstadisticasRankingTest {
 
-    private GestionAtletas gestorAtletas;
+    private GestionJudokas gestorAtletas;
     private EstadisticasRanking estadisticasRanking;
 
     @BeforeEach
     void setUp() {
-        gestorAtletas = new GestionAtletas();
+        gestorAtletas = new GestionJudokas();
         estadisticasRanking = new EstadisticasRanking(gestorAtletas);
     }
 
     @Test
     void testMostrarEstadisticasDesdeConsolaAtletaRegistrado() {
-        Atleta atleta = new Atleta("Ignacio", "Essus", "66kg", "2004-05-12");
+        Judoka atleta = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
         gestorAtletas.getListaAtletas().add(atleta);
 
         String input = "Ignacio\n";
         Scanner scanner = new Scanner(input);
 
         estadisticasRanking.mostrarEstadisticasDesdeConsola(scanner);
-        Atleta encontrado = gestorAtletas.obtenerAtleta("Ignacio");
+        Judoka encontrado = gestorAtletas.obtenerAtleta("Ignacio");
         assertNotNull(encontrado);
     }
 
@@ -39,20 +39,20 @@ class EstadisticasRankingTest {
         String input = "Fantasma\n";
         Scanner scanner = new Scanner(input);
         estadisticasRanking.mostrarEstadisticasDesdeConsola(scanner);
-        Atleta noEncontrado = gestorAtletas.obtenerAtleta("Fantasma");
+        Judoka noEncontrado = gestorAtletas.obtenerAtleta("Fantasma");
         assertNull(noEncontrado);
     }
 
     @Test
     void testCalcularRanking() {
-        Atleta atleta1 = new Atleta("Ignacio", "Essus", "66kg", "2004-05-12");
+        Judoka atleta1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
         atleta1.aumentarVictoria();
         atleta1.aumentarVictoria();
 
-        Atleta atleta2 = new Atleta("Alonso", "Romero", "66kg", "2004-03-28");
+        Judoka atleta2 = new Judoka("Alonso", "Romero", "66kg", "2004-03-28");
         atleta2.aumentarVictoria();
 
-        Atleta atleta3 = new Atleta("Benjamin", "Beroiza", "73kg", "2003-09-21");
+        Judoka atleta3 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
 
         gestorAtletas.getListaAtletas().add(atleta1);
         gestorAtletas.getListaAtletas().add(atleta2);

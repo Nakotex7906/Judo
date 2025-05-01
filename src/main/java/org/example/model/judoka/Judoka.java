@@ -1,4 +1,4 @@
-package org.example.model.atleta;
+package org.example.model.judoka;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import java.util.Locale;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Atleta {
+public class Judoka {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Atleta {
     private int empates;
     private String fechaNacimiento;
 
-    public Atleta(String nombre, String apellido, String categoria, String fechaNacimiento) {
+    public Judoka(String nombre, String apellido, String categoria, String fechaNacimiento) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.categoria = categoria;

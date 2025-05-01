@@ -1,4 +1,4 @@
-package org.example.model.atleta;
+package org.example.model.judoka;
 
 import org.example.model.example.LoggerManager;
 
@@ -9,15 +9,15 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GestionAtletas {
+public class GestionJudokas {
 
-    private List<Atleta> listaAtletas;
+    private List<Judoka> listaAtletas;
 
-    public GestionAtletas() {
+    public GestionJudokas() {
         listaAtletas = new ArrayList<>();
     }
 
-    private static final Logger logger = LoggerManager.getLogger(GestionAtletas.class);
+    private static final Logger logger = LoggerManager.getLogger(GestionJudokas.class);
 
     public void agregarAtletaDesdeConsola(Scanner scanner) {
         try {
@@ -30,7 +30,7 @@ public class GestionAtletas {
             logger.log(Level.INFO, "Fecha de Nacimiento (DD-MM-YYYY): ");
             String fechaNacimiento = scanner.nextLine();
 
-            Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
+            Judoka atleta = new Judoka(nombre, apellido, categoria, fechaNacimiento);
             if (existeAtleta(nombre)) {
                 throw new IllegalArgumentException("El atleta " + nombre + " ya está registrado");
             }
@@ -69,7 +69,7 @@ public class GestionAtletas {
                     int empates = Integer.parseInt(datos[5]);
                     String fechaNacimiento = datos[6];
 
-                    Atleta atleta = new Atleta(nombre, apellido, categoria, fechaNacimiento);
+                    Judoka atleta = new Judoka(nombre, apellido, categoria, fechaNacimiento);
                     atleta.setVictorias(victorias);
                     atleta.setDerrotas(derrotas);
                     atleta.setEmpates(empates);
@@ -92,7 +92,7 @@ public class GestionAtletas {
             logger.log(Level.INFO, "Resultado (victoria / derrota / empate): ");
             String resultado = scanner.nextLine();
 
-            Atleta atleta = obtenerAtleta(nombre);
+            Judoka atleta = obtenerAtleta(nombre);
 
             switch (resultado.toLowerCase()) {
                 case "victoria":
@@ -120,12 +120,12 @@ public class GestionAtletas {
         }
     }
 
-    public List<Atleta> getListaAtletas() {
+    public List<Judoka> getListaAtletas() {
         return new ArrayList<>(listaAtletas);
     }
 
-    public Atleta obtenerAtleta(String nombre) throws IllegalArgumentException {
-        for (Atleta atleta : listaAtletas) {
+    public Judoka obtenerAtleta(String nombre) throws IllegalArgumentException {
+        for (Judoka atleta : listaAtletas) {
             if (atleta.getNombre().equalsIgnoreCase(nombre)) {
                 return atleta;
             }
@@ -134,7 +134,7 @@ public class GestionAtletas {
     }
 
     private boolean existeAtleta(String nombre) {
-        for (Atleta atleta : listaAtletas) {
+        for (Judoka atleta : listaAtletas) {
             if (atleta.getNombre().equalsIgnoreCase(nombre)) {
                 return true;
             }
@@ -152,7 +152,7 @@ public class GestionAtletas {
 
     public void guardarAtletasCSV(String rutaArchivo) throws IOException {
         try (FileWriter fw = new FileWriter(rutaArchivo)) {
-            for (Atleta atleta : listaAtletas) {
+            for (Judoka atleta : listaAtletas) {
                 fw.write(atleta.getNombre() + "," + atleta.getApellido() + "," + atleta.getCategoria() + "," +
                         atleta.getVictorias() + "," + atleta.getDerrotas() + "," + atleta.getEmpates() + "," +
                         atleta.getFechaNacimiento() + "\n");

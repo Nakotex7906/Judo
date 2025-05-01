@@ -1,7 +1,7 @@
 package org.example.model.ranking;
 
-import org.example.model.atleta.Atleta;
-import org.example.model.atleta.GestionAtletas;
+import org.example.model.judoka.Judoka;
+import org.example.model.judoka.GestionJudokas;
 import org.example.model.example.LoggerManager;
 
 import java.util.Comparator;
@@ -14,9 +14,9 @@ public class EstadisticasRanking {
 
     private static final Logger logger = LoggerManager.getLogger(EstadisticasRanking.class);
 
-    private GestionAtletas gestorAtletas;
+    private GestionJudokas gestorAtletas;
 
-    public EstadisticasRanking(GestionAtletas gestorAtletas) {
+    public EstadisticasRanking(GestionJudokas gestorAtletas) {
         this.gestorAtletas = gestorAtletas;
     }
 
@@ -24,7 +24,7 @@ public class EstadisticasRanking {
         logger.log(Level.INFO,"Nombre del Atleta: ");
         String nombre = scanner.nextLine();
 
-        Atleta atleta = gestorAtletas.obtenerAtleta(nombre);
+        Judoka atleta = gestorAtletas.obtenerAtleta(nombre);
         if (atleta != null) {
             if (logger.isLoggable(Level.INFO)) {
                 logger.log(Level.INFO, atleta.mostrarInformacion());
@@ -35,12 +35,12 @@ public class EstadisticasRanking {
     }
 
     public void calcularRanking() {
-        List<Atleta> atletas = gestorAtletas.getListaAtletas();
+        List<Judoka> atletas = gestorAtletas.getListaAtletas();
 
-        atletas.sort(Comparator.comparingInt(Atleta::getVictorias).reversed());
+        atletas.sort(Comparator.comparingInt(Judoka::getVictorias).reversed());
 
         logger.log(Level.INFO,"Ranking de Atletas (por numero de victorias):");
-        for (Atleta a : atletas) {
+        for (Judoka a : atletas) {
             logger.log(Level.INFO, "{0} {1} - Victorias: {2}, Derrotas: {3}, Empates: {4}",
          new Object[]{a.getNombre(), a.getApellido(), a.getVictorias(), a.getDerrotas(), a.getEmpates()});
         }

@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.model.competencia.Competencia;
-import org.example.repository.AtletaRepository;
 import org.example.repository.CompetenciaRepository;
 import org.springframework.stereotype.Service;
 

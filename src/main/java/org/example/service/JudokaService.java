@@ -1,34 +1,34 @@
 package org.example.service;
 
-import org.example.model.atleta.Atleta;
-import org.example.repository.AtletaRepository;
+import org.example.model.judoka.Judoka;
+import org.example.repository.JudokaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AtletaService {
+public class JudokaService {
 
-    private final AtletaRepository atletaRepository;
+    private final JudokaRepository atletaRepository;
 
-    public AtletaService(AtletaRepository atletaRepository) {
+    public JudokaService(JudokaRepository atletaRepository) {
         this.atletaRepository = atletaRepository;
     }
 
-    public List<Atleta> listarAtletas() {
+    public List<Judoka> listarAtletas() {
         return atletaRepository.findAll();
     }
 
-    public Optional<Atleta> buscarPorId(Long id) {
+    public Optional<Judoka> buscarPorId(Long id) {
         return atletaRepository.findById(id);
     }
 
-    public List<Atleta> buscarPorNombre(String nombre) {
+    public List<Judoka> buscarPorNombre(String nombre) {
         return atletaRepository.findByNombre(nombre);
     }
 
-    public Atleta guardarAtleta(Atleta atleta) {
+    public Judoka guardarAtleta(Judoka atleta) {
         return atletaRepository.save(atleta);
     }
 

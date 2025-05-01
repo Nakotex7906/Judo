@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.model.atleta.GestionAtletas;
+import org.example.model.judoka.GestionJudokas;
 import org.example.model.competencia.GestionarCompetencia;
 import org.example.model.example.LoggerManager;
 import org.example.model.ranking.EstadisticasRanking;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger logger = LoggerManager.getLogger(Main.class);
     public static void main(String[] args) {
-        GestionAtletas gestionAtletas = new GestionAtletas();
+        GestionJudokas gestionAtletas = new GestionJudokas();
 
         try {
             gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");

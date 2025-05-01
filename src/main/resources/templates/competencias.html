@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Competencias</title>
+</head>
+<body>
+    <h1>Competencias</h1>
+    <a th:href="@{/}">Inicio</a>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+        </tr>
+        <tr th:each="comp : ${competencias}">
+            <td th:text="${comp.id}"></td>
+            <td th:text="${comp.nombre}"></td>
+            <td th:text="${comp.fecha}"></td>
+        </tr>
+    </table>
+</body>
+</html>

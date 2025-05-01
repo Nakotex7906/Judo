@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.api;
 
 import org.example.model.competencia.Competencia;
 import org.example.service.CompetenciaService;

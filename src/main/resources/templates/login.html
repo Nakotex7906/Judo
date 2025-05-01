@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+<h2>Iniciar Sesión</h2>
+<form th:action="@{/login}" method="post">
+    <label>Usuario:</label>
+    <input type="text" name="username" required />
+    <br/>
+    <label>Tipo:</label>
+    <select name="tipo" required>
+        <option value="judoka">Judoka</option>
+        <option value="club">Club</option>
+    </select>
+    <br/>
+    <button type="submit">Entrar</button>
+</form>
+<div th:if="${error != null}" style="color:red;">
+    <span th:text="${error}"></span>
+</div>
+</body>
+</html>

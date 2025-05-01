@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.atleta.Atleta;
+import org.example.model.judoka.Judoka;
 import org.example.model.example.LoggerManager;
 
 import java.util.List;
@@ -30,22 +30,22 @@ public class Competencia {
             joinColumns = @JoinColumn(name = "competencia_id"),
             inverseJoinColumns = @JoinColumn(name = "atleta_id")
     )
-    private List<Atleta> participantes;
+    private List<Judoka> participantes;
 
     @ManyToOne
     @JoinColumn(name = "ganador_id")
     @JsonBackReference // Sirve para que no sea infinito
-    private Atleta ganador;
+    private Judoka ganador;
 
     private static final Logger logger = LoggerManager.getLogger(Competencia.class);
-    public Competencia(String nombre, String fecha, List<Atleta> participantes) {
+    public Competencia(String nombre, String fecha, List<Judoka> participantes) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.participantes = participantes;
     }
 
     public void registrarGanador(String nombreAtleta) {
-        for (Atleta atleta : participantes) {
+        for (Judoka atleta : participantes) {
             if (atleta.getNombre().equalsIgnoreCase(nombreAtleta)) {
                 this.ganador = atleta;
                 return;

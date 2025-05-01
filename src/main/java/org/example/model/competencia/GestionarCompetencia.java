@@ -1,6 +1,7 @@
 package org.example.model.competencia;
-import org.example.model.atleta.Atleta;
-import org.example.model.atleta.GestionAtletas;
+import lombok.Getter;
+import org.example.model.judoka.Judoka;
+import org.example.model.judoka.GestionJudokas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,21 +10,18 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.example.model.example.LoggerManager;
 
-
+@Getter
 public class GestionarCompetencia {
 
     private static final Logger logger = LoggerManager.getLogger(GestionarCompetencia.class);
     private List<Competencia> competencias;
-    private GestionAtletas gestionAtletas;
+    private GestionJudokas gestionAtletas;
 
-    public GestionarCompetencia(GestionAtletas gestionAtletas) {
+    public GestionarCompetencia(GestionJudokas gestionAtletas) {
         this.gestionAtletas = gestionAtletas;
         competencias = new ArrayList<>();
     }
 
-    public List<Competencia> getCompetencias() {
-        return competencias;
-    }
 
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {
         logger.log(Level.INFO,"Nombre de la Competencia: ");
@@ -34,10 +32,10 @@ public class GestionarCompetencia {
         logger.log(Level.INFO,"Ingrese los nombres de los participantes (separados por comas): ");
         String participantesInput = scanner.nextLine();
         List<String> nombresParticipantes = Arrays.asList(participantesInput.split(","));
-        List<Atleta> participantes = new ArrayList<>();
+        List<Judoka> participantes = new ArrayList<>();
 
         for (String nombreParticipante : nombresParticipantes) {
-            Atleta atleta = gestionAtletas.obtenerAtleta(nombreParticipante.trim());
+            Judoka atleta = gestionAtletas.obtenerAtleta(nombreParticipante.trim());
             if (atleta != null) {
                 participantes.add(atleta);
             } else {

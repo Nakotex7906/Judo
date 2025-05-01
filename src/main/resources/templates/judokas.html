@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Judokas</title>
+</head>
+<body>
+<h1>Judokas</h1>
+<a th:href="@{/}">Inicio</a>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Categoría</th>
+  </tr>
+  <tr th:each="atleta : ${atletas}">
+    <td th:text="${atleta.id}"></td>
+    <td th:text="${atleta.nombre}"></td>
+    <td th:text="${atleta.apellido}"></td>
+    <td th:text="${atleta.categoria}"></td>
+  </tr>
+</table>
+</body>
+</html>

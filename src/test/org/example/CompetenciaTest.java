@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.model.atleta.Atleta;
+import org.example.model.judoka.Judoka;
 import org.example.model.competencia.Competencia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,14 +10,14 @@ import java.util.List;
 
 class CompetenciaTest {
     private Competencia competencia;
-    private Atleta atleta1;
-    private Atleta atleta2;
+    private Judoka atleta1;
+    private Judoka atleta2;
 
     @BeforeEach
     void setUp() {
-        atleta1 = new Atleta("Ignacio", "Essus", "66kg", "2004-05-12");
-        atleta2 = new Atleta("Benjamin", "Beroiza", "73kg", "2003-09-21");
-        List<Atleta> participantes = Arrays.asList(atleta1, atleta2);
+        atleta1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        atleta2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
+        List<Judoka> participantes = Arrays.asList(atleta1, atleta2);
         competencia = new Competencia("Torneo Regional", "2025-06-01", participantes);
     }
 
