@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class WebController {
 
-    private final JudokaService atletaService;
+    private final JudokaService judokaService;
     private final CompetenciaService competenciaService;
 
-    public WebController(JudokaService atletaService, CompetenciaService competenciaService) {
-        this.atletaService = atletaService;
+    public WebController(JudokaService judokaService, CompetenciaService competenciaService) {
+        this.judokaService = judokaService;
         this.competenciaService = competenciaService;
     }
 

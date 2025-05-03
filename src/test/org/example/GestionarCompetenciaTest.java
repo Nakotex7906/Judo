@@ -17,18 +17,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class GestionarCompetenciaTest {
 
     private GestionarCompetencia gestor;
-    private Judoka atleta1;
-    private Judoka atleta2;
-    private Judoka atleta3;
+    private Judoka judoka1;
+    private Judoka judoka2;
+    private Judoka judoka3;
 
     @BeforeEach
     void setUp() {
-        GestionJudokas gestionAtletas = new GestionJudokas();
-        atleta1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
-        atleta2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
-        atleta3 = new Judoka("Alonso", "Romero", "81kg", "2002-08-30");
-        gestionAtletas.getListaAtletas().addAll(Arrays.asList(atleta1, atleta2, atleta3));
-        gestor = new GestionarCompetencia(gestionAtletas);
+        GestionJudokas gestionJudokas = new GestionJudokas();
+        judoka1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        judoka2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
+        judoka3 = new Judoka("Alonso", "Romero", "81kg", "2002-08-30");
+        gestionJudokas.getListaJudokas().addAll(Arrays.asList(judoka1, judoka2, judoka3));
+        gestor = new GestionarCompetencia(gestionJudokas);
     }
 
     @Test
@@ -43,7 +43,7 @@ class GestionarCompetenciaTest {
         Competencia competencia = gestor.getCompetencias().getFirst();
         assertEquals("Copa Nacional", competencia.getNombre());
 
-        // Comprobar que los nombres de los participantes están presentes (convertidos en Atleta)
+        // Comprobar que los nombres de los participantes están presentes (convertidos en Judoka)
         assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Ignacio")));
         assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Benjamin")));
         assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Alonso")));
@@ -51,7 +51,7 @@ class GestionarCompetenciaTest {
 
     @Test
     void testRegistrarGanadorDesdeConsola_CompetenciaExistente() {
-        List<Judoka> participantes = Arrays.asList(atleta1, atleta3);
+        List<Judoka> participantes = Arrays.asList(judoka1, judoka3);
         Competencia competencia = new Competencia("Regional 2025", "2025-09-01", participantes);
         gestor.getCompetencias().add(competencia);
 
@@ -60,12 +60,12 @@ class GestionarCompetenciaTest {
         Scanner scanner = new Scanner(in);
 
         gestor.registrarGanadorDesdeConsola(scanner);
-        assertEquals(atleta3, competencia.getGanador());
+        assertEquals(judoka3, competencia.getGanador());
     }
 
     @Test
-    void testRegistrarGanadorDesdeConsola_AtletaInvalido() {
-        List<Judoka> participantes = Arrays.asList(atleta1, atleta2);
+    void testRegistrarGanadorDesdeConsola_JudokaInvalido() {
+        List<Judoka> participantes = Arrays.asList(judoka1, judoka2);
         Competencia competencia = new Competencia("Torneo Invierno", "2025-12-12", participantes);
         gestor.getCompetencias().add(competencia);
 

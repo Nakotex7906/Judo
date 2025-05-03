@@ -15,13 +15,12 @@ public class GestionarCompetencia {
 
     private static final Logger logger = LoggerManager.getLogger(GestionarCompetencia.class);
     private List<Competencia> competencias;
-    private GestionJudokas gestionAtletas;
+    private GestionJudokas gestionJudokas;
 
-    public GestionarCompetencia(GestionJudokas gestionAtletas) {
-        this.gestionAtletas = gestionAtletas;
+    public GestionarCompetencia(GestionJudokas gestionJudokas) {
+        this.gestionJudokas = gestionJudokas;
         competencias = new ArrayList<>();
     }
-
 
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {
         logger.log(Level.INFO,"Nombre de la Competencia: ");
@@ -35,11 +34,11 @@ public class GestionarCompetencia {
         List<Judoka> participantes = new ArrayList<>();
 
         for (String nombreParticipante : nombresParticipantes) {
-            Judoka atleta = gestionAtletas.obtenerAtleta(nombreParticipante.trim());
-            if (atleta != null) {
-                participantes.add(atleta);
+            Judoka judoka = gestionJudokas.obtenerJudoka(nombreParticipante.trim());
+            if (judoka != null) {
+                participantes.add(judoka);
             } else {
-                logger.log(Level.WARNING, "Atleta no encontrado: {0}", nombreParticipante.trim());
+                logger.log(Level.WARNING, "Judoka no encontrado: {0}", nombreParticipante.trim());
             }
         }
 

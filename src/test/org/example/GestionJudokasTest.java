@@ -13,61 +13,61 @@ import static org.junit.jupiter.api.Assertions.*;
  class GestionJudokasTest {
 
     private GestionJudokas gestion;
-    private Judoka atleta1;
+    private Judoka judoka;
 
     @BeforeEach
      void setUp() {
         gestion = new GestionJudokas();
-        atleta1 = new Judoka("Carlos", "Pérez", "Senior", "01-01-1990");
-        gestion.getListaAtletas().add(atleta1);
+        judoka = new Judoka("Carlos", "Pérez", "Senior", "01-01-1990");
+        gestion.getListaJudokas().add(judoka);
     }
 
     @Test
      void testObtenerAtletaExistente() {
-        Judoka atleta = gestion.obtenerAtleta("Carlos");
+        Judoka atleta = gestion.obtenerJudoka("Carlos");
         assertNotNull(atleta);
         assertEquals("Carlos", atleta.getNombre());
     }
 
     @Test
      void testObtenerAtletaInexistente() {
-        Judoka atleta = gestion.obtenerAtleta("Ana");
+        Judoka atleta = gestion.obtenerJudoka("Ana");
         assertNull(atleta);
     }
 
     @Test
      void testAgregarAtletaNuevo() {
         Judoka nuevo = new Judoka("Ana", "Gomez", "Junior", "15-05-2000");
-        assertNull(gestion.obtenerAtleta("Ana"));
-        gestion.getListaAtletas().add(nuevo);
-        assertNotNull(gestion.obtenerAtleta("Ana"));
+        assertNull(gestion.obtenerJudoka("Ana"));
+        gestion.getListaJudokas().add(nuevo);
+        assertNotNull(gestion.obtenerJudoka("Ana"));
     }
 
     @Test
      void testRegistrarVictoria() {
-        int victoriasAntes = atleta1.getVictorias();
-        atleta1.aumentarVictoria();
-        assertEquals(victoriasAntes + 1, atleta1.getVictorias());
+        int victoriasAntes = judoka.getVictorias();
+        judoka.aumentarVictoria();
+        assertEquals(victoriasAntes + 1, judoka.getVictorias());
     }
 
     @Test
      void testRegistrarDerrota() {
-        int derrotasAntes = atleta1.getDerrotas();
-        atleta1.aumentarDerrota();
-        assertEquals(derrotasAntes + 1, atleta1.getDerrotas());
+        int derrotasAntes = judoka.getDerrotas();
+        judoka.aumentarDerrota();
+        assertEquals(derrotasAntes + 1, judoka.getDerrotas());
     }
 
     @Test
      void testRegistrarEmpate() {
-        int empatesAntes = atleta1.getEmpates();
-        atleta1.aumentarEmpate();
-        assertEquals(empatesAntes + 1, atleta1.getEmpates());
+        int empatesAntes = judoka.getEmpates();
+        judoka.aumentarEmpate();
+        assertEquals(empatesAntes + 1, judoka.getEmpates());
     }
 
     @Test
      void testGuardarCSV() throws IOException {
         String ruta = "test_atletas.csv";
-        gestion.guardarAtletasCSV(ruta);
+        gestion.guardarJudokasCSV(ruta);
         File archivo = new File(ruta);
         assertTrue(archivo.exists());
         archivo.delete(); // Limpiar el archivo generado después del test

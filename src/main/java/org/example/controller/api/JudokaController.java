@@ -9,41 +9,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/atletas")
+@RequestMapping("/api/judokas")
 public class JudokaController {
 
-    private final JudokaService atletaService;
+    private final JudokaService judokaService;
 
-    public JudokaController(JudokaService atletaService) {
-        this.atletaService = atletaService;
+    public JudokaController(JudokaService judokaService) {
+        this.judokaService = judokaService;
     }
 
     @GetMapping
-    public List<Judoka> listarAtletas() {
-        return atletaService.listarAtletas();
+    public List<Judoka> listarJudokas() {
+        return judokaService.listarJudokas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Judoka> buscarPorId(@PathVariable Long id) {
-        return atletaService.buscarPorId(id)
+        return judokaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build()); // response entity con status 204
     }
 
     @PostMapping
-    public Judoka crearAtleta(@RequestBody Judoka atleta) {
-        return atletaService.guardarAtleta(atleta);
+    public Judoka crearJudoka(@RequestBody Judoka judoka) {
+        return judokaService.guardarjudoka(judoka);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarAtleta(@PathVariable Long id) {
-        atletaService.eliminarAtleta(id);
+    public ResponseEntity<Void> eliminarJudoka(@PathVariable Long id) {
+        judokaService.eliminarJudoka(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/buscar")
     public List<Judoka> buscarPorNombre(@RequestParam String nombre) {
-        return atletaService.buscarPorNombre(nombre);
+        return judokaService.buscarPorNombre(nombre);
     }
 
 }

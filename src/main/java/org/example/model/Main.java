@@ -13,28 +13,28 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger logger = LoggerManager.getLogger(Main.class);
     public static void main(String[] args) {
-        GestionJudokas gestionAtletas = new GestionJudokas();
+        GestionJudokas gestionJudokas = new GestionJudokas();
 
         try {
-            gestionAtletas.cargarAtletasDesdeCSV("atletas.csv");
+            gestionJudokas.cargarJudokassDesdeCSV("judokas.csv");
         } catch (IOException e) {
-            logger.log(Level.SEVERE, String.format("Error al cargar atletas desde CSV: %s", e.getMessage()), e);
+            logger.log(Level.SEVERE, String.format("Error al cargar judokas desde CSV: %s", e.getMessage()), e);
         }
 
-        GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionAtletas);
-        EstadisticasRanking estadisticasRanking = new EstadisticasRanking(gestionAtletas);
+        GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionJudokas);
+        EstadisticasRanking estadisticasRanking = new EstadisticasRanking(gestionJudokas);
 
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
             logger.log(Level.INFO,"\n=== Sistema de Gestión de Judo ===");
-            logger.log(Level.INFO,"1. Agregar Atleta");
-            logger.log(Level.INFO,"2. Mostrar Atletas");
-            logger.log(Level.INFO,"3. Registrar Resultado de Atleta");
+            logger.log(Level.INFO,"1. Agregar Judoka");
+            logger.log(Level.INFO,"2. Mostrar Judokass");
+            logger.log(Level.INFO,"3. Registrar Resultado de Judoka");
             logger.log(Level.INFO,"4. Agregar Competencia");
             logger.log(Level.INFO,"5. Registrar Ganador de Competencia");
-            logger.log(Level.INFO,"6. Mostrar Estadisticas de un Atleta");
+            logger.log(Level.INFO,"6. Mostrar Estadisticas de un Judoka");
             logger.log(Level.INFO,"7. Mostrar Ranking");
             logger.log(Level.INFO,"8. Salir");
             logger.log(Level.INFO,"Seleccione una opcion: ");
@@ -43,13 +43,13 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    gestionAtletas.agregarAtletaDesdeConsola(scanner);
+                    gestionJudokas.agregarJudokaDesdeConsola(scanner);
                     break;
                 case 2:
-                    gestionAtletas.mostrarAtletas();
+                    gestionJudokas.mostrarJudokas();
                     break;
                 case 3:
-                    gestionAtletas.registrarResultadoAtleta(scanner);
+                    gestionJudokas.registrarResultadoJudoka(scanner);
                     break;
                 case 4:
                     gestionarCompetencia.agregarCompetenciaDesdeConsola(scanner);

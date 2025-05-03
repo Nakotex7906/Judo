@@ -11,15 +11,15 @@ import java.util.logging.Logger;
 
 public class GestionJudokas {
 
-    private List<Judoka> listaAtletas;
+    private List<Judoka> listaJudokas;
 
     public GestionJudokas() {
-        listaAtletas = new ArrayList<>();
+        listaJudokas = new ArrayList<>();
     }
 
     private static final Logger logger = LoggerManager.getLogger(GestionJudokas.class);
 
-    public void agregarAtletaDesdeConsola(Scanner scanner) {
+    public void agregarJudokaDesdeConsola(Scanner scanner) {
         try {
             logger.log(Level.INFO, "Nombre: ");
             String nombre = scanner.nextLine();
@@ -30,23 +30,23 @@ public class GestionJudokas {
             logger.log(Level.INFO, "Fecha de Nacimiento (DD-MM-YYYY): ");
             String fechaNacimiento = scanner.nextLine();
 
-            Judoka atleta = new Judoka(nombre, apellido, categoria, fechaNacimiento);
-            if (existeAtleta(nombre)) {
-                throw new IllegalArgumentException("El atleta " + nombre + " ya está registrado");
+            Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
+            if (existeJudoka(nombre)) {
+                throw new IllegalArgumentException("El judoka " + nombre + " ya está registrado");
             }
 
-            listaAtletas.add(atleta);
-            guardarAtletasCSV("atletas.csv");
-            logger.log(Level.INFO, "Atleta agregado con éxito");
+            listaJudokas.add(judoka);
+            guardarJudokasCSV("judokas.csv");
+            logger.log(Level.INFO, "Judoka agregado con éxito");
 
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, e.getMessage());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, String.format("Error inesperado al agregar atleta: %s", e.getMessage()), e);
+            logger.log(Level.SEVERE, String.format("Error inesperado al agregar judoka: %s", e.getMessage()), e);
         }
     }
 
-    public void cargarAtletasDesdeCSV(String rutaArchivo) throws IOException {
+    public void cargarJudokassDesdeCSV(String rutaArchivo) throws IOException {
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
             if (logger.isLoggable(Level.INFO)) {
@@ -69,46 +69,45 @@ public class GestionJudokas {
                     int empates = Integer.parseInt(datos[5]);
                     String fechaNacimiento = datos[6];
 
-                    Judoka atleta = new Judoka(nombre, apellido, categoria, fechaNacimiento);
-                    atleta.setVictorias(victorias);
-                    atleta.setDerrotas(derrotas);
-                    atleta.setEmpates(empates);
+                    Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
+                    judoka.setVictorias(victorias);
+                    judoka.setDerrotas(derrotas);
+                    judoka.setEmpates(empates);
 
-                    if (!existeAtleta(nombre)) {
-                        listaAtletas.add(atleta);
+                    if (!existeJudoka(nombre)) {
+                        listaJudokas.add(judoka);
                     }
                 }
             }
-            logger.log(Level.INFO, "Atletas cargados correctamente desde {0}", rutaArchivo);
+            logger.log(Level.INFO, "Judokass cargados correctamente desde {0}", rutaArchivo);
         } catch (NumberFormatException e) {
             throw new IOException("Error en el formato " + rutaArchivo, e);
         }
     }
 
-    public void registrarResultadoAtleta(Scanner scanner) {
+    public void registrarResultadoJudoka(Scanner scanner) {
         try {
-            logger.log(Level.INFO, "Nombre del Atleta: ");
+            logger.log(Level.INFO, "Nombre del Judoka: ");
             String nombre = scanner.nextLine();
             logger.log(Level.INFO, "Resultado (victoria / derrota / empate): ");
             String resultado = scanner.nextLine();
 
-            Judoka atleta = obtenerAtleta(nombre);
+            Judoka judoka = obtenerJudoka(nombre);
 
             switch (resultado.toLowerCase()) {
                 case "victoria":
-                    atleta.aumentarVictoria();
+                    judoka.aumentarVictoria();
                     break;
                 case "derrota":
-                    atleta.aumentarDerrota();
+                    judoka.aumentarDerrota();
                     break;
                 case "empate":
-                    atleta.aumentarEmpate();
+                    judoka.aumentarEmpate();
                     break;
                 default:
                     throw new IllegalArgumentException("Resultado no válido: " + resultado);
             }
-
-            guardarAtletasCSV("atletas.csv");
+            guardarJudokasCSV("judokas.csv");
             logger.log(Level.INFO, "Resultado actualizado");
 
         } catch (IllegalArgumentException e) {
@@ -120,44 +119,44 @@ public class GestionJudokas {
         }
     }
 
-    public List<Judoka> getListaAtletas() {
-        return new ArrayList<>(listaAtletas);
+    public List<Judoka> getListaJudokas() {
+        return new ArrayList<>(listaJudokas);
     }
 
-    public Judoka obtenerAtleta(String nombre) throws IllegalArgumentException {
-        for (Judoka atleta : listaAtletas) {
-            if (atleta.getNombre().equalsIgnoreCase(nombre)) {
-                return atleta;
+    public Judoka obtenerJudoka(String nombre) throws IllegalArgumentException {
+        for (Judoka judoka : listaJudokas) {
+            if (judoka.getNombre().equalsIgnoreCase(nombre)) {
+                return judoka;
             }
         }
-        throw new IllegalArgumentException("Atleta " + nombre + " no encontrado");
+        throw new IllegalArgumentException("Judoka " + nombre + " no encontrado");
     }
 
-    private boolean existeAtleta(String nombre) {
-        for (Judoka atleta : listaAtletas) {
-            if (atleta.getNombre().equalsIgnoreCase(nombre)) {
+    private boolean existeJudoka(String nombre) {
+        for (Judoka judoka : listaJudokas) {
+            if (judoka.getNombre().equalsIgnoreCase(nombre)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void mostrarAtletas() {
-        if (listaAtletas.isEmpty()) {
-            logger.log(Level.INFO, "No hay atletas registrados");
+    public void mostrarJudokas() {
+        if (listaJudokas.isEmpty()) {
+            logger.log(Level.INFO, "No hay judokass registrados");
         } else {
-            listaAtletas.forEach(atleta -> logger.log(Level.INFO,atleta.mostrarInformacion()));
+            listaJudokas.forEach(judoka -> logger.log(Level.INFO, judoka.mostrarInformacion()));
         }
     }
 
-    public void guardarAtletasCSV(String rutaArchivo) throws IOException {
+    public void guardarJudokasCSV(String rutaArchivo) throws IOException {
         try (FileWriter fw = new FileWriter(rutaArchivo)) {
-            for (Judoka atleta : listaAtletas) {
-                fw.write(atleta.getNombre() + "," + atleta.getApellido() + "," + atleta.getCategoria() + "," +
-                        atleta.getVictorias() + "," + atleta.getDerrotas() + "," + atleta.getEmpates() + "," +
-                        atleta.getFechaNacimiento() + "\n");
+            for (Judoka judoka : listaJudokas) {
+                fw.write(judoka.getNombre() + "," + judoka.getApellido() + "," + judoka.getCategoria() + "," +
+                        judoka.getVictorias() + "," + judoka.getDerrotas() + "," + judoka.getEmpates() + "," +
+                        judoka.getFechaNacimiento() + "\n");
             }
-            logger.log(Level.INFO, "Datos de atletas guardados en {0}", rutaArchivo);
+            logger.log(Level.INFO, "Datos de judokas guardados en {0}", rutaArchivo);
         }
     }
 }

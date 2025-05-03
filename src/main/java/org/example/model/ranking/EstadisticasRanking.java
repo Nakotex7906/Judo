@@ -14,33 +14,33 @@ public class EstadisticasRanking {
 
     private static final Logger logger = LoggerManager.getLogger(EstadisticasRanking.class);
 
-    private GestionJudokas gestorAtletas;
+    private GestionJudokas gestorJudokas;
 
-    public EstadisticasRanking(GestionJudokas gestorAtletas) {
-        this.gestorAtletas = gestorAtletas;
+    public EstadisticasRanking(GestionJudokas gestorJudokass) {
+        this.gestorJudokas = gestorJudokass;
     }
 
     public void mostrarEstadisticasDesdeConsola(Scanner scanner) {
-        logger.log(Level.INFO,"Nombre del Atleta: ");
+        logger.log(Level.INFO,"Nombre del Judoka: ");
         String nombre = scanner.nextLine();
 
-        Judoka atleta = gestorAtletas.obtenerAtleta(nombre);
-        if (atleta != null) {
+        Judoka judoka = gestorJudokas.obtenerJudoka(nombre);
+        if (judoka != null) {
             if (logger.isLoggable(Level.INFO)) {
-                logger.log(Level.INFO, atleta.mostrarInformacion());
+                logger.log(Level.INFO, judoka.mostrarInformacion());
             }
         } else {
-            logger.log(Level.INFO,"El atleta no esta registrado.");
+            logger.log(Level.INFO,"El judoka no esta registrado.");
         }
     }
 
     public void calcularRanking() {
-        List<Judoka> atletas = gestorAtletas.getListaAtletas();
+        List<Judoka> judokas = gestorJudokas.getListaJudokas();
 
-        atletas.sort(Comparator.comparingInt(Judoka::getVictorias).reversed());
+        judokas.sort(Comparator.comparingInt(Judoka::getVictorias).reversed());
 
-        logger.log(Level.INFO,"Ranking de Atletas (por numero de victorias):");
-        for (Judoka a : atletas) {
+        logger.log(Level.INFO,"Ranking de judokas (por numero de victorias):");
+        for (Judoka a : judokas) {
             logger.log(Level.INFO, "{0} {1} - Victorias: {2}, Derrotas: {3}, Empates: {4}",
          new Object[]{a.getNombre(), a.getApellido(), a.getVictorias(), a.getDerrotas(), a.getEmpates()});
         }

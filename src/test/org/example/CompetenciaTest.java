@@ -10,21 +10,21 @@ import java.util.List;
 
 class CompetenciaTest {
     private Competencia competencia;
-    private Judoka atleta1;
-    private Judoka atleta2;
+    private Judoka judoka1;
+    private Judoka judoka2;
 
     @BeforeEach
     void setUp() {
-        atleta1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
-        atleta2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
-        List<Judoka> participantes = Arrays.asList(atleta1, atleta2);
+        judoka1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        judoka2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
+        List<Judoka> participantes = Arrays.asList(judoka1, judoka2);
         competencia = new Competencia("Torneo Regional", "2025-06-01", participantes);
     }
 
     @Test
     void testRegistrarGanadorValido() {
         competencia.registrarGanador("Ignacio");
-        assertEquals(atleta1, competencia.getGanador());
+        assertEquals(judoka1, competencia.getGanador());
     }
 
     @Test

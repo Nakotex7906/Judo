@@ -26,9 +26,9 @@ public class Competencia {
     private String fecha;
     @ManyToMany
     @JoinTable(
-            name = "competencia_atleta",
+            name = "competencia_judoka",
             joinColumns = @JoinColumn(name = "competencia_id"),
-            inverseJoinColumns = @JoinColumn(name = "atleta_id")
+            inverseJoinColumns = @JoinColumn(name = "judoka_id")
     )
     private List<Judoka> participantes;
 
@@ -44,13 +44,13 @@ public class Competencia {
         this.participantes = participantes;
     }
 
-    public void registrarGanador(String nombreAtleta) {
-        for (Judoka atleta : participantes) {
-            if (atleta.getNombre().equalsIgnoreCase(nombreAtleta)) {
-                this.ganador = atleta;
+    public void registrarGanador(String nombreJudoka) {
+        for (Judoka judoka : participantes) {
+            if (judoka.getNombre().equalsIgnoreCase(nombreJudoka)) {
+                this.ganador = judoka;
                 return;
             }
         }
-        logger.log(Level.INFO,"El atleta no esta inscrito en esta competencia");
+        logger.log(Level.INFO,"El judoka no esta inscrito en esta competencia");
     }
 }

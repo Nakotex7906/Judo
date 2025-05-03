@@ -1,27 +1,36 @@
 package org.example.controller.web;
 
+import lombok.AllArgsConstructor;
 import org.example.model.judoka.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-
+@AllArgsConstructor
 @Controller
 public class JudokaWebController {
 
-    private final JudokaService atletaService;
-
-    public JudokaWebController(JudokaService atletaService) {
-        this.atletaService = atletaService;
-    }
+    private final JudokaService judokaService;
 
     @GetMapping("/judokas")
-    public String listarAtletas(Model model) {
-        List<Judoka> atletas = atletaService.listarAtletas();
-        model.addAttribute("atletas", atletas);
+    public String listarJudokas(Model model) {
+        List<Judoka> judokas = judokaService.listarJudokas();
+        model.addAttribute("judokas", judokas);
         return "judokas";
+    }
+
+    @PostMapping("/judokas/agregar")
+    public String agregarJudoka(@RequestParam String nombre,
+                                @RequestParam String apellido,
+                                @RequestParam String categoria,
+                                @RequestParam String fechaNacimiento) {
+        Judoka nuevo = new Judoka(nombre, apellido, categoria, fechaNacimiento);
+        judokaService.guardarjudoka(nuevo);
+        return "redirect:/judokas";
     }
 
 }
