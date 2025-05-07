@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 import java.util.Locale;
+
+/**
+ * The type Judoka.
+ */
 @Entity
 @Getter
 @Setter
@@ -25,6 +29,14 @@ public class Judoka {
     private int empates;
     private String fechaNacimiento;
 
+    /**
+     * Instantiates a new Judoka.
+     *
+     * @param nombre          the nombre
+     * @param apellido        the apellido
+     * @param categoria       the categoria
+     * @param fechaNacimiento the fecha nacimiento
+     */
     public Judoka(String nombre, String apellido, String categoria, String fechaNacimiento) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -32,15 +44,36 @@ public class Judoka {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    /**
+     * Aumentar victoria.
+     */
     public void aumentarVictoria() { victorias++; }
+
+    /**
+     * Aumentar derrota.
+     */
     public void aumentarDerrota() { derrotas++; }
+
+    /**
+     * Aumentar empate.
+     */
     public void aumentarEmpate() { empates++; }
 
+    /**
+     * Calcular porcentaje victorias double.
+     *
+     * @return the double
+     */
     public double calcularPorcentajeVictorias() {
         int total = victorias + derrotas + empates;
         return total == 0 ? 0 : (victorias * 100.0) / total;
     }
 
+    /**
+     * Mostrar informacion string.
+     *
+     * @return the string
+     */
     public String mostrarInformacion() {
         return "Nombre: " + nombre + " " + apellido + ", Categoria: " + categoria +
                 ", Victorias: " + victorias + ", Derrotas: " + derrotas + ", Empates: " + empates +

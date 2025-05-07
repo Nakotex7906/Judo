@@ -9,16 +9,27 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Gestion judokas.
+ */
 public class GestionJudokas {
 
     private List<Judoka> listaJudokas;
 
+    /**
+     * Instantiates a new Gestion judokas.
+     */
     public GestionJudokas() {
         listaJudokas = new ArrayList<>();
     }
 
     private static final Logger logger = LoggerManager.getLogger(GestionJudokas.class);
 
+    /**
+     * Agregar judoka desde consola.
+     *
+     * @param scanner the scanner
+     */
     public void agregarJudokaDesdeConsola(Scanner scanner) {
         try {
             logger.log(Level.INFO, "Nombre: ");
@@ -46,6 +57,12 @@ public class GestionJudokas {
         }
     }
 
+    /**
+     * Cargar judokass desde csv.
+     *
+     * @param rutaArchivo the ruta archivo
+     * @throws IOException the io exception
+     */
     public void cargarJudokassDesdeCSV(String rutaArchivo) throws IOException {
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
@@ -85,6 +102,11 @@ public class GestionJudokas {
         }
     }
 
+    /**
+     * Registrar resultado judoka.
+     *
+     * @param scanner the scanner
+     */
     public void registrarResultadoJudoka(Scanner scanner) {
         try {
             logger.log(Level.INFO, "Nombre del Judoka: ");
@@ -119,10 +141,22 @@ public class GestionJudokas {
         }
     }
 
+    /**
+     * Gets lista judokas.
+     *
+     * @return the lista judokas
+     */
     public List<Judoka> getListaJudokas() {
         return new ArrayList<>(listaJudokas);
     }
 
+    /**
+     * Obtener judoka judoka.
+     *
+     * @param nombre the nombre
+     * @return the judoka
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public Judoka obtenerJudoka(String nombre) throws IllegalArgumentException {
         for (Judoka judoka : listaJudokas) {
             if (judoka.getNombre().equalsIgnoreCase(nombre)) {
@@ -141,6 +175,9 @@ public class GestionJudokas {
         return false;
     }
 
+    /**
+     * Mostrar judokas.
+     */
     public void mostrarJudokas() {
         if (listaJudokas.isEmpty()) {
             logger.log(Level.INFO, "No hay judokass registrados");
@@ -149,6 +186,12 @@ public class GestionJudokas {
         }
     }
 
+    /**
+     * Guardar judokas csv.
+     *
+     * @param rutaArchivo the ruta archivo
+     * @throws IOException the io exception
+     */
     public void guardarJudokasCSV(String rutaArchivo) throws IOException {
         try (FileWriter fw = new FileWriter(rutaArchivo)) {
             for (Judoka judoka : listaJudokas) {

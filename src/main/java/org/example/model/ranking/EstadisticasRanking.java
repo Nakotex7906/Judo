@@ -10,16 +10,29 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Estadisticas ranking.
+ */
 public class EstadisticasRanking {
 
     private static final Logger logger = LoggerManager.getLogger(EstadisticasRanking.class);
 
     private GestionJudokas gestorJudokas;
 
+    /**
+     * Instantiates a new Estadisticas ranking.
+     *
+     * @param gestorJudokass the gestor judokass
+     */
     public EstadisticasRanking(GestionJudokas gestorJudokass) {
         this.gestorJudokas = gestorJudokass;
     }
 
+    /**
+     * Mostrar estadisticas desde consola.
+     *
+     * @param scanner the scanner
+     */
     public void mostrarEstadisticasDesdeConsola(Scanner scanner) {
         logger.log(Level.INFO,"Nombre del Judoka: ");
         String nombre = scanner.nextLine();
@@ -34,6 +47,9 @@ public class EstadisticasRanking {
         }
     }
 
+    /**
+     * Calcular ranking.
+     */
     public void calcularRanking() {
         List<Judoka> judokas = gestorJudokas.getListaJudokas();
 

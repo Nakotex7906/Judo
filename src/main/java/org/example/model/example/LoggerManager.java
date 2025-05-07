@@ -5,11 +5,20 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Logger manager.
+ */
 public final class LoggerManager {  //
 
     private LoggerManager() {
     }
 
+    /**
+     * Gets logger.
+     *
+     * @param clazz the clazz
+     * @return the logger
+     */
     public static Logger getLogger(Class<?> clazz) {
         Logger logger = Logger.getLogger(clazz.getName());
         logger.setUseParentHandlers(false);

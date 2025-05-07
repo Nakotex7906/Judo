@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Competencia.
+ */
 @Entity
 @Getter
 @Setter
@@ -38,12 +41,25 @@ public class Competencia {
     private Judoka ganador;
 
     private static final Logger logger = LoggerManager.getLogger(Competencia.class);
+
+    /**
+     * Instantiates a new Competencia.
+     *
+     * @param nombre        the nombre
+     * @param fecha         the fecha
+     * @param participantes the participantes
+     */
     public Competencia(String nombre, String fecha, List<Judoka> participantes) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.participantes = participantes;
     }
 
+    /**
+     * Registrar ganador.
+     *
+     * @param nombreJudoka the nombre judoka
+     */
     public void registrarGanador(String nombreJudoka) {
         for (Judoka judoka : participantes) {
             if (judoka.getNombre().equalsIgnoreCase(nombreJudoka)) {

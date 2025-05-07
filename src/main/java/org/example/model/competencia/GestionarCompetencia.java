@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.example.model.example.LoggerManager;
 
+/**
+ * The type Gestionar competencia.
+ */
 @Getter
 public class GestionarCompetencia {
 
@@ -17,11 +20,21 @@ public class GestionarCompetencia {
     private List<Competencia> competencias;
     private GestionJudokas gestionJudokas;
 
+    /**
+     * Instantiates a new Gestionar competencia.
+     *
+     * @param gestionJudokas the gestion judokas
+     */
     public GestionarCompetencia(GestionJudokas gestionJudokas) {
         this.gestionJudokas = gestionJudokas;
         competencias = new ArrayList<>();
     }
 
+    /**
+     * Agregar competencia desde consola.
+     *
+     * @param scanner the scanner
+     */
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {
         logger.log(Level.INFO,"Nombre de la Competencia: ");
         String nombre = scanner.nextLine();
@@ -52,6 +65,11 @@ public class GestionarCompetencia {
         logger.log(Level.INFO,"Competencia agregada con exito.");
     }
 
+    /**
+     * Registrar ganador desde consola.
+     *
+     * @param scanner the scanner
+     */
     public void registrarGanadorDesdeConsola(Scanner scanner) {
         logger.log(Level.INFO,"Nombre de la Competencia: ");
         String nombreCompetencia = scanner.nextLine();
