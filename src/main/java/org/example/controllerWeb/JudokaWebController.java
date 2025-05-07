@@ -1,4 +1,4 @@
-package org.example.controller.web;
+package org.example.controllerWeb;
 
 import lombok.AllArgsConstructor;
 import org.example.model.judoka.Judoka;

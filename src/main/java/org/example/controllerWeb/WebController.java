@@ -1,4 +1,4 @@
-package org.example.controller.web;
+package org.example.controllerWeb;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.service.JudokaService;
