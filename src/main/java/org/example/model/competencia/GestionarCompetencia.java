@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import org.example.model.example.LoggerManager;
+import org.example.model.logger.LoggerManager;
 
 /**
  * The type Gestionar competencia.

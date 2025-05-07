@@ -2,7 +2,7 @@ package org.example.model.ranking;
 
 import org.example.model.judoka.Judoka;
 import org.example.model.judoka.GestionJudokas;
-import org.example.model.example.LoggerManager;
+import org.example.model.logger.LoggerManager;
 
 import java.util.Comparator;
 import java.util.List;

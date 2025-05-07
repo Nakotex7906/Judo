@@ -1,6 +1,6 @@
 package org.example.model.judoka;
 
-import org.example.model.example.LoggerManager;
+import org.example.model.logger.LoggerManager;
 
 import java.io.*;
 import java.util.ArrayList;

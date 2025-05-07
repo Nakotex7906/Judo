@@ -2,7 +2,7 @@ package org.example.model;
 
 import org.example.model.judoka.GestionJudokas;
 import org.example.model.competencia.GestionarCompetencia;
-import org.example.model.example.LoggerManager;
+import org.example.model.logger.LoggerManager;
 import org.example.model.ranking.EstadisticasRanking;
 
 import java.io.IOException;
