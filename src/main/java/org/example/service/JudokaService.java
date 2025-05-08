@@ -52,7 +52,7 @@ public class JudokaService {
      * @param judoka the judoka
      * @return the judoka
      */
-    public Judoka guardarjudoka(Judoka judoka) {
+    public Judoka guardarJudoka(Judoka judoka) {
         return judokaRepository.save(judoka);
     }
 
