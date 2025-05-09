@@ -48,7 +48,7 @@ public class JudokaWebController {
                                 @RequestParam String categoria,
                                 @RequestParam String fechaNacimiento) {
         Judoka nuevo = new Judoka(nombre, apellido, categoria, fechaNacimiento);
-        judokaService.guardarjudoka(nuevo);
+        judokaService.guardarJudoka(nuevo);
         return "redirect:/judokas";
     }
 
