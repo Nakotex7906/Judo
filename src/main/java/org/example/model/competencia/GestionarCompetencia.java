@@ -36,11 +36,31 @@ public class GestionarCompetencia {
      * @param scanner the scanner
      */
     public void agregarCompetenciaDesdeConsola(Scanner scanner) {
-        logger.log(Level.INFO,"Nombre de la Competencia: ");
-        String nombre = scanner.nextLine();
-        logger.log(Level.INFO,"Fecha de la Competencia (YYYY-MM-DD): ");
-        String fecha = scanner.nextLine();
+        String nombre = solicitarNombreCompetencia(scanner);
+        String fecha = solicitarFechaCompetencia(scanner);
+        List<Judoka> participantes = solicitarParticipantes(scanner);
 
+        if (participantes.isEmpty()) {
+            logger.log(Level.WARNING,"No se agregaron participantes validos, competencia no creada");
+            return;
+        }
+
+        Competencia competencia = new Competencia(nombre, fecha, participantes);
+        competencias.add(competencia);
+        logger.log(Level.INFO,"Competencia agregada con exito.");
+    }
+
+    private String solicitarNombreCompetencia(Scanner scanner) {
+        logger.log(Level.INFO,"Nombre de la Competencia: ");
+        return scanner.nextLine();
+    }
+
+    private String solicitarFechaCompetencia(Scanner scanner) {
+        logger.log(Level.INFO,"Fecha de la Competencia (YYYY-MM-DD): ");
+        return scanner.nextLine();
+    }
+
+    private List<Judoka> solicitarParticipantes(Scanner scanner) {
         logger.log(Level.INFO,"Ingrese los nombres de los participantes (separados por comas): ");
         String participantesInput = scanner.nextLine();
         List<String> nombresParticipantes = Arrays.asList(participantesInput.split(","));
@@ -54,15 +74,7 @@ public class GestionarCompetencia {
                 logger.log(Level.WARNING, "Judoka no encontrado: {0}", nombreParticipante.trim());
             }
         }
-
-        if (participantes.isEmpty()) {
-            logger.log(Level.WARNING,"No se agregaron participantes validos, competencia no creada");
-            return;
-        }
-
-        Competencia competencia = new Competencia(nombre, fecha, participantes);
-        competencias.add(competencia);
-        logger.log(Level.INFO,"Competencia agregada con exito.");
+        return participantes;
     }
 
     /**

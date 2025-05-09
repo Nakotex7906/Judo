@@ -1,5 +1,6 @@
 package org.example.model.judoka;
 
+import lombok.Getter;
 import org.example.model.logger.LoggerManager;
 
 import java.io.*;
@@ -8,10 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  * The type Gestion judokas.
  */
+@Getter
 public class GestionJudokas {
 
     private List<Judoka> listaJudokas;
@@ -32,29 +33,29 @@ public class GestionJudokas {
      */
     public void agregarJudokaDesdeConsola(Scanner scanner) {
         try {
-            logger.log(Level.INFO, "Nombre: ");
-            String nombre = scanner.nextLine();
-            logger.log(Level.INFO, "Apellido: ");
-            String apellido = scanner.nextLine();
-            logger.log(Level.INFO, "Categoría: ");
-            String categoria = scanner.nextLine();
-            logger.log(Level.INFO, "Fecha de Nacimiento (DD-MM-YYYY): ");
-            String fechaNacimiento = scanner.nextLine();
+            String nombre = solicitarDato(scanner, "Nombre: ");
+            String apellido = solicitarDato(scanner, "Apellido: ");
+            String categoria = solicitarDato(scanner, "Categoría: ");
+            String fechaNacimiento = solicitarDato(scanner, "Fecha de Nacimiento (DD-MM-YYYY): ");
 
-            Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
             if (existeJudoka(nombre)) {
                 throw new IllegalArgumentException("El judoka " + nombre + " ya está registrado");
             }
 
+            Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
             listaJudokas.add(judoka);
             guardarJudokasCSV("judokas.csv");
             logger.log(Level.INFO, "Judoka agregado con éxito");
-
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, e.getMessage());
         } catch (Exception e) {
             logger.log(Level.SEVERE, String.format("Error inesperado al agregar judoka: %s", e.getMessage()), e);
         }
+    }
+
+    private String solicitarDato(Scanner scanner, String mensaje) {
+        logger.log(Level.INFO, mensaje);
+        return scanner.nextLine();
     }
 
     /**
@@ -75,30 +76,40 @@ public class GestionJudokas {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-
-                if (datos.length == 7) {
-                    String nombre = datos[0];
-                    String apellido = datos[1];
-                    String categoria = datos[2];
-                    int victorias = Integer.parseInt(datos[3]);
-                    int derrotas = Integer.parseInt(datos[4]);
-                    int empates = Integer.parseInt(datos[5]);
-                    String fechaNacimiento = datos[6];
-
-                    Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
-                    judoka.setVictorias(victorias);
-                    judoka.setDerrotas(derrotas);
-                    judoka.setEmpates(empates);
-
-                    if (!existeJudoka(nombre)) {
-                        listaJudokas.add(judoka);
-                    }
+                Judoka judoka = parsearJudokaDesdeLineaCSV(linea);
+                if (judoka != null && !existeJudoka(judoka.getNombre())) {
+                    listaJudokas.add(judoka);
                 }
             }
-            logger.log(Level.INFO, "Judokass cargados correctamente desde {0}", rutaArchivo);
+            logger.log(Level.INFO, "Judokas cargados correctamente desde {0}", rutaArchivo);
         } catch (NumberFormatException e) {
             throw new IOException("Error en el formato " + rutaArchivo, e);
+        }
+    }
+
+    private Judoka parsearJudokaDesdeLineaCSV(String linea) {
+        String[] datos = linea.split(",");
+        if (datos.length != 7) {
+            logger.log(Level.WARNING, "Línea {0} inválida en CSV: ",linea);
+            return null;
+        }
+        try {
+            String nombre = datos[0];
+            String apellido = datos[1];
+            String categoria = datos[2];
+            int victorias = Integer.parseInt(datos[3]);
+            int derrotas = Integer.parseInt(datos[4]);
+            int empates = Integer.parseInt(datos[5]);
+            String fechaNacimiento = datos[6];
+
+            Judoka judoka = new Judoka(nombre, apellido, categoria, fechaNacimiento);
+            judoka.setVictorias(victorias);
+            judoka.setDerrotas(derrotas);
+            judoka.setEmpates(empates);
+            return judoka;
+        } catch (Exception e) {
+            logger.log(Level.WARNING, String.format("Error al parsear línea: %s", linea), e);
+            return null;
         }
     }
 
@@ -139,15 +150,6 @@ public class GestionJudokas {
                 logger.log(Level.SEVERE, String.format("Error inesperado al registrar resultado: %s", e.getMessage()), e);
             }
         }
-    }
-
-    /**
-     * Gets lista judokas.
-     *
-     * @return the lista judokas
-     */
-    public List<Judoka> getListaJudokas() {
-        return new ArrayList<>(listaJudokas);
     }
 
     /**
