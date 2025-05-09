@@ -53,11 +53,10 @@ public class CompetenciaWebController {
      * @param model the model
      * @return the string
      */
-    @GetMapping("/competencias/detalle/{id}")
+    @GetMapping("/competencias/detalle/{id}") //Se agrego un mensaje de error
     public String detalleCompetencia(@PathVariable Long id, Model model) {
         Competencia competencia = competenciaService.buscarPorId(id)
-                .orElse(null); // Manejar si no existe
-        model.addAttribute("competencia", competencia);
+                .orElseThrow(()-> new RuntimeException("Competencia no encontrada")); //
         return "detalle_competencia"; // Nombre del template HTML
     }
 
