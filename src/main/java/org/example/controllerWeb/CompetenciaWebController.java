@@ -2,6 +2,7 @@ package org.example.controllerWeb;
 
 import org.example.model.competencia.Competencia;
 import org.example.model.judoka.Judoka;
+import org.example.model.logger.LoggerManager;
 import org.example.service.CompetenciaService;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Competencia web controller.
@@ -18,6 +21,7 @@ public class CompetenciaWebController {
 
     private final CompetenciaService competenciaService;
     private final JudokaService judokaService;
+    private static final Logger logger = LoggerManager.getLogger(CompetenciaWebController.class);
 
     /**
      * Instantiates a new Competencia web controller.
@@ -52,6 +56,7 @@ public class CompetenciaWebController {
      */
     @GetMapping("/competencias/detalle/{id}") //Se agrego un mensaje de error
     public String detalleCompetencia(@PathVariable Long id, Model model) {
+        logger.log(Level.INFO, "Intentando mostrar detalles de la competencia con id: " + id);
         Competencia competencia = competenciaService.buscarPorId(id)
                 .orElseThrow(()-> new RuntimeException("Competencia no encontrada"));
         return "detalle_competencia"; // Nombre del template HTML
