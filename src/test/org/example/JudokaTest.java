@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.model.judoka.Judoka;
+import org.example.model.gestor.Judoka;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

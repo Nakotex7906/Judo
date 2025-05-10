@@ -2,22 +2,22 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle de Competencia</title>
+    <title>Detalle de Torneo</title>
 </head>
 <body>
-<h1>Detalle de la Competencia</h1>
+<h1>Detalle de la Torneo</h1>
 
-<div th:if="${competencia != null}">
-    <p><strong>ID:</strong> <span th:text="${competencia.id}"></span></p>
-    <p><strong>Nombre:</strong> <span th:text="${competencia.nombre}"></span></p>
-    <p><strong>Fecha:</strong> <span th:text="${competencia.fecha}"></span></p>
-    <p><strong>Descripción:</strong> <span th:text="${competencia.descripcion}"></span></p>
-    <!-- Agrega más campos si tu modelo Competencia tiene otros atributos -->
+<div th:if="${torneo != null}">
+    <p><strong>ID:</strong> <span th:text="${torneo.id}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${torneo.nombre}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${torneo.fecha}"></span></p>
+    <p><strong>Descripción:</strong> <span th:text="${torneo.descripcion}"></span></p>
+    <!-- Agrega más campos si tu modelo torneo tiene otros atributos -->
 </div>
-<div th:if="${competencia == null}">
-    <p>No se encontró la competencia.</p>
+<div th:if="${torneo == null}">
+    <p>No se encontró el torneo.</p>
 </div>
 
-<a href="/competencias">Volver al listado de competencias</a>
+<a href="/torneos">Volver al listado de torneos</a>
 </body>
 </html>

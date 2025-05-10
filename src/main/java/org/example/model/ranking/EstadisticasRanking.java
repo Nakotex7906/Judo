@@ -1,7 +1,7 @@
 package org.example.model.ranking;
 
-import org.example.model.judoka.Judoka;
-import org.example.model.judoka.GestionJudokas;
+import org.example.model.gestor.GestorJudokas;
+import org.example.model.user.Judoka;
 import org.example.model.logger.LoggerManager;
 
 import java.util.Comparator;
@@ -17,14 +17,14 @@ public class EstadisticasRanking {
 
     private static final Logger logger = LoggerManager.getLogger(EstadisticasRanking.class);
 
-    private GestionJudokas gestorJudokas;
+    private GestorJudokas gestorJudokas;
 
     /**
      * Instantiates a new Estadisticas ranking.
      *
      * @param gestorJudokass the gestor judokass
      */
-    public EstadisticasRanking(GestionJudokas gestorJudokass) {
+    public EstadisticasRanking(GestorJudokas gestorJudokass) {
         this.gestorJudokas = gestorJudokass;
     }
 

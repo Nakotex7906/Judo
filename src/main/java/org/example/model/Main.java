@@ -1,7 +1,7 @@
 package org.example.model;
 
-import org.example.model.judoka.GestionJudokas;
-import org.example.model.competencia.GestionarCompetencia;
+import org.example.model.gestor.GestorJudokas;
+import org.example.model.gestor.GestionarTorneo;
 import org.example.model.logger.LoggerManager;
 import org.example.model.ranking.EstadisticasRanking;
 
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger logger = LoggerManager.getLogger(Main.class);
     public static void main(String[] args) {
-        GestionJudokas gestionJudokas = new GestionJudokas();
+        GestorJudokas gestionJudokas = new GestorJudokas();
 
         try {
             gestionJudokas.cargarJudokassDesdeCSV("judokas.csv");
@@ -21,7 +21,7 @@ public class Main {
             logger.log(Level.SEVERE, String.format("Error al cargar judokas desde CSV: %s", e.getMessage()), e);
         }
 
-        GestionarCompetencia gestionarCompetencia = new GestionarCompetencia(gestionJudokas);
+        GestionarTorneo gestionarTorneo = new GestionarTorneo(gestionJudokas);
         EstadisticasRanking estadisticasRanking = new EstadisticasRanking(gestionJudokas);
 
         Scanner scanner = new Scanner(System.in);
@@ -52,10 +52,10 @@ public class Main {
                     gestionJudokas.registrarResultadoJudoka(scanner);
                     break;
                 case 4:
-                    gestionarCompetencia.agregarCompetenciaDesdeConsola(scanner);
+                    gestionarTorneo.agregarTorneoDesdeConsola(scanner);
                     break;
                 case 5:
-                    gestionarCompetencia.registrarGanadorDesdeConsola(scanner);
+                    gestionarTorneo.registrarGanadorDesdeConsola(scanner);
                     break;
                 case 6:
                     estadisticasRanking.mostrarEstadisticasDesdeConsola(scanner);

@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.model.user.Judoka;
-import org.example.model.user.GestionJudokas;
+import org.example.model.user.GestorJudokas;
 import org.example.model.competencia.Torneo;
 import org.example.model.competencia.GestionarTorneo;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,12 +23,12 @@ class GestionarTorneoTest {
 
     @BeforeEach
     void setUp() {
-        GestionJudokas gestionJudokas = new GestionJudokas();
+        GestorJudokas gestorJudokas = new GestorJudokas();
         judoka1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
         judoka2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
         judoka3 = new Judoka("Alonso", "Romero", "81kg", "2002-08-30");
-        gestionJudokas.getListaJudokas().addAll(Arrays.asList(judoka1, judoka2, judoka3));
-        gestor = new GestionarTorneo(gestionJudokas);
+        gestorJudokas.getListaJudokas().addAll(Arrays.asList(judoka1, judoka2, judoka3));
+        gestor = new GestionarTorneo(gestorJudokas);
     }
 
     @Test

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista de Competencias</title>
+    <title>Lista de Torneo</title>
 </head>
 <body>
-    <h1>Competencias</h1>
+    <h1>Torneo</h1>
     <a th:href="@{/}">Inicio</a>
     <table border="1">
         <tr>
@@ -12,10 +12,10 @@
             <th>Nombre</th>
             <th>Fecha</th>
         </tr>
-        <tr th:each="comp : ${competencias}">
-            <td th:text="${comp.id}"></td>
-            <td th:text="${comp.nombre}"></td>
-            <td th:text="${comp.fecha}"></td>
+        <tr th:each="tor : ${torneos}">
+            <td th:text="${tor.id}"></td>
+            <td th:text="${tor.nombre}"></td>
+            <td th:text="${tor.fecha}"></td>
         </tr>
     </table>
 </body>

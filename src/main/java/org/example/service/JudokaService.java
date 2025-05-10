@@ -1,7 +1,7 @@
 package org.example.service;
 
 import lombok.AllArgsConstructor;
-import org.example.model.judoka.Judoka;
+import org.example.model.user.Judoka;
 import org.example.repository.JudokaRepository;
 import org.springframework.stereotype.Service;
 

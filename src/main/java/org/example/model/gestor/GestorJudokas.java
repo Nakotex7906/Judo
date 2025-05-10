@@ -1,7 +1,8 @@
-package org.example.model.judoka;
+package org.example.model.gestor;
 
 import lombok.Getter;
 import org.example.model.logger.LoggerManager;
+import org.example.model.user.Judoka;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,18 +14,18 @@ import java.util.logging.Logger;
  * The type Gestion judokas.
  */
 @Getter
-public class GestionJudokas {
+public class GestorJudokas {
 
     private List<Judoka> listaJudokas;
 
     /**
      * Instantiates a new Gestion judokas.
      */
-    public GestionJudokas() {
+    public GestorJudokas() {
         listaJudokas = new ArrayList<>();
     }
 
-    private static final Logger logger = LoggerManager.getLogger(GestionJudokas.class);
+    private static final Logger logger = LoggerManager.getLogger(GestorJudokas.class);
 
     /**
      * Agregar judoka desde consola.

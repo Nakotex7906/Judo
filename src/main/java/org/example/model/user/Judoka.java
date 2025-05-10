@@ -1,9 +1,6 @@
-package org.example.model.judoka;
+package org.example.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Locale;
@@ -21,6 +18,11 @@ public class Judoka {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "club_id")
+    private Club club;
+
     private String nombre;
     private String apellido;
     private String categoria;

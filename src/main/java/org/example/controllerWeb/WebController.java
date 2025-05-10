@@ -2,7 +2,7 @@ package org.example.controllerWeb;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.service.JudokaService;
-import org.example.service.CompetenciaService;
+import org.example.service.TorneoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WebController {
 
     private final JudokaService judokaService;
-    private final CompetenciaService competenciaService;
+    private final TorneoService torneoService;
 
     /**
      * Instantiates a new Web controller.
      *
      * @param judokaService      the judoka service
-     * @param competenciaService the competencia service
+     * @param torneoService the competencia service
      */
-    public WebController(JudokaService judokaService, CompetenciaService competenciaService) {
+    public WebController(JudokaService judokaService, TorneoService torneoService) {
         this.judokaService = judokaService;
-        this.competenciaService = competenciaService;
+        this.torneoService = torneoService;
     }
 
     //@GetMapping("/")

@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.model.judoka.Judoka;
-import org.example.model.judoka.GestionJudokas;
+import org.example.model.gestor.Judoka;
+import org.example.model.gestor.GestionJudokas;
 import org.example.model.ranking.EstadisticasRanking;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
