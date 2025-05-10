@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Club</title>
+</head>
+<body>
+<h2>Registrar Club</h2>
+<form th:action="@{/registro-club}" method="post">
+  <label>Correo: <input type="email" name="username" required/></label><br>
+  <label>Contraseña: <input type="password" name="password" required/></label><br>
+  <label>Nombre del club: <input type="text" name="nombre" required/></label><br>
+  <button type="submit">Registrar Club</button>
+</form>
+<a href="/registro">Volver</a>
+<div th:if="${error != null}" th:text="${error}"></div>
+<div th:if="${success != null}" th:text="${success}"></div>
+</body>
+</html>

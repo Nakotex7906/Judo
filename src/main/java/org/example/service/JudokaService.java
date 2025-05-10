@@ -65,6 +65,15 @@ public class JudokaService {
         judokaRepository.deleteById(id);
     }
 
+    public Optional<Judoka> findByUsername(String username) {
+        return judokaRepository.findByUsername(username);
+    }
+
+    public boolean validarContrasena(String username, String password) {
+        Optional<Judoka> opt = findByUsername(username);
+        return opt.isPresent() && opt.get().getPassword().equals(password);
+    }
+
     /**
      * Buscar por ids list.
      *

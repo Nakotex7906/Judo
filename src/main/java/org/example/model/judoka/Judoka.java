@@ -23,6 +23,8 @@ public class Judoka {
     private long id;
     private String nombre;
     private String apellido;
+    private String username;
+    private String password;
     private String categoria;
     private int victorias;
     private int derrotas;

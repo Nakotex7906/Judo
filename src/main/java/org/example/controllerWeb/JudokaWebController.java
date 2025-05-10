@@ -1,17 +1,16 @@
 package org.example.controllerWeb;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.model.Main;
 import org.example.model.judoka.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.example.model.logger.LoggerManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.example.model.logger.LoggerManager;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,48 +42,66 @@ public class JudokaWebController {
         return "judokas";
     }
 
-    @GetMapping("/judokas/agregar")
-    public String agregarJudoka(Model model){
-        model.addAttribute("judoka", new Judoka());
-        return "judokas_agregar";
+    private boolean esJudoka(HttpSession s) {
+        return s.getAttribute("username") != null && "judoka".equals(s.getAttribute("tipo"));
     }
 
     /**
-     * Agregar judoka string.
+     * Judoka home string.
      *
-     * @param nombre          the nombre
-     * @param apellido        the apellido
-     * @param categoria       the categoria
-     * @param fechaNacimiento the fecha nacimiento
+     * @param session the session
+     * @param model   the model
      * @return the string
      */
-    @PostMapping("/judokas/agregar")//Se mejoro el metodo para parametros invalidos
-    public String agregarJudoka(@RequestParam String nombre,
-                                @RequestParam String apellido,
-                                @RequestParam String categoria,
-                                @RequestParam String fechaNacimiento) {
-        logger.log(Level.INFO,"Intentando agregar Judoka: " + nombre
-                + " " + apellido + " " +
-                categoria + " " + fechaNacimiento + "");
-        // Validacion de los campos
-        // Verificar el formato de la fecha
-        try {
-            LocalDate.parse(fechaNacimiento);
-            // Valida el formato yyyy-MM-dd
-        } catch (DateTimeParseException e) {
-            logger.log(Level.WARNING, "Error en formato de fecha");
-            return "redirect:/judokas?error=FechaInvalida";// Redirige con error de fecha
+    @GetMapping("/judoka/home")
+    public String judokaHome(HttpSession session, Model model) {
+        if (!esJudoka(session)) return "redirect:/login";
+        model.addAttribute("username", session.getAttribute("username"));
+        return "judoka_home";
+    }
 
+    // Formulario para registrar judoka
+    @GetMapping("/registro-judoka")
+    public String showRegistroJudoka() {
+        return "registro_judoka";
+    }
+
+    @PostMapping("/registro-judoka")
+    public String doRegistroJudoka(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String nombre,
+            @RequestParam String apellido,
+            @RequestParam String categoria,
+            @RequestParam String fechaNacimiento,
+            Model model
+    ) {
+        if (username == null || username.isBlank() ||
+                password == null || password.isBlank() ||
+                nombre == null || nombre.isBlank() ||
+                apellido == null || apellido.isBlank() ||
+                categoria == null || categoria.isBlank() ||
+                fechaNacimiento == null || fechaNacimiento.isBlank()) {
+            model.addAttribute("error", "Todos los campos son obligatorios.");
+            return "registro_judoka";
         }
-        try {
-            Judoka nuevo = new Judoka(nombre, apellido, categoria, fechaNacimiento);
-            judokaService.guardarJudoka(nuevo);
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Error en guardado de Judoka");
-            return "redirect:/judokas?error=ErrorGuardado";
+
+        if (judokaService.findByUsername(username).isPresent()) {
+            model.addAttribute("error", "El correo ya está registrado.");
+            return "registro_judoka";
         }
-        logger.log(Level.INFO,"Judoka guardado correctamente");
-        return "redirect:/judokas";
+
+        Judoka nuevo = new Judoka();
+        nuevo.setUsername(username);
+        nuevo.setPassword(password);
+        nuevo.setNombre(nombre);
+        nuevo.setApellido(apellido);
+        nuevo.setCategoria(categoria);
+        nuevo.setFechaNacimiento(fechaNacimiento);
+
+        judokaService.guardarJudoka(nuevo);
+        model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
+        return "registro_judoka";
     }
 
 }

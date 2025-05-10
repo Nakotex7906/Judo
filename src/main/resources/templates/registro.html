@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - JSCORE</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f2f2; text-align: center; padding-top: 60px; }
+        .container { background: #fff; border-radius: 8px; display: inline-block; padding: 40px 30px; }
+        h2 { margin-bottom: 18px; }
+        button { padding: 12px 20px; margin: 12px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; background:#e60000; color:#fff;}
+        button:hover { background: #cc0000; }
+        a { display: inline-block; margin-top: 18px; color: #0866fd; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>¿Qué deseas registrar?</h2>
+    <form action="/registro-judoka" method="get" style="display:inline;">
+        <button type="submit">Registrar Judoka</button>
+    </form>
+    <form action="/registro-club" method="get" style="display:inline;">
+        <button type="submit">Registrar Club</button>
+    </form>
+    <br/>
+    <a href="/login">Volver al login</a>
+</div>
+</body>
+</html>
