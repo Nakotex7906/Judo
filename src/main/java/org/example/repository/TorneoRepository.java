@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import org.example.model.competencia.Competencia;
+import org.example.model.competencia.Torneo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The interface Competencia repository.
  */
-public interface CompetenciaRepository extends JpaRepository<Competencia, Long> {
+public interface TorneoRepository extends JpaRepository<Torneo, Long> {
 
     /**
      * Find by nombre list.
@@ -16,6 +16,6 @@ public interface CompetenciaRepository extends JpaRepository<Competencia, Long> 
      * @param nombre the nombre
      * @return the list
      */
-    List<Competencia> findByNombre(String nombre);
+    List<Torneo> findByNombre(String nombre);
 
 }

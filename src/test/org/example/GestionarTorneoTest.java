@@ -1,9 +1,9 @@
 package org.example;
 
-import org.example.model.judoka.Judoka;
-import org.example.model.judoka.GestionJudokas;
-import org.example.model.competencia.Competencia;
-import org.example.model.competencia.GestionarCompetencia;
+import org.example.model.user.Judoka;
+import org.example.model.user.GestionJudokas;
+import org.example.model.competencia.Torneo;
+import org.example.model.competencia.GestionarTorneo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +14,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GestionarCompetenciaTest {
+class GestionarTorneoTest {
 
-    private GestionarCompetencia gestor;
+    private GestionarTorneo gestor;
     private Judoka judoka1;
     private Judoka judoka2;
     private Judoka judoka3;
@@ -28,62 +28,60 @@ class GestionarCompetenciaTest {
         judoka2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
         judoka3 = new Judoka("Alonso", "Romero", "81kg", "2002-08-30");
         gestionJudokas.getListaJudokas().addAll(Arrays.asList(judoka1, judoka2, judoka3));
-        gestor = new GestionarCompetencia(gestionJudokas);
+        gestor = new GestionarTorneo(gestionJudokas);
     }
 
     @Test
-    void testAgregarCompetenciaDesdeConsola() {
+    void testAgregarTorneoDesdeConsola() {
         String input = "Copa Nacional\n2025-08-15\nIgnacio,Benjamin,Alonso\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
 
-        gestor.agregarCompetenciaDesdeConsola(scanner);
+        gestor.agregarTorneoDesdeConsola(scanner);
 
-        assertEquals(1, gestor.getCompetencias().size());
-        Competencia competencia = gestor.getCompetencias().getFirst();
-        assertEquals("Copa Nacional", competencia.getNombre());
+        assertEquals(1, gestor.getTorneos().size());
+        Torneo torneo = gestor.getTorneos().getFirst();
+        assertEquals("Copa Nacional", torneo.getNombre());
 
-        // Comprobar que los nombres de los participantes están presentes (convertidos en Judoka)
-        assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Ignacio")));
-        assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Benjamin")));
-        assertTrue(competencia.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Alonso")));
+        assertTrue(torneo.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Ignacio")));
+        assertTrue(torneo.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Benjamin")));
+        assertTrue(torneo.getParticipantes().stream().anyMatch(a -> a.getNombre().equals("Alonso")));
     }
 
     @Test
-    void testRegistrarGanadorDesdeConsola_CompetenciaExistente() {
+    void testRegistrarGanadorDesdeConsola_TorneoExistente() {
         List<Judoka> participantes = Arrays.asList(judoka1, judoka3);
-        Competencia competencia = new Competencia("Regional 2025", "2025-09-01", participantes);
-        gestor.getCompetencias().add(competencia);
+        Torneo torneo = new Torneo("Regional 2025", "2025-09-01", participantes);
+        gestor.getTorneos().add(torneo);
 
         String input = "Regional 2025\nAlonso\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
 
         gestor.registrarGanadorDesdeConsola(scanner);
-        assertEquals(judoka3, competencia.getGanador());
+        assertEquals(judoka3, torneo.getGanador());
     }
 
     @Test
     void testRegistrarGanadorDesdeConsola_JudokaInvalido() {
         List<Judoka> participantes = Arrays.asList(judoka1, judoka2);
-        Competencia competencia = new Competencia("Torneo Invierno", "2025-12-12", participantes);
-        gestor.getCompetencias().add(competencia);
+        Torneo torneo = new Torneo("Torneo Invierno", "2025-12-12", participantes);
+        gestor.getTorneos().add(torneo);
 
         String input = "Torneo Invierno\nAlonso\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
 
         gestor.registrarGanadorDesdeConsola(scanner);
-        assertNull(competencia.getGanador()); // Alonso no está inscrito
+        assertNull(torneo.getGanador());
     }
 
     @Test
-    void testRegistrarGanadorDesdeConsola_CompetenciaInexistente() {
-        String input = "Competencia Fantasma\nIgnacio\n";
+    void testRegistrarGanadorDesdeConsola_TorneoInexistente() {
+        String input = "Torneo Fantasma\nIgnacio\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
 
-        // Ejecuta, no debe lanzar excepción y evidentemente no se modificará ningún objeto
         assertDoesNotThrow(() -> gestor.registrarGanadorDesdeConsola(scanner));
     }
 }
