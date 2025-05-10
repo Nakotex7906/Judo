@@ -7,16 +7,6 @@
 <h1>Judokas</h1>
 <a th:href="@{/}">Inicio</a>
 
-<!-- Formulario para agregar un Judoka -->
-<form th:action="@{/judokas/agregar}" method="post">
-  <label>Nombre: <input type="text" name="nombre" required></label>
-  <label>Apellido: <input type="text" name="apellido" required></label>
-  <label>Categoría: <input type="text" name="categoria" required></label>
-  <label>Fecha Nacimiento: <input type="date" name="fechaNacimiento" required></label>
-  <button type="submit">Agregar Judoka</button>
-</form>
-<br/>
-
 <table border="1">
   <tr>
     <th>ID</th>

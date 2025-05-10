@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Judokas</title>
+</head>
+<body>
+<h1>Judokas</h1>
+<a th:href="@{/}">Inicio</a>
+
+<!-- Formulario para agregar un Judoka -->
+<form th:action="@{/judokas/agregar}" method="post">
+    <label>Nombre: <input type="text" name="nombre" required></label>
+    <label>Apellido: <input type="text" name="apellido" required></label>
+    <label>Categoría: <input type="text" name="categoria" required></label>
+    <label>Fecha Nacimiento: <input type="date" name="fechaNacimiento" required></label>
+    <button type="submit">Agregar Judoka</button>
+</form>
+<br/>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Categoría</th>
+    </tr>
+    <tr th:each="atleta : ${atletas}">
+        <td th:text="${atleta.id}"></td>
+        <td th:text="${atleta.nombre}"></td>
+        <td th:text="${atleta.apellido}"></td>
+        <td th:text="${atleta.categoria}"></td>
+    </tr>
+</table>
+</body>
+</html>

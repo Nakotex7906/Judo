@@ -43,6 +43,12 @@ public class JudokaWebController {
         return "judokas";
     }
 
+    @GetMapping("/judokas/agregar")
+    public String agregarJudoka(Model model){
+        model.addAttribute("judoka", new Judoka());
+        return "judokas_agregar";
+    }
+
     /**
      * Agregar judoka string.
      *
@@ -61,13 +67,6 @@ public class JudokaWebController {
                 + " " + apellido + " " +
                 categoria + " " + fechaNacimiento + "");
         // Validacion de los campos
-        if(     nombre == null || nombre.isEmpty() ||
-                apellido == null || apellido.isEmpty() ||
-                categoria == null || categoria.isEmpty() ||
-                fechaNacimiento == null || fechaNacimiento.isEmpty()){
-            return "redirect:/judokas?error=DatosInvalidos";// Redirige con error
-
-        }
         // Verificar el formato de la fecha
         try {
             LocalDate.parse(fechaNacimiento);
