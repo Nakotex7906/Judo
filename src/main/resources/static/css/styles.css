@@ -1,0 +1,107 @@
+:root {
+    --negro-suave: #1e1e1e;
+    --gris-oscuro: #3d3d3d;
+    --gris-claro: #ddd;
+    --blanco: #ffffff;
+    --rojo: #e60000;
+    --rojo-hover: #cc0000;
+    --rojo-error: red;
+    --azul-link: #0866fd;
+    --gris-texto: #ccc;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--negro-suave);
+    color: var(--blanco);
+}
+
+.header {
+    background-color: var(--blanco);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header img {
+    height: 30px;
+}
+
+.header button {
+    background-color: var(--rojo);
+    color: var(--blanco);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.header button:hover {
+    background-color: var(--rojo-hover);
+}
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+}
+
+.form-container {
+    background-color: var(--gris-oscuro);
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    width: 420px;
+    color: var(--blanco);
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-container h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.form-container form input[type="text"],
+.form-container form input[type="email"],
+.form-container form input[type="password"],
+.form-container form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: var(--gris-claro);
+    border: none;
+    border-radius: 4px;
+}
+
+.form-container form button {
+    background-color: var(--rojo);
+    color: var(--blanco);
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.form-container form button:hover {
+    background-color: var(--rojo-hover);
+}
+
+.error-message {
+    color: var(--rojo-error);
+    margin-top: 10px;
+}
+
+.success-message {
+    color: var(--azul-link);
+    margin-top: 10px;
+}
