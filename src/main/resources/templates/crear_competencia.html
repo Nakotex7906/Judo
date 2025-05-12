@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Competencia</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Crear Competencia</h1>
-<form th:action="@{/competencias/crear}" method="post">
-    <label>Nombre: <input type="text" name="nombre" required></label><br>
-    <label>Fecha: <input type="date" name="fecha" required></label><br>
-    <label>Participantes:</label>
-    <select name="participantes" multiple required>
-        <option th:each="j : ${judokas}" th:value="${j.id}"
-                th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}"></option>
-    </select>
-    <br><button type="submit">Crear Competencia</button>
-</form>
-<a th:href="@{/club/home}">Volver</a>
+<header class="header blue-header">
+    <img src="/img/logo.png" alt="Logo">
+    <button onclick="location.href='/club/home'">Volver</button>
+</header>
+
+<div class="form-wrapper">
+    <div class="form-container">
+        <h2>Crear Competencia</h2>
+        <form th:action="@{/competencias/crear}" method="post">
+            <input type="text" name="nombre" placeholder="Nombre de la competencia" required/>
+            <input type="date" name="fecha" required/>
+            <div class="select-container">
+                <label for="participantes">Seleccionar Participantes:</label>
+                <select id="participantes" name="participantes" multiple required>
+                    <option th:each="j : ${judokas}" th:value="${j.id}"
+                            th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}"></option>
+                </select>
+            </div>
+            <button type="submit">Crear Competencia</button>
+        </form>
+        <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
+        <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
+    </div>
+</div>
 </body>
 </html>

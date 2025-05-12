@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Judokas</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Judokas</h1>
-<a th:href="@{/}">Inicio</a>
+<header class="header blue-header">
+  <h1>Lista de Judokas</h1>
+  <a href="/" class="btn header-btn">Inicio</a>
+</header>
 
-<table border="1">
-  <tr>
-    <th>ID</th>
-    <th>Nombre</th>
-    <th>Apellido</th>
-    <th>Categoría</th>
-  </tr>
-  <tr th:each="atleta : ${atletas}">
-    <td th:text="${atleta.id}"></td>
-    <td th:text="${atleta.nombre}"></td>
-    <td th:text="${atleta.apellido}"></td>
-    <td th:text="${atleta.categoria}"></td>
-  </tr>
-</table>
+<div class="table-container">
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Categoría</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="atleta : ${atletas}">
+      <td th:text="${atleta.id}"></td>
+      <td th:text="${atleta.nombre}"></td>
+      <td th:text="${atleta.apellido}"></td>
+      <td th:text="${atleta.categoria}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+</div>
 </body>
 </html>

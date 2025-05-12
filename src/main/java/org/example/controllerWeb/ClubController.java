@@ -18,13 +18,19 @@ public class ClubController {
     /**
      * Devuelve la vista de inicio del club solo si la sesión pertenece a un club.
      */
-    @GetMapping("/home")
+    @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         if (!esClub(session)) {
             return "redirect:/login";
         }
         String username = (String) session.getAttribute("username");
-        model.addAttribute("username", username);
+        // Buscar el club por username
+        Club club = clubService.findByUsername(username).orElse(null);
+        if (club != null) {
+            model.addAttribute("nombre", club.getNombre());
+        } else {
+            model.addAttribute("nombre", username); // fallback
+        }
         return "club_home";
     }
 

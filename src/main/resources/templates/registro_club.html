@@ -3,17 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Registrar Club</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h2>Registrar Club</h2>
-<form th:action="@{/registro-club}" method="post">
-  <label>Correo: <input type="email" name="username" required/></label><br>
-  <label>Contraseña: <input type="password" name="password" required/></label><br>
-  <label>Nombre del club: <input type="text" name="nombre" required/></label><br>
-  <button type="submit">Registrar Club</button>
-</form>
-<a href="/registro">Volver</a>
-<div th:if="${error != null}" th:text="${error}"></div>
-<div th:if="${success != null}" th:text="${success}"></div>
+<header class="header">
+  <img src="/img/logo.png" alt="Logo"> <!-- Cambiar el logo -->
+  <button onclick="location.href='/registro'">Volver</button>
+</header>
+
+<div class="form-wrapper">
+  <div class="form-container">
+    <h2>Registrar Club</h2>
+    <form th:action="@{/registro-club}" method="post">
+      <input type="text" name="nombre" placeholder="Nombre del club" required/>
+      <input type="email" name="username" placeholder="Correo" required/>
+      <input type="password" name="password" placeholder="Contraseña" required/>
+      <button type="submit">Registrar Club</button>
+    </form>
+    <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
+    <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
+  </div>
+</div>
 </body>
 </html>

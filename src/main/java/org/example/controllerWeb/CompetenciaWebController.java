@@ -48,21 +48,6 @@ public class CompetenciaWebController {
     }
 
     /**
-     * Detalle competencia string.
-     *
-     * @param id    the id
-     * @param model the model
-     * @return the string
-     */
-    @GetMapping("/competencias/detalle/{id}") //Se agrego un mensaje de error
-    public String detalleCompetencia(@PathVariable Long id, Model model) {
-        logger.log(Level.INFO, "Intentando mostrar detalles de la competencia con id: " + id);
-        Competencia competencia = competenciaService.buscarPorId(id)
-                .orElseThrow(()-> new RuntimeException("Competencia no encontrada"));
-        return "detalle_competencia"; // Nombre del template HTML
-    }
-
-    /**
      * Cargar judokas list.
      *
      * @return the list

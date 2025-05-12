@@ -56,7 +56,14 @@ public class JudokaWebController {
     @GetMapping("/judoka/home")
     public String judokaHome(HttpSession session, Model model) {
         if (!esJudoka(session)) return "redirect:/login";
-        model.addAttribute("username", session.getAttribute("username"));
+        String username = (String) session.getAttribute("username");
+
+        Judoka judoka = judokaService.findByUsername(username).orElse(null);
+        if (judoka != null) {
+            model.addAttribute("nombre", judoka.getNombre());
+        }else {
+            model.addAttribute("nombre", username);
+        }
         return "judoka_home";
     }
 

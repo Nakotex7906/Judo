@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Club</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Bienvenido Club [[${username}]]</h1>
-<ul>
-    <li><a th:href="@{/competencias/crear}">Crear competencia</a></li>
-    <li><a th:href="@{/competencias}">Ver mis competencias</a></li>
-    <li><a th:href="@{/logout}">Cerrar sesión</a></li>
-</ul>
+<header class="header red-header">
+    <h1>Bienvenido Club\, [[${nombre}]]</h1>
+</header>
+
+<div class="menu-container">
+    <!-- Menú con botones estilizados -->
+    <ul class="menu-buttons">
+        <li><a class="btn" th:href="@{/competencias/crear}">Crear competencia</a></li>
+        <li><a class="btn" th:href="@{/competencias}">Ver mis competencias</a></li>
+        <li><a class="btn" th:href="@{/logout}">Cerrar sesión</a></li>
+    </ul>
+</div>
 </body>
 </html>
