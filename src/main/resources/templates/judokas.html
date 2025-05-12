@@ -23,11 +23,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="atleta : ${atletas}">
-      <td th:text="${atleta.id}"></td>
-      <td th:text="${atleta.nombre}"></td>
-      <td th:text="${atleta.apellido}"></td>
-      <td th:text="${atleta.categoria}"></td>
+    <tr th:each="judoka : ${judokas}">
+      <td th:text="${judoka.id}"></td>
+      <td th:text="${judoka.nombre}"></td>
+      <td th:text="${judoka.apellido}"></td>
+      <td th:text="${judoka.categoria}"></td>
     </tr>
     </tbody>
   </table>

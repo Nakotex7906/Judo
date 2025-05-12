@@ -42,6 +42,13 @@ public class JudokaWebController {
         return "judokas";
     }
 
+    @PostMapping("/judokas")
+    public String mostrarJudokas(Model model) {
+        List<Judoka> judokas = judokaService.listarJudokas();
+        model.addAttribute("judokas", judokas);
+        return "judokas";
+    }
+
     private boolean esJudoka(HttpSession s) {
         return s.getAttribute("username") != null && "judoka".equals(s.getAttribute("tipo"));
     }
