@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 public class ClubWebController {
 
-    public static final String CLUB = "club";
+    public static final String REGISTRO_CLUB = "registro_club";
 
     private final ClubService clubService;
 
@@ -48,7 +48,7 @@ public class ClubWebController {
 
     @GetMapping("/registro-club")
     public String showRegistroClub() {
-        return CLUB;
+        return REGISTRO_CLUB;
     }
 
     @PostMapping("/registro-club")
@@ -63,12 +63,12 @@ public class ClubWebController {
             nombre == null || nombre.isBlank()) 
         {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return CLUB;
+            return REGISTRO_CLUB;
         }
 
         if (clubService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado para un club.");
-            return CLUB;
+            return REGISTRO_CLUB;
         }
 
         Club nuevoClub = new Club();

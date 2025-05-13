@@ -117,8 +117,7 @@ class ClubWebControllerTest {
 
         String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
 
-        assertEquals("registro_club", result);
-        verify(model).addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
+        assertEquals("redirect:/login?registrado=1", result); 
         verify(clubService).guardarClub(any(Club.class));
     }
 
