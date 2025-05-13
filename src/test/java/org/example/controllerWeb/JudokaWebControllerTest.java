@@ -1,6 +1,6 @@
 package org.example.controllerWeb;
 
-import org.example.model.judoka.Judoka;
+import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

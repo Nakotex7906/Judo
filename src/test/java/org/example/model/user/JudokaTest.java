@@ -1,6 +1,5 @@
-package org.example;
+package org.example.model.user;
 
-import org.example.model.judoka.Judoka;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
