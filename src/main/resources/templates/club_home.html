@@ -8,14 +8,14 @@
 </head>
 <body>
 <header class="header red-header">
-    <h1>Bienvenido Club\, [[${nombre}]]</h1>
+    <h1>Bienvenido Club, [[${nombre}]]</h1>
 </header>
 
 <div class="menu-container">
     <!-- Menú con botones estilizados -->
     <ul class="menu-buttons">
-        <li><a class="btn" th:href="@{/competencias/crear}">Crear competencia</a></li>
-        <li><a class="btn" th:href="@{/competencias}">Ver mis competencias</a></li>
+        <li><a class="btn" th:href="@{/torneos/crear}">Crear torneo</a></li>
+        <li><a class="btn" th:href="@{/torneos}">Ver mis torneos</a></li>
         <li><a class="btn" th:href="@{/logout}">Cerrar sesión</a></li>
     </ul>
 </div>
