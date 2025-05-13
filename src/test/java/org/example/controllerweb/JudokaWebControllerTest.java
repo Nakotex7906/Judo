@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;

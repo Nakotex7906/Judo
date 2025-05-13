@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -20,8 +20,11 @@ import java.util.logging.Logger;
  */
 @AllArgsConstructor
 @Controller
-
 public class JudokaWebController {
+
+    public static final String JUDOKA = "judoka";
+    private static final String REGISTRO_JUDOKA = "registro_judoka";
+
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);
     private final JudokaService judokaService;
 
@@ -38,15 +41,15 @@ public class JudokaWebController {
         if(judokas.isEmpty()){
             logger.log(Level.INFO,"No hay judokas registradas");
         }
-        model.addAttribute("judokas", judokas);
-        return "judokas";
+        model.addAttribute(JUDOKA, judokas);
+        return JUDOKA;
     }
 
     @PostMapping("/judokas")
     public String mostrarJudokas(Model model) {
         List<Judoka> judokas = judokaService.listarJudokas();
-        model.addAttribute("judokas", judokas);
-        return "judokas";
+        model.addAttribute(JUDOKA, judokas);
+        return JUDOKA;
     }
 
     private boolean esJudoka(HttpSession s) {
@@ -77,7 +80,7 @@ public class JudokaWebController {
     // Formulario para registrar judoka
     @GetMapping("/registro-judoka")
     public String showRegistroJudoka() {
-        return "registro_judoka";
+        return REGISTRO_JUDOKA;
     }
 
     @PostMapping("/registro-judoka")
@@ -97,12 +100,12 @@ public class JudokaWebController {
                 categoria == null || categoria.isBlank() ||
                 fechaNacimiento == null || fechaNacimiento.isBlank()) {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "registro_judoka";
+            return REGISTRO_JUDOKA;
         }
 
         if (judokaService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado.");
-            return "registro_judoka";
+            return REGISTRO_JUDOKA;
         }
 
         Judoka nuevo = new Judoka();
@@ -115,7 +118,7 @@ public class JudokaWebController {
 
         judokaService.guardarJudoka(nuevo);
         model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
-        return "registro_judoka";
+        return REGISTRO_JUDOKA;
     }
 
 }

@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.model.user.Club;

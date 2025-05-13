@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 public class ClubWebController {
+
+    public static final String CLUB = "club";
 
     private final ClubService clubService;
 
@@ -46,7 +48,7 @@ public class ClubWebController {
 
     @GetMapping("/registro-club")
     public String showRegistroClub() {
-        return "registro_club";
+        return CLUB;
     }
 
     @PostMapping("/registro-club")
@@ -56,16 +58,17 @@ public class ClubWebController {
             @RequestParam String nombre,
             Model model
     ) {
-        if(username == null || username.isBlank() ||
-                password == null || password.isBlank() ||
-                nombre == null || nombre.isBlank()) {
+        if (username == null || username.isBlank() ||
+            password == null || password.isBlank() ||
+            nombre == null || nombre.isBlank()) 
+        {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "registro_club";
+            return CLUB;
         }
 
         if (clubService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado para un club.");
-            return "registro_club";
+            return CLUB;
         }
 
         Club nuevoClub = new Club();
@@ -74,8 +77,9 @@ public class ClubWebController {
         nuevoClub.setNombre(nombre);
 
         clubService.guardarClub(nuevoClub);
+        // Ahora redirigimos al login tras el registro exitoso.
         model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
-        return "registro_club";
+        return "redirect:/login?registrado=1";
     }
 
     /**
