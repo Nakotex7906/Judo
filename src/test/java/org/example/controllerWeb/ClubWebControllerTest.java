@@ -38,7 +38,7 @@ class ClubWebControllerTest {
      * Prueba que el método clubHome redirija al inicio de sesión si no es un club válido.
      */
     @Test
-    void testClubHomeRedirectsToLoginForInvalidSession() {
+    void testClubHomeDireccionaAlLogin_siNoEsValidoElClub() {
         when(session.getAttribute("username")).thenReturn(null);
         when(session.getAttribute("tipo")).thenReturn(null);
 
@@ -53,7 +53,7 @@ class ClubWebControllerTest {
      * un club válido está logueado.
      */
     @Test
-    void testClubHomeDisplaysClubNameForValidSession() {
+    void testClubHomeMuestraElNombreDelClubParaUnLoginValido() {
         when(session.getAttribute("username")).thenReturn("club123");
         when(session.getAttribute("tipo")).thenReturn("club");
         Club club = new Club();
@@ -72,7 +72,7 @@ class ClubWebControllerTest {
      * si no encuentra el club.
      */
     @Test
-    void testClubHomeUsesUsernameAsFallback() {
+    void TestClubHomeNombreUsuarioComoFallback() {
         when(session.getAttribute("username")).thenReturn("club123");
         when(session.getAttribute("tipo")).thenReturn("club");
 
@@ -102,7 +102,7 @@ class ClubWebControllerTest {
      * Prueba que el método showRegistroClub devuelva la vista de registro de clubes.
      */
     @Test
-    void testShowRegistroClub() {
+    void testMostrarRegistroClub() {
         String result = clubWebController.showRegistroClub();
 
         assertEquals("registro_club", result);
@@ -112,7 +112,7 @@ class ClubWebControllerTest {
      * Prueba el registro de un club con datos válidos.
      */
     @Test
-    void testDoRegistroClubSuccess() {
+    void testDoRegistroClubExitoso() {
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.empty());
 
         String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
@@ -126,7 +126,7 @@ class ClubWebControllerTest {
      * Prueba el registro de un club con campos obligatorios vacíos.
      */
     @Test
-    void testDoRegistroClubMissingFields() {
+    void testDoRegistroClubSinUsername() {
         String result = clubWebController.doRegistroClub("", "password123", "Club ABC", model);
 
         assertEquals("registro_club", result);
@@ -138,7 +138,7 @@ class ClubWebControllerTest {
      * Prueba el registro de un club cuando el nombre de usuario ya está registrado.
      */
     @Test
-    void testDoRegistroClubDuplicateUsername() {
+    void testDoRegistroClubConUsernameYaRegistrado() {
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.of(new Club()));
 
         String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
