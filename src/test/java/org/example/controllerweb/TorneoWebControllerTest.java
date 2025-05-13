@@ -55,7 +55,6 @@ class TorneoWebControllerTest {
      */
     @Test
     void testCargarJudokas() {
-        List<Long> participantesIds = List.of(1L, 2L);
         List<Judoka> judokas =
                 List.of(new Judoka(1L, "Benjamin", "Beroiza", "73kg", "2003-09-21"),
                 new Judoka(2L, "Ignacio", "Essus", "66kg", "2004-05-12"));

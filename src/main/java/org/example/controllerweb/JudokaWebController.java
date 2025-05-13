@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Controller
 public class JudokaWebController {
 
-    public static final String JUDOKA = "judoka";
+    private static final String JUDOKA = "judokas";
     private static final String REGISTRO_JUDOKA = "registro_judoka";
 
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);

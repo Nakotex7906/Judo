@@ -66,7 +66,7 @@ class JudokaWebControllerTest {
         when(judokaService.listarJudokas()).thenReturn(lista);
 
         String view = controller.listarJudokas(model);
-        verify(model).addAttribute(eq("judokas"), eq(lista));
+        verify(model).addAttribute("judokas", lista);
         assertEquals("judokas", view);
     }
 
