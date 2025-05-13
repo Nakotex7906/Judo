@@ -18,8 +18,8 @@ class CombateTest {
 
     @BeforeEach
     void setUp() {
-        judoka1 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
-        judoka2 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        judoka1 = new Judoka(1L, "Benjamin", "Beroiza", "73kg", "2003-09-21");
+        judoka2 = new Judoka(2L, "Ignacio", "Essus", "66kg", "2004-05-12");
         torneo = new Torneo();
         torneo.setNombre("Torneo Nacional");
 
@@ -45,7 +45,7 @@ class CombateTest {
 
     @Test
     void testRegistrarGanadorInvalidoNoCambiaEstado() {
-        Judoka externo = new Judoka("Alonso", "Romero", "66kg", "2004-03-28");
+        Judoka externo = new Judoka(3L, "Alonso", "Romero", "66kg", "2004-03-28");
         combate.registrarGanador(externo);
         assertNull(combate.getGanador());
         assertEquals(0, judoka1.getVictorias());
@@ -54,10 +54,10 @@ class CombateTest {
 
     @Test
     void testGenerarCombatesImpar_RoundRobin() {
-        //Se simula un combate categoria absoluta(se pueden mesclar las categorias)
-        Judoka a = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
-        Judoka b = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
-        Judoka c = new Judoka("Alonso", "Romero", "66kg", "2004-03-28");
+        //Se simula un combate categoria absoluta(se pueden mezclar las categorias)
+        Judoka a = new Judoka(2L, "Ignacio", "Essus", "66kg", "2004-05-12");
+        Judoka b = new Judoka(1L, "Benjamin", "Beroiza", "73kg", "2003-09-21");
+        Judoka c = new Judoka(3L, "Alonso", "Romero", "66kg", "2004-03-28");
 
         List<Judoka> participantes = Arrays.asList(a, b, c);
         List<Combate> combates = Combate.generarCombates(participantes, torneo);

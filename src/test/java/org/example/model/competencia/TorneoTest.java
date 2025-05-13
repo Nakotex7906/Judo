@@ -14,8 +14,8 @@ class TorneoTest {
 
     @BeforeEach
     void setUp() {
-        judoka1 = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
-        judoka2 = new Judoka("Benjamin", "Beroiza", "73kg", "2003-09-21");
+        judoka1 = new Judoka(1L, "Ignacio", "Essus", "66kg", "2004-05-12");
+        judoka2 = new Judoka(2L, "Benjamin", "Beroiza", "73kg", "2003-09-21");
         List<Judoka> participantes = Arrays.asList(judoka1, judoka2);
         torneo = new Torneo("Torneo Regional", "2025-06-01", participantes);
     }
