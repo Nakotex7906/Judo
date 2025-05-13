@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.judoka.Judoka;
+import org.example.model.user.Judoka;
 import org.example.model.logger.LoggerManager;
 
 import java.util.List;

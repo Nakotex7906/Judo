@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.model.club.Club;
+import org.example.model.user.Club;
 import org.example.repository.ClubRepository;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package org.example.controllerWeb;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.model.club.Club;
+import org.example.model.user.Club;
 import org.example.service.ClubService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @AllArgsConstructor
 @Controller
-public class ClubController {
+public class ClubWebController {
 
     private final ClubService clubService;
 
