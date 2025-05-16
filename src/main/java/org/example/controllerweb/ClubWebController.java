@@ -1,8 +1,8 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.model.club.Club;
+import org.example.model.user.Club;
 import org.example.service.ClubService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,20 +11,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @AllArgsConstructor
 @Controller
-public class ClubController {
+public class ClubWebController {
+
+    public static final String REGISTRO_CLUB = "registro_club";
 
     private final ClubService clubService;
 
     /**
      * Devuelve la vista de inicio del club solo si la sesión pertenece a un club.
      */
-    @GetMapping("/home")
+    @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         if (!esClub(session)) {
             return "redirect:/login";
         }
         String username = (String) session.getAttribute("username");
-        model.addAttribute("username", username);
+        // Buscar el club por username
+        Club club = clubService.findByUsername(username).orElse(null);
+        if (club != null) {
+            model.addAttribute("nombre", club.getNombre());
+        } else {
+            model.addAttribute("nombre", username); // fallback
+        }
         return "club_home";
     }
 
@@ -40,7 +48,7 @@ public class ClubController {
 
     @GetMapping("/registro-club")
     public String showRegistroClub() {
-        return "registro_club";
+        return REGISTRO_CLUB;
     }
 
     @PostMapping("/registro-club")
@@ -50,16 +58,17 @@ public class ClubController {
             @RequestParam String nombre,
             Model model
     ) {
-        if(username == null || username.isBlank() ||
-                password == null || password.isBlank() ||
-                nombre == null || nombre.isBlank()) {
+        if (username == null || username.isBlank() ||
+            password == null || password.isBlank() ||
+            nombre == null || nombre.isBlank()) 
+        {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "registro_club";
+            return REGISTRO_CLUB;
         }
 
         if (clubService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado para un club.");
-            return "registro_club";
+            return REGISTRO_CLUB;
         }
 
         Club nuevoClub = new Club();
@@ -68,8 +77,9 @@ public class ClubController {
         nuevoClub.setNombre(nombre);
 
         clubService.guardarClub(nuevoClub);
+        // Ahora redirigimos al login tras el registro exitoso.
         model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
-        return "registro_club";
+        return "redirect:/login?registrado=1";
     }
 
     /**

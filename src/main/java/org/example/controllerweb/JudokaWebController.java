@@ -1,8 +1,8 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.model.judoka.Judoka;
+import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,11 @@ import java.util.logging.Logger;
  */
 @AllArgsConstructor
 @Controller
-
 public class JudokaWebController {
+
+    private static final String JUDOKA = "judokas";
+    private static final String REGISTRO_JUDOKA = "registro_judoka";
+
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);
     private final JudokaService judokaService;
 
@@ -38,8 +41,15 @@ public class JudokaWebController {
         if(judokas.isEmpty()){
             logger.log(Level.INFO,"No hay judokas registradas");
         }
-        model.addAttribute("judokas", judokas);
-        return "judokas";
+        model.addAttribute(JUDOKA, judokas);
+        return JUDOKA;
+    }
+
+    @PostMapping("/judokas")
+    public String mostrarJudokas(Model model) {
+        List<Judoka> judokas = judokaService.listarJudokas();
+        model.addAttribute(JUDOKA, judokas);
+        return JUDOKA;
     }
 
     private boolean esJudoka(HttpSession s) {
@@ -56,14 +66,21 @@ public class JudokaWebController {
     @GetMapping("/judoka/home")
     public String judokaHome(HttpSession session, Model model) {
         if (!esJudoka(session)) return "redirect:/login";
-        model.addAttribute("username", session.getAttribute("username"));
+        String username = (String) session.getAttribute("username");
+
+        Judoka judoka = judokaService.findByUsername(username).orElse(null);
+        if (judoka != null) {
+            model.addAttribute("nombre", judoka.getNombre());
+        }else {
+            model.addAttribute("nombre", username);
+        }
         return "judoka_home";
     }
 
     // Formulario para registrar judoka
     @GetMapping("/registro-judoka")
     public String showRegistroJudoka() {
-        return "registro_judoka";
+        return REGISTRO_JUDOKA;
     }
 
     @PostMapping("/registro-judoka")
@@ -83,12 +100,12 @@ public class JudokaWebController {
                 categoria == null || categoria.isBlank() ||
                 fechaNacimiento == null || fechaNacimiento.isBlank()) {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "registro_judoka";
+            return REGISTRO_JUDOKA;
         }
 
         if (judokaService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado.");
-            return "registro_judoka";
+            return REGISTRO_JUDOKA;
         }
 
         Judoka nuevo = new Judoka();
@@ -100,8 +117,8 @@ public class JudokaWebController {
         nuevo.setFechaNacimiento(fechaNacimiento);
 
         judokaService.guardarJudoka(nuevo);
-        model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
-        return "registro_judoka";
+        // Redirige al login indicando exito, evitando así siempre devolver el mismo valor, que era el error de sonar
+        return "redirect:/login?registrado=1";
     }
 
 }

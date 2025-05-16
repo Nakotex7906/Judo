@@ -1,6 +1,5 @@
-package org.example;
+package org.example.model.user;
 
-import org.example.model.judoka.Judoka;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +10,7 @@ class JudokaTest {
 
     @BeforeEach
     void setUp() {
-        atleta = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        atleta = new Judoka(2L, "Ignacio", "Essus", "66kg", "2004-05-12");
     }
 
     @Test

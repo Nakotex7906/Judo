@@ -1,16 +1,10 @@
-package org.example.model.judoka;
+package org.example.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Locale;
 
-/**
- * The type Judoka.
- */
 @Entity
 @Getter
 @Setter
@@ -31,15 +25,23 @@ public class Judoka {
     private int empates;
     private String fechaNacimiento;
 
+    @ManyToOne
+    @JoinColumn(name = "club_id")
+    private Club club;
+
+
+
     /**
      * Instantiates a new Judoka.
      *
+     * @param id              the id
      * @param nombre          the nombre
      * @param apellido        the apellido
      * @param categoria       the categoria
      * @param fechaNacimiento the fecha nacimiento
      */
-    public Judoka(String nombre, String apellido, String categoria, String fechaNacimiento) {
+    public Judoka(long id,String nombre, String apellido, String categoria, String fechaNacimiento) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.categoria = categoria;
@@ -81,4 +83,5 @@ public class Judoka {
                 ", Victorias: " + victorias + ", Derrotas: " + derrotas + ", Empates: " + empates +
                 ", % Victorias: " + String.format(Locale.US, "%.2f", calcularPorcentajeVictorias());
     }
+
 }

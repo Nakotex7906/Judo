@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Torneos</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header class="header blue-header">
+    <h1>Lista de Torneos</h1>
+    <a href="/" class="btn header-btn">Inicio</a>
+</header>
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="torneo : ${torneos}">
+            <td th:text="${torneo.id}"></td>
+            <td th:text="${torneo.nombre}"></td>
+            <td th:text="${torneo.fecha}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
