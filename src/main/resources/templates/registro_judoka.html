@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Judoka</title>
+</head>
+<body>
+<h2>Registrar Judoka</h2>
+<form th:action="@{/registro-judoka}" method="post">
+    <label>Nombre: <input type="text" name="nombre" required/></label><br>
+    <label>Apellido: <input type="text" name="apellido" required/></label><br>
+    <label>Fecha de nacimiento: <input type="date" name="fechaNacimiento" required/></label><br>
+    <label>Categoría (peso): <input type="text" name="categoria" required/></label><br>
+    <label>Correo: <input type="email" name="username" required/></label><br>
+    <label>Contraseña: <input type="password" name="password" required/></label><br>
+    <button type="submit">Registrar Judoka</button>
+</form>
+<a href="/registro">Volver</a>
+<div th:if="${error != null}" th:text="${error}"></div>
+<div th:if="${success != null}" th:text="${success}"></div>
+</body>
+</html>
