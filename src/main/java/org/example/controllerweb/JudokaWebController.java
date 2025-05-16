@@ -117,8 +117,8 @@ public class JudokaWebController {
         nuevo.setFechaNacimiento(fechaNacimiento);
 
         judokaService.guardarJudoka(nuevo);
-        model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
-        return REGISTRO_JUDOKA;
+        // Redirige al login indicando exito, evitando así siempre devolver el mismo valor, que era el error de sonar
+        return "redirect:/login?registrado=1";
     }
 
 }
