@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil Judoka - JSCORE</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #3d3d3d;
+            --gris-claro: #ddd;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--negro-suave);
+            color: var(--negro-suave);
+        }
+
+        .header {
+            background-color: var(--blanco);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h3 {
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--rojo);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .banner {
+            background-color: #0f1111;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 50px;
+        }
+
+        .photo-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: var(--gris-claro);
+            border: 4px solid white;
+        }
+
+        .profile-container {
+            background-color: var(--blanco);
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-list {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            font-size: 15px;
+        }
+
+        .info-list p {
+            margin: 6px 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            background-color: var(--gris-claro);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #bbbbbb;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Encabezado -->
+<div class="header">
+    <h3>JSCORE</h3>
+    <div class="nav-links">
+        <a href="/static">Inicio</a>
+        <a href="/clubs">Clubs</a>
+        <a href="/rankings">Rankings</a>
+        <div class="profile-icon">👤</div>
+    </div>
+</div>
+
+<!-- Banner con imagen circular -->
+<div class="banner">
+    <div class="photo-circle"></div>
+</div>
+
+<!-- Contenido del perfil -->
+<div class="profile-container">
+    <h2>NOMBRE DEL JUDOKA</h2>
+    <div class="info-list">
+        <p><strong>Años de entrenamiento:</strong> 5</p>
+        <p><strong>Oficio/Profesión:</strong> Estudiante</p>
+        <p><strong>Edad:</strong> 21</p>
+        <p><strong>Categoría:</strong> -66kg</p>
+        <p><strong>Club:</strong> Judo Lonquimay</p>
+    </div>
+    <div class="buttons">
+        <button>Editar Perfil</button>
+        <button>Ver Estadísticas</button>
+    </div>
+</div>
+
+</body>
+</html>

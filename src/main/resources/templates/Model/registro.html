@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - JSCORE</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #2b2b2b;
+            --gris-fondo: #121212;
+            --gris-claro: #ccc;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .form-container {
+            background-color: var(--gris-oscuro);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 2rem;
+            color: var(--blanco);
+        }
+
+        form {
+            display: inline-block;
+            margin: 0.5rem;
+        }
+
+        button {
+            background-color: var(--rojo);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        a {
+            display: block;
+            margin-top: 2rem;
+            color: var(--gris-claro);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--blanco);
+        }
+    </style>
+</head>
+<body>
+<div class="form-wrapper">
+    <div class="form-container">
+        <h2>¿Qué deseas registrar?</h2>
+        <form action="/registro-judoka" method="get">
+            <button type="submit">Registrar Judoka</button>
+        </form>
+        <form action="/registro-club" method="get">
+            <button type="submit">Registrar Club</button>
+        </form>
+        <a href="/login">Volver al login</a>
+    </div>
+</div>
+</body>
+</html>

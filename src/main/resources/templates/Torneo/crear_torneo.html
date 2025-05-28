@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Torneo</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #2b2b2b;
+            --gris-fondo: #121212;
+            --gris-claro: #ccc;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
+            min-height: 100vh;
+        }
+
+        header.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: var(--gris-oscuro);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        header button {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        header button:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+
+        .form-container {
+            background-color: var(--gris-oscuro);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input, select {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #444;
+            color: var(--blanco);
+        }
+
+        select[multiple] {
+            height: 150px;
+        }
+
+        label {
+            text-align: left;
+            font-size: 14px;
+            color: var(--gris-claro);
+        }
+
+        button[type="submit"] {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #00cc66;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <img src="/img/logo.png" alt="Logo">
+    <button onclick="location.href='/club/home'">Volver</button>
+</header>
+
+<div class="form-wrapper">
+    <div class="form-container">
+        <h2>Crear Torneo</h2>
+        <form th:action="@{/torneos/crear}" method="post">
+            <input type="text" name="nombre" placeholder="Nombre del torneo" required/>
+            <input type="date" name="fecha" required/>
+            <div class="select-container">
+                <label for="participantes">Seleccionar Participantes:</label>
+                <select id="participantes" name="participantes" multiple required>
+                    <option th:each="j : ${judokas}" th:value="${j.id}"
+                            th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}"></option>
+                </select>
+            </div>
+            <button type="submit">Crear Torneo</button>
+        </form>
+        <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
+        <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
+    </div>
+</div>
+</body>
+</html>
