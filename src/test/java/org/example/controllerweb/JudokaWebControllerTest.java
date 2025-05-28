@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
@@ -66,7 +66,7 @@ class JudokaWebControllerTest {
         when(judokaService.listarJudokas()).thenReturn(lista);
 
         String view = controller.listarJudokas(model);
-        verify(model).addAttribute(eq("judokas"), eq(lista));
+        verify(model).addAttribute("judokas", lista);
         assertEquals("judokas", view);
     }
 
@@ -152,10 +152,11 @@ class JudokaWebControllerTest {
     @Test
     void doRegistroJudoka_registroExitoso() {
         when(judokaService.findByUsername("nuevo@correo.com")).thenReturn(Optional.empty());
+
         String view = controller.doRegistroJudoka(
                 "nuevo@correo.com", "pass", "nombre", "apellido", "cat", "1990-01-01", model);
+
         verify(judokaService).guardarJudoka(any(Judoka.class));
-        verify(model).addAttribute(eq("success"), contains("¡Judoka registrado correctamente!"));
-        assertEquals("registro_judoka", view);
+        assertEquals("redirect:/login?registrado=1", view);
     }
 }

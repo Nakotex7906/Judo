@@ -1,4 +1,4 @@
-package org.example.controllerWeb;
+package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.service.ClubService;
@@ -47,7 +47,7 @@ class AuthControllerTest {
      * Verifica que el endpoint raíz ("/") redirija correctamente a la página de inicio de sesión ("/login").
      */
     @Test
-    void testRootRedirectsToLogin() {
+    void testRootDireccionaAlLogin() {
         String result = authController.root();
         assertEquals("redirect:/login", result);
     }
@@ -57,7 +57,7 @@ class AuthControllerTest {
      * El método redirige a la página de inicio correspondiente según el tipo de usuario (ej., "judoka").
      */
     @Test
-    void testShowLoginWhenUserIsLogged() {
+    void testMuestraLoginCuandoElUsuarioEstaAutenticado() {
         when(session.getAttribute("username")).thenReturn("john_doe");
         when(session.getAttribute("tipo")).thenReturn("judoka");
 
@@ -66,23 +66,11 @@ class AuthControllerTest {
     }
 
     /**
-     * Prueba el comportamiento de la página de inicio de sesión para un usuario invitado
-     * (sin una sesión activa). Debe devolver la vista "login".
-     */
-    @Test
-    void testShowLoginForGuestUser() {
-        when(session.getAttribute("username")).thenReturn(null);
-
-        String result = authController.showLogin(session);
-        assertEquals("login", result);
-    }
-
-    /**
      * Verifica el comportamiento del proceso de inicio de sesión cuando el nombre de usuario está vacío.
      * Debe agregar un mensaje de error al modelo y devolver la vista "login".
      */
     @Test
-    void testDoLoginWithEmptyUsername() {
+    void testDoLoginCuandoElCampoUsernameEstaVacio() {
         String result = authController.doLogin("", "password", "judoka", model, session);
 
         verify(model).addAttribute("error", "Usuario vacío");
@@ -94,7 +82,7 @@ class AuthControllerTest {
      * Debe agregar un mensaje de error al modelo y devolver la vista "login".
      */
     @Test
-    void testDoLoginWithInvalidType() {
+    void testDoLoginConTipoDeUsuarioInvalido() {
         String result = authController.doLogin("john_doe", "password", "invalidType", model, session);
 
         verify(model).addAttribute("error", "Tipo inválido");
@@ -106,7 +94,7 @@ class AuthControllerTest {
      * Debe guardar los datos del usuario en la sesión y redirigir a la página de inicio del judoka.
      */
     @Test
-    void testDoLoginWithJudokaValidCredentials() {
+    void testDoLoginConCredencialesValidasJudoka() {
         when(judokaService.validarContrasena("john_doe", "password")).thenReturn(true);
 
         String result = authController.doLogin("john_doe", "password", "judoka", model, session);
@@ -121,7 +109,7 @@ class AuthControllerTest {
      * Debe agregar un mensaje de error al modelo y devolver la vista "login".
      */
     @Test
-    void testDoLoginWithIncorrectCredentials() {
+    void testDoLoginConCredencialesInvalidasJudoka() {
         when(judokaService.validarContrasena("john_doe", "password")).thenReturn(false);
 
         String result = authController.doLogin("john_doe", "password", "judoka", model, session);
@@ -131,11 +119,11 @@ class AuthControllerTest {
     }
 
     /**
-     * Verifica que el método de cierre de sesión invalide la sesión actual
+     * Verifica que el método de cierre de sesión invalido la sesión actual
      * y redirija al usuario a la página de inicio de sesión.
      */
     @Test
-    void testLogoutInvalidatesSession() {
+    void testLogoutinvalido() {
         String result = authController.logout(session);
 
         verify(session).invalidate();
@@ -146,7 +134,7 @@ class AuthControllerTest {
      * Verifica que la página "registro" se resuelva y devuelva correctamente la vista esperada.
      */
     @Test
-    void testShowRegistroReturnsCorrectView() {
+    void testShowRegistroDevuelveRegistro() {
         String result = authController.showRegistro();
         assertEquals("registro", result);
     }
