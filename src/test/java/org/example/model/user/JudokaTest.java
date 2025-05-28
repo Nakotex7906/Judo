@@ -10,7 +10,7 @@ class JudokaTest {
 
     @BeforeEach
     void setUp() {
-        atleta = new Judoka("Ignacio", "Essus", "66kg", "2004-05-12");
+        atleta = new Judoka(2L, "Ignacio", "Essus", "66kg", "2004-05-12");
     }
 
     @Test

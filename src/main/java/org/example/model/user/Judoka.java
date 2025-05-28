@@ -34,12 +34,14 @@ public class Judoka {
     /**
      * Instantiates a new Judoka.
      *
+     * @param id              the id
      * @param nombre          the nombre
      * @param apellido        the apellido
      * @param categoria       the categoria
      * @param fechaNacimiento the fecha nacimiento
      */
-    public Judoka(String nombre, String apellido, String categoria, String fechaNacimiento) {
+    public Judoka(long id,String nombre, String apellido, String categoria, String fechaNacimiento) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.categoria = categoria;
