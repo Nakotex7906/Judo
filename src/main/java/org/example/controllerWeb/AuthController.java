@@ -30,7 +30,7 @@ public class AuthController {
             if ("judoka".equals(tipo)) return "redirect:/judoka/home";
             if ("club".equals(tipo)) return "redirect:/club/home";
         }
-        return "login";
+        return "Model/login";
     }
 
     @PostMapping("/login")
@@ -43,12 +43,13 @@ public class AuthController {
     ) {
         if (username == null || username.isEmpty()) {
             model.addAttribute("error", "Usuario vacío");
-            return "login";
+            return "Model/login";
         }
         if (password == null || password.isEmpty()) {
             model.addAttribute("error", "Contraseña vacía");
-            return "login";
+            return "Model/login";
         }
+
         boolean valido = false;
 
         if ("judoka".equals(tipo)) {
@@ -57,16 +58,17 @@ public class AuthController {
             valido = clubService.validarContrasena(username, password);
         } else {
             model.addAttribute("error", "Tipo inválido");
-            return "login";
+            return "Model/login";
         }
 
         if (!valido) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "login";
+            return "Model/login";
         }
 
         session.setAttribute("username", username);
         session.setAttribute("tipo", tipo);
+
         if ("judoka".equals(tipo)) {
             return "redirect:/judoka/home";
         } else {
@@ -82,7 +84,6 @@ public class AuthController {
 
     @GetMapping("/registro")
     public String showRegistro() {
-        return "registro"; // Página donde se elige tipo de registro
+        return "Model/registro";
     }
-
 }
