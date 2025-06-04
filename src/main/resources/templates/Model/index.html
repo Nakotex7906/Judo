@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>JSCORE - Inicio</title>
+    <style>
+        :root {
+            --negro: #1e1e1e;
+            --gris: #f2f2f2;
+            --rojo: #e60000;
+            --rojo-hover: #c40000;
+            --blanco: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gris);
+            color: var(--negro);
+        }
+
+        header {
+            background-color: var(--negro);
+            color: var(--blanco);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        nav a {
+            color: var(--negro);
+            background-color: var(--blanco);
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--gris);
+        }
+
+        .btn-login {
+            background-color: var(--rojo);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-login:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .hero {
+            background-color: var(--negro);
+            color: var(--blanco);
+            text-align: left;
+            padding: 3rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .hero-text {
+            max-width: 50%;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-text .red {
+            color: var(--rojo);
+        }
+
+        .hero-text p {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .hero img {
+            max-height: 300px;
+        }
+
+        .bio {
+            display: flex;
+            background-color: var(--blanco);
+            padding: 3rem 2rem;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .bio img {
+            width: 180px;
+            border-radius: 4px;
+        }
+
+        .bio-content h3 {
+            color: var(--rojo);
+            margin-bottom: 0.5rem;
+        }
+
+        .bio-content h4 {
+            margin-bottom: 1rem;
+        }
+
+        .bio-content p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn-vermas {
+            background-color: var(--rojo);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-vermas:hover {
+            background-color: var(--rojo-hover);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="/img/logo.png" alt="JSCORE Logo">
+    <nav>
+        <a href="/static">Inicio</a>
+        <a href="/clubs">Clubs</a>
+        <a href="/rankings">Rankings</a>
+        <a class="btn-login" href="/login">Iniciar sesión</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1><span class="red">LUCHA</span> COMO UN JUDOKA</h1>
+        <p>EL CAMINO DE LA SUAVIDAD</p>
+    </div>
+
+    <!-- Img de tecnica de judo -->
+    <img src="/img/judokas.png" alt="Judokas en acción">
+</section>
+
+<section class="bio">
+    <!-- Img de jigoro kano -->
+    <img src="/img/jigoro_kano.png" alt="Jigoro Kano">
+    <div class="bio-content">
+        <h3>JIGORO KANO</h3>
+
+        <!-- Esto esta de momento nomas, ideal sacar la info directa de otra pag -->
+        <p>
+            Texto del Judo o descripcion de jigoro kano
+        </p>
+        <a class="btn-vermas" href="#">VER MÁS</a>
+    </div>
+</section>
+
+</body>
+</html>

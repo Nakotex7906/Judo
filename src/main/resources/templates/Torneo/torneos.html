@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Torneos - JSCORE</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #3d3d3d;
+            --gris-claro: #ddd;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+            --azul-link: #0866fd;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--negro-suave);
+            color: var(--gris-claro);
+        }
+
+        .header {
+            background-color: var(--blanco);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: var(--negro-suave);
+        }
+
+        .btn {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: var(--gris-oscuro);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #444;
+            color: var(--blanco);
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+
+        tbody tr:hover {
+            background-color: #383838;
+        }
+
+        td {
+            color: var(--gris-claro);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--gris-claro);
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>JScore</h1>
+    <a href="/static" class="btn">Inicio</a>
+</div>
+
+<div class="container">
+    <h2 class="title">Lista de Torneos</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="torneo : ${torneos}">
+            <td th:text="${torneo.id}">1</td>
+            <td th:text="${torneo.nombre}">Torneo Nacional</td>
+            <td th:text="${torneo.fecha}">2025-06-10</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
