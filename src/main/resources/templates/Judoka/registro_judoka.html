@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Judoka</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-fondo: #121212;
+            --gris-oscuro: #2b2b2b;
+            --gris-claro: #ccc;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
+        }
+
+        .header {
+            background-color: var(--gris-oscuro);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .header img {
+            height: 40px;
+        }
+
+        .header button {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .form-container {
+            background-color: var(--gris-oscuro);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #444;
+            color: var(--blanco);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        button[type="submit"] {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .error-message, .success-message {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .error-message {
+            background-color: #400;
+            color: #ff6666;
+        }
+
+        .success-message {
+            background-color: #014d01;
+            color: #8dff8d;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <img src="/img/logo.png" alt="Logo">
+    <button onclick="location.href='/registro'">Volver</button>
+</header>
+
+<div class="form-wrapper">
+    <div class="form-container">
+        <h2>Registrar Judoka</h2>
+        <form th:action="@{/registro-judoka}" method="post">
+            <input type="text" name="nombre" placeholder="Nombre" required/>
+            <input type="text" name="apellido" placeholder="Apellido" required/>
+            <input type="date" name="fechaNacimiento" required/>
+            <input type="text" name="categoria" placeholder="Categoría (peso)" required/>
+            <input type="email" name="username" placeholder="Correo" required/>
+            <input type="password" name="password" placeholder="Contraseña" required/>
+            <button type="submit">Registrar</button>
+        </form>
+        <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
+        <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
+    </div>
+</div>
+</body>
+</html>

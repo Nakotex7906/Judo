@@ -152,10 +152,11 @@ class JudokaWebControllerTest {
     @Test
     void doRegistroJudoka_registroExitoso() {
         when(judokaService.findByUsername("nuevo@correo.com")).thenReturn(Optional.empty());
+
         String view = controller.doRegistroJudoka(
                 "nuevo@correo.com", "pass", "nombre", "apellido", "cat", "1990-01-01", model);
+
         verify(judokaService).guardarJudoka(any(Judoka.class));
-        verify(model).addAttribute(eq("success"), contains("¡Judoka registrado correctamente!"));
-        assertEquals("registro_judoka", view);
+        assertEquals("redirect:/login?registrado=1", view);
     }
 }
