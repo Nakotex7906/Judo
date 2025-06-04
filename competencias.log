@@ -22,3 +22,4 @@ WARNING: No se agregaron participantes validos, competencia no creada
 2025-04-27 00:10:05 - [WARNING] - Atleta no encontrado: Benja
 2025-04-27 00:10:05 - [WARNING] - Atleta no encontrado: Alonso
 2025-04-27 00:10:05 - [INFO] - Competencia agregada con exito.
+2025-05-30 11:27:35 - [INFO] - org.example.controllerweb.JudokaWebController.listarJudokas - No hay judokas registradas
