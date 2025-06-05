@@ -18,8 +18,11 @@ public class AuthController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/login";
+        return "redirect:/index";
     }
+
+    @GetMapping("/index")
+    public String index() {return "Model/index";}
 
     @GetMapping("/login")
     public String showLogin(HttpSession session) {
