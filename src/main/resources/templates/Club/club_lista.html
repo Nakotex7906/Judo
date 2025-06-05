@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clubs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            width: 70%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: .85em 1em;
+            text-align: left;
+        }
+        th {
+            background: #e60000;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9
+        }
+        h1 {
+            text-align: center;
+            color: #e60000;
+            margin-top: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista de Clubs</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Sensei</th>
+        <th>Año Fundación</th>
+        <th>Dirección</th>
+        <th>Horarios</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="club : ${clubes}">
+        <td th:text="${club.nombre}">Nombre Club</td>
+        <td th:text="${club.sensei}">Sensei</td>
+        <td th:text="${club.anoFundacion}">Año</td>
+        <td th:text="${club.direccion}">Dirección</td>
+        <td th:text="${club.horarios}">Horarios</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
