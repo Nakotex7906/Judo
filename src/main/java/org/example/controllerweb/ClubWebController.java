@@ -16,6 +16,8 @@ public class ClubWebController {
 
     private final ClubService clubService;
 
+    private static final String REGISTRO_CLUB = "Club/registro_club";
+
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         if (!esClub(session)) {
@@ -40,7 +42,7 @@ public class ClubWebController {
 
     @GetMapping("/registro-club")
     public String showRegistroClub() {
-        return "Club/registro_club";
+        return REGISTRO_CLUB;
     }
 
     @PostMapping("/registro-club")
@@ -54,12 +56,12 @@ public class ClubWebController {
                 password == null || password.isBlank() ||
                 nombre == null || nombre.isBlank()) {
             model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "Club/registro_club";
+            return REGISTRO_CLUB;
         }
 
         if (clubService.findByUsername(username).isPresent()) {
             model.addAttribute("error", "El correo ya está registrado para un club.");
-            return "Club/registro_club";
+            return REGISTRO_CLUB;
         }
 
         Club nuevoClub = new Club();
@@ -69,7 +71,7 @@ public class ClubWebController {
 
         clubService.guardarClub(nuevoClub);
         model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
-        return "Club/registro_club";
+        return REGISTRO_CLUB;
     }
 
     private boolean esClub(HttpSession session) {

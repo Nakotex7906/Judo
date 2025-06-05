@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 public class JudokaWebController {
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);
     private static final String JUDOKA_VIEW = "judoka/judokas";
+    private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
     private final JudokaService judokaService;
 
     @GetMapping("/judokas")
@@ -60,7 +61,7 @@ public class JudokaWebController {
 
     @GetMapping("/registro-judoka")
     public String showRegistroJudoka() {
-        return JUDOKA_VIEW;
+        return REGISTRO_JUDOKA;
     }
 
     @PostMapping("/registro-judoka")
@@ -68,16 +69,17 @@ public class JudokaWebController {
         String errores = validarDatosRegistro(dto);
         if (errores != null) {
             model.addAttribute("error", errores);
-            return JUDOKA_VIEW;
+            return REGISTRO_JUDOKA;
         }
         if (!validarCredencialesDisponibles(dto.getUsername())) {
             model.addAttribute("error", "El correo ya está registrado.");
-            return JUDOKA_VIEW;
+            return REGISTRO_JUDOKA;
         }
         Judoka nuevo = mapearDtoAJudoka(dto);
         judokaService.guardarJudoka(nuevo);
+        // Redirigir al login tras el registro exitoso
         model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
-        return "Judoka/registro_judoka";
+        return "redirect:/login";
     }
 
     private String validarDatosRegistro(JudokaRegistroDTO dto) {
