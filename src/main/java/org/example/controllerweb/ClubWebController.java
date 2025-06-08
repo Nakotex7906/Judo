@@ -49,7 +49,8 @@ public class ClubWebController {
             Model model
     ) {
         if (clubService.findByUsername(clubForm.getUsername()).isPresent()) {
-            bindingResult.rejectValue("username", "error.clubForm", "El correo ya está registrado para un club.");
+            bindingResult.rejectValue("username", "error.clubForm", "El correo " +
+                    "ya está registrado para un club.");
         }
 
         if (bindingResult.hasErrors()) {

@@ -26,13 +26,27 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLogin(HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            String tipo = (String) session.getAttribute("tipo");
-            if (JUDOKA.equals(tipo)) return DIRIGIR_JUDOKA_HOME;
-            if ("club".equals(tipo)) return "redirect:/club/home";
+        if (isUsuarioLogueado(session)) {
+            return destinoSegunTipoUsuario(session);
+        }
+        return DIRIGIR_LOGIN;
+
+    }
+
+    private boolean isUsuarioLogueado(HttpSession session) {
+        return session.getAttribute("username") != null;
+    }
+
+    private String destinoSegunTipoUsuario(HttpSession session) {
+        String tipo = (String) session.getAttribute("tipo");
+        if (JUDOKA.equals(tipo)) {
+            return DIRIGIR_JUDOKA_HOME;
+        } else if ("club".equals(tipo)) {
+            return "redirect:/club/home";
         }
         return DIRIGIR_LOGIN;
     }
+
 
     @PostMapping("/login")
     public String doLogin(
@@ -55,10 +69,37 @@ public class AuthController {
     }
 
     private String validarLogin(String username, String password, String tipo) {
-        if (username == null || username.isEmpty()) return "Usuario vacío";
-        if (password == null || password.isEmpty()) return "Contraseña vacía";
-        if (!authenticationService.tipoValido(tipo)) return "Tipo inválido";
-        if (!authenticationService.authenticate(tipo, username, password)) return "Usuario o contraseña incorrectos";
+        String mensajeValidacion = validarCamposObligatorios(username, password);
+        if (mensajeValidacion != null) return mensajeValidacion;
+
+        mensajeValidacion = validarTipoUsuario(tipo);
+        if (mensajeValidacion != null) return mensajeValidacion;
+
+        return validarCredenciales(username, password, tipo);
+
+    }
+
+    private String validarCamposObligatorios(String username, String password) {
+        if (username == null || username.isEmpty()) {
+            return "Usuario vacío";
+        }
+        if (password == null || password.isEmpty()) {
+            return "Contraseña vacía";
+        }
+        return null;
+    }
+
+    private String validarTipoUsuario(String tipo) {
+        if (!authenticationService.tipoValido(tipo)) {
+            return "Tipo inválido";
+        }
+        return null;
+    }
+
+    private String validarCredenciales(String username, String password, String tipo) {
+        if (!authenticationService.authenticate(tipo, username, password)) {
+            return "Usuario o contraseña incorrectos";
+        }
         return null;
     }
 
