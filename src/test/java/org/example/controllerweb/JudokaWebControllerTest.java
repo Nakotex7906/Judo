@@ -1,5 +1,6 @@
 package org.example.controllerweb;
 
+import org.example.dto.JudokaRegistroDTO;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,7 @@ class JudokaWebControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        controller = new JudokaWebController(judokaService);
     }
 
     /**
@@ -49,10 +51,12 @@ class JudokaWebControllerTest {
      */
     @Test
     void listarJudokas_modelConListaVacia() {
-        when(judokaService.listarJudokas()).thenReturn(new ArrayList<>());
-        String view = controller.listarJudokas(model);
-        verify(model).addAttribute(eq("judokas"), anyList());
-        assertEquals("judokas", view);
+        List<Judoka> listaVacia = new ArrayList<>();
+        when(judokaService.listarJudokas()).thenReturn(listaVacia);
+
+        String vista = controller.listarJudokas(model);
+        verify(model).addAttribute("judokas", listaVacia);
+        assertEquals("judoka/judokas", vista);
     }
 
     /**
@@ -61,13 +65,14 @@ class JudokaWebControllerTest {
      */
     @Test
     void listarJudokas_modelConListaNoVacia() {
-        List<Judoka> lista = new ArrayList<>();
-        lista.add(new Judoka());
-        when(judokaService.listarJudokas()).thenReturn(lista);
+        List<Judoka> judokas = List.of(new Judoka());
+        when(judokaService.listarJudokas()).thenReturn(judokas);
 
-        String view = controller.listarJudokas(model);
-        verify(model).addAttribute("judokas", lista);
-        assertEquals("judokas", view);
+        String vista = controller.listarJudokas(model);
+
+        verify(model).addAttribute("judokas", judokas);
+        assertEquals("judoka/judokas", vista);
+
     }
 
     /**
@@ -76,11 +81,14 @@ class JudokaWebControllerTest {
      */
     @Test
     void mostrarJudokas_devuelveVistaJudokas() {
-        List<Judoka> lista = new ArrayList<>();
-        when(judokaService.listarJudokas()).thenReturn(lista);
-        String view = controller.mostrarJudokas(model);
-        verify(model).addAttribute("judokas", lista);
-        assertEquals("judokas", view);
+        List<Judoka> judokas = List.of(new Judoka());
+        when(judokaService.listarJudokas()).thenReturn(judokas);
+
+        String vista = controller.mostrarJudokas(model);
+
+        verify(model).addAttribute("judokas", judokas);
+        assertEquals("judoka/judokas", vista);
+
     }
 
     /**
@@ -89,9 +97,13 @@ class JudokaWebControllerTest {
      */
     @Test
     void judokaHome_siNoEsJudoka_redirigeALogin() {
-        when(session.getAttribute("username")).thenReturn(null);
-        String view = controller.judokaHome(session, model);
-        assertEquals("redirect:/login", view);
+        when(session.getAttribute("username")).thenReturn(null); // No logueado
+
+        String resultado = controller.judokaHome(session, model);
+
+        assertEquals("redirect:/login", resultado);
+        verifyNoInteractions(judokaService);
+
     }
 
     /**
@@ -100,16 +112,17 @@ class JudokaWebControllerTest {
      */
     @Test
     void judokaHome_siEsJudoka_muestraNombre() {
-        when(session.getAttribute("username")).thenReturn("test@correo.com");
+        when(session.getAttribute("username")).thenReturn("usuario");
         when(session.getAttribute("tipo")).thenReturn("judoka");
-
         Judoka judoka = new Judoka();
         judoka.setNombre("Pedro");
-        when(judokaService.findByUsername("test@correo.com")).thenReturn(Optional.of(judoka));
+        when(judokaService.findByUsername("usuario")).thenReturn(Optional.of(judoka));
 
-        String view = controller.judokaHome(session, model);
+        String resultado = controller.judokaHome(session, model);
+
         verify(model).addAttribute("nombre", "Pedro");
-        assertEquals("judoka_home", view);
+        assertEquals("Judoka/judoka_home", resultado);
+
     }
 
     /**
@@ -118,7 +131,7 @@ class JudokaWebControllerTest {
      */
     @Test
     void showRegistroJudoka_muestraVista() {
-        assertEquals("registro_judoka", controller.showRegistroJudoka());
+        assertEquals("Judoka/registro_judoka", controller.showRegistroJudoka());
     }
 
     /**
@@ -127,9 +140,18 @@ class JudokaWebControllerTest {
      */
     @Test
     void doRegistroJudoka_camposObligatoriosFaltantes() {
-        String view = controller.doRegistroJudoka("", "", "", "", "", "", model);
+        JudokaRegistroDTO dto = new JudokaRegistroDTO();
+        dto.setUsername(""); // campo vacío
+        dto.setPassword("123");
+        dto.setNombre("nombre");
+        dto.setApellido("apellido");
+        dto.setCategoria("cat");
+        dto.setFechaNacimiento("2000-01-01");
+
+        String vista = controller.doRegistroJudoka(dto, model);
+
         verify(model).addAttribute(eq("error"), anyString());
-        assertEquals("registro_judoka", view);
+        assertEquals("Judoka/registro_judoka", vista);
     }
 
     /**
@@ -138,11 +160,21 @@ class JudokaWebControllerTest {
      */
     @Test
     void doRegistroJudoka_usernameYaRegistrado() {
-        when(judokaService.findByUsername("usuario@correo.com")).thenReturn(Optional.of(new Judoka()));
-        String view = controller.doRegistroJudoka(
-                "usuario@correo.com", "pass", "nombre", "apellido", "cat", "1990-01-01", model);
-        verify(model).addAttribute(eq("error"), contains("ya está registrado"));
-        assertEquals("registro_judoka", view);
+        JudokaRegistroDTO dto = new JudokaRegistroDTO();
+        dto.setUsername("usuario");
+        dto.setPassword("pass");
+        dto.setNombre("nombre");
+        dto.setApellido("apellido");
+        dto.setCategoria("cat");
+        dto.setFechaNacimiento("2000-01-01");
+
+        when(judokaService.findByUsername("usuario")).thenReturn(Optional.of(new Judoka()));
+
+        String vista = controller.doRegistroJudoka(dto, model);
+
+        verify(model).addAttribute("error", "El correo ya está registrado.");
+        assertEquals("Judoka/registro_judoka", vista);
+
     }
 
     /**
@@ -151,12 +183,21 @@ class JudokaWebControllerTest {
      */
     @Test
     void doRegistroJudoka_registroExitoso() {
-        when(judokaService.findByUsername("nuevo@correo.com")).thenReturn(Optional.empty());
+        JudokaRegistroDTO dto = new JudokaRegistroDTO();
+        dto.setUsername("usuario");
+        dto.setPassword("pass");
+        dto.setNombre("nombre");
+        dto.setApellido("apellido");
+        dto.setCategoria("cat");
+        dto.setFechaNacimiento("2000-01-01");
 
-        String view = controller.doRegistroJudoka(
-                "nuevo@correo.com", "pass", "nombre", "apellido", "cat", "1990-01-01", model);
+        when(judokaService.findByUsername("usuario")).thenReturn(Optional.empty());
+
+        String vista = controller.doRegistroJudoka(dto, model);
 
         verify(judokaService).guardarJudoka(any(Judoka.class));
-        assertEquals("redirect:/login?registrado=1", view);
+        verify(model).addAttribute(eq("success"), contains("Judoka registrado correctamente"));
+        assertEquals("redirect:/login", vista);
+
     }
 }
