@@ -1,8 +1,6 @@
 package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.service.ClubService;
-import org.example.service.JudokaService;
 import org.example.service.auth.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

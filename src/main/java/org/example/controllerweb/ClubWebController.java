@@ -19,13 +19,14 @@ public class ClubWebController {
     private final ClubService clubService;
 
     private static final String REGISTRO_CLUB = "Club/registro_club";
+    private static final String USERNAME = "username";
 
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         if (!esClub(session)) {
             return "redirect:/login";
         }
-        String username = (String) session.getAttribute("username");
+        String username = (String) session.getAttribute(USERNAME);
         Club club = clubService.findByUsername(username).orElse(null);
         if (club != null) {
             model.addAttribute("nombre", club.getNombre());
@@ -49,7 +50,7 @@ public class ClubWebController {
             Model model
     ) {
         if (clubService.findByUsername(clubForm.getUsername()).isPresent()) {
-            bindingResult.rejectValue("username", "error.clubForm", "El correo " +
+            bindingResult.rejectValue(USERNAME, "error.clubForm", "El correo " +
                     "ya está registrado para un club.");
         }
 
@@ -68,7 +69,7 @@ public class ClubWebController {
 
         clubService.guardarClub(nuevoClub);
         model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
-        return REGISTRO_CLUB;
+        return "redirect:/login";
     }
 
     @GetMapping("/registro-club")
@@ -80,6 +81,6 @@ public class ClubWebController {
     }
 
     private boolean esClub(HttpSession session) {
-        return session.getAttribute("username") != null && "club".equals(session.getAttribute("tipo"));
+        return session.getAttribute(USERNAME) != null && "club".equals(session.getAttribute("tipo"));
     }
 }
