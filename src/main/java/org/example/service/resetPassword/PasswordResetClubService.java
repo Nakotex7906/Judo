@@ -20,9 +20,15 @@ public class PasswordResetClubService {
     @Autowired
     private PasswordResetTokenClubRepository tokenRepo;
 
+    @Autowired
+    private CorreoService correoService;
+
     public void crearToken(String username) {
         Club club = clubRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Club no encontrado"));
+
+        // Eliminar token anterior si ya existe
+        tokenRepo.findByClub(club).ifPresent(tokenRepo::delete);
 
         String token = UUID.randomUUID().toString();
         PasswordResetTokenClub resetToken = new PasswordResetTokenClub();
@@ -33,9 +39,17 @@ public class PasswordResetClubService {
 
         tokenRepo.save(resetToken);
 
-        // Lógica de envío de correo
-        System.out.println("Token generado para club: " + token);
+        String link = "http://localhost:8080/restablecer/club?token=" + token;
+
+        correoService.enviarCorreo(
+                club.getUsername(), // asegurarse de que username es un correo
+                "Recuperación de contraseña - JScore",
+                "Hola " + club.getNombre() + ",\n\n" +
+                        "Para restablecer tu contraseña, haz clic en el siguiente enlace:\n" +
+                        link + "\n\nEste enlace expirará en 30 minutos."
+        );
     }
+
 
     public boolean validarToken(String token) {
         var resetToken = tokenRepo.findByToken(token);
@@ -54,4 +68,3 @@ public class PasswordResetClubService {
         tokenRepo.save(resetToken);
     }
 }
-

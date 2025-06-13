@@ -20,9 +20,15 @@ public class PasswordResetJudokaService {
     @Autowired
     private PasswordResetTokenJudokaRepository tokenRepo;
 
+    @Autowired
+    private CorreoService correoService;
+
     public void crearToken(String username) {
         Judoka judoka = judokaRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Judoka no encontrado"));
+
+        // Eliminar token existente si lo hay
+        tokenRepo.findByJudoka(judoka).ifPresent(tokenRepo::delete);
 
         String token = UUID.randomUUID().toString();
         PasswordResetTokenJudoka resetToken = new PasswordResetTokenJudoka();
@@ -33,8 +39,15 @@ public class PasswordResetJudokaService {
 
         tokenRepo.save(resetToken);
 
-        // Aquí agregar lógica para enviar email
-        System.out.println("Token generado para judoka: " + token);
+        String link = "http://localhost:8080/restablecer/judoka?token=" + token;
+
+        correoService.enviarCorreo(
+                judoka.getUsername(),
+                "Recuperación de contraseña - JScore",
+                "Hola " + judoka.getNombre() + ",\n\n" +
+                        "Para restablecer tu contraseña, haz clic en el siguiente enlace:\n" +
+                        link + "\n\nEste enlace expirará en 30 minutos."
+        );
     }
 
     public boolean validarToken(String token) {

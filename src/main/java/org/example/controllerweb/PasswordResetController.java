@@ -25,10 +25,16 @@ public class PasswordResetController {
 
     @PostMapping("/recuperar/judoka")
     public String procesarSolicitudJudoka(@RequestParam String username, Model model) {
-        judokaService.crearToken(username);
-        model.addAttribute("mensaje", "Se envió el enlace al correo registrado.");
+        try {
+            judokaService.crearToken(username);
+            model.addAttribute("mensaje", "Se envió el enlace al correo registrado (si existe).");
+        } catch (RuntimeException ex) {
+            // No reveles si el usuario existe o no por seguridad
+            model.addAttribute("mensaje", "Se envió el enlace al correo registrado (si existe).");
+        }
         return "ResetPassword/recuperar-judoka";
     }
+
 
     @GetMapping("/restablecer/judoka")
     public String mostrarFormularioRestablecerJudoka(@RequestParam String token, Model model) {
