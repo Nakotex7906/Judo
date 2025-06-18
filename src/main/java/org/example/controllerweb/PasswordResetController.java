@@ -10,11 +10,17 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PasswordResetController {
 
-    @Autowired
+    public static final String MENSAJE = "mensaje";
+    public static final String ERROR = "error";
+
     private PasswordResetJudokaService judokaService;
 
-    @Autowired
     private PasswordResetClubService clubService;
+
+    public PasswordResetController(PasswordResetJudokaService judokaService, PasswordResetClubService clubService) {
+        this.judokaService = judokaService;
+        this.clubService = clubService;
+    }
 
     // ======== JUDOKA ========
 
@@ -27,10 +33,10 @@ public class PasswordResetController {
     public String procesarSolicitudJudoka(@RequestParam String username, Model model) {
         try {
             judokaService.crearToken(username);
-            model.addAttribute("mensaje", "Se envió el enlace al correo registrado (si existe).");
-        } catch (RuntimeException ex) {
+            model.addAttribute(MENSAJE, "Se envió el enlace al correo registrado (si existe).");
+        } catch (RuntimeException _) {
             // No reveles si el usuario existe o no por seguridad
-            model.addAttribute("mensaje", "Se envió el enlace al correo registrado (si existe).");
+            model.addAttribute(MENSAJE, "Se envió el enlace al correo registrado (si existe).");
         }
         return "ResetPassword/recuperar-judoka";
     }
@@ -39,8 +45,8 @@ public class PasswordResetController {
     @GetMapping("/restablecer/judoka")
     public String mostrarFormularioRestablecerJudoka(@RequestParam String token, Model model) {
         if (!judokaService.validarToken(token)) {
-            model.addAttribute("error", "Token inválido o expirado.");
-            return "error";
+            model.addAttribute(ERROR, "Token inválido o expirado.");
+            return ERROR;
         }
         model.addAttribute("token", token);
         return "ResetPassword/restablecer-judoka";
@@ -49,7 +55,7 @@ public class PasswordResetController {
     @PostMapping("/restablecer/judoka")
     public String procesarNuevaPasswordJudoka(@RequestParam String token, @RequestParam String nuevaPassword, Model model) {
         judokaService.actualizarPassword(token, nuevaPassword);
-        model.addAttribute("mensaje", "Contraseña actualizada correctamente.");
+        model.addAttribute(MENSAJE, "Contraseña actualizada correctamente.");
         return "Model/login";
     }
 
@@ -63,15 +69,15 @@ public class PasswordResetController {
     @PostMapping("/recuperar/club")
     public String procesarSolicitudClub(@RequestParam String username, Model model) {
         clubService.crearToken(username);
-        model.addAttribute("mensaje", "Se envió el enlace al correo registrado.");
+        model.addAttribute(MENSAJE, "Se envió el enlace al correo registrado.");
         return "ResetPassword/recuperar-club";
     }
 
     @GetMapping("/restablecer/club")
     public String mostrarFormularioRestablecerClub(@RequestParam String token, Model model) {
         if (!clubService.validarToken(token)) {
-            model.addAttribute("error", "Token inválido o expirado.");
-            return "error";
+            model.addAttribute(ERROR, "Token inválido o expirado.");
+            return ERROR;
         }
         model.addAttribute("token", token);
         return "ResetPassword/restablecer-club";
@@ -80,7 +86,7 @@ public class PasswordResetController {
     @PostMapping("/restablecer/club")
     public String procesarNuevaPasswordClub(@RequestParam String token, @RequestParam String nuevaPassword, Model model) {
         clubService.actualizarPassword(token, nuevaPassword);
-        model.addAttribute("mensaje", "Contraseña actualizada correctamente.");
+        model.addAttribute(MENSAJE, "Contraseña actualizada correctamente.");
         return "Model/login";
     }
 }
