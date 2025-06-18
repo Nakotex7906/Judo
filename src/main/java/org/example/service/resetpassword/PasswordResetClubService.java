@@ -14,14 +14,18 @@ import java.util.UUID;
 @Service
 public class PasswordResetClubService {
 
-    @Autowired
     private ClubRepository clubRepo;
 
-    @Autowired
     private PasswordResetTokenClubRepository tokenRepo;
 
-    @Autowired
     private CorreoService correoService;
+
+    public PasswordResetClubService(ClubRepository clubRepo, PasswordResetTokenClubRepository tokenRepo,
+                                    CorreoService correoService) {
+        this.clubRepo = clubRepo;
+        this.tokenRepo = tokenRepo;
+        this.correoService = correoService;
+    }
 
     public void crearToken(String username) {
         Club club = clubRepo.findByUsername(username)
