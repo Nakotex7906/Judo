@@ -24,11 +24,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/club/**").hasRole("CLUB")        // Solo Club
-                        .requestMatchers("/judoka/**").hasRole("JUDOKA")    // Solo Judoka
-                        .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**",
-                                "registro-judoka","registro-club").permitAll() // públicas
-                        .anyRequest().authenticated()
+                        .requestMatchers("/club/**").hasRole("CLUB")           // Rutas para Club
+                        .requestMatchers("/judoka/**").hasRole("JUDOKA")       // Rutas para Judoka
+                        .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**", "/recuperar/**", "/restablecer/**")  // Permitir acceso público a estas rutas
+                        .permitAll()  // Estas rutas son accesibles sin autenticación
+                        .anyRequest().authenticated()  // El resto requiere autenticación
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -41,24 +41,20 @@ public class SecurityConfig {
                         .permitAll()
                 );
         return http.build();
-
-
     }
 
         // Configuración del AuthenticationManager, que se encarga de autenticar los usuarios
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authBuilder
-                .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder());
-        return authBuilder.build();
-
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+            AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+            authBuilder
+                    .userDetailsService(userService)
+                    .passwordEncoder(passwordEncoder());
+            return authBuilder.build();
+        }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
