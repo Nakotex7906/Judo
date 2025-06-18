@@ -21,7 +21,7 @@ public class ClubService{
 
     public boolean validarContrasena(String username, String password) {
         return clubRepository.findByUsername(username)
-                .map(club -> club.getPassword().equals(password))
+                .map(club -> passwordEncoder.matches(password, club.getPassword()))
                 .orElse(false);
     }
 
