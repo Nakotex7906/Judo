@@ -8,23 +8,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 class CorreoServiceTest {
 
     @Test
     void enviarCorreo() {
         // Arrange
         JavaMailSender mailSenderMock = mock(JavaMailSender.class);
-        CorreoService correoService = new CorreoService();
-        // Inyección por reflexión por ser @Autowired
-        java.lang.reflect.Field field;
-        try {
-            field = CorreoService.class.getDeclaredField("mailSender");
-            field.setAccessible(true);
-            field.set(correoService, mailSenderMock);
-        } catch (Exception e) {
-            fail("No se pudo inyectar mailSender: " + e.getMessage());
-        }
+        CorreoService correoService = new CorreoService(mailSenderMock);
 
         String destino = "destinatario@ejemplo.com";
         String asunto = "Asunto de prueba";
@@ -41,6 +31,5 @@ class CorreoServiceTest {
         assertArrayEquals(new String[]{destino}, enviado.getTo());
         assertEquals(asunto, enviado.getSubject());
         assertEquals(mensaje, enviado.getText());
-
     }
 }

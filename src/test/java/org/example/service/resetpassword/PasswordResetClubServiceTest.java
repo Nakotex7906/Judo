@@ -1,5 +1,6 @@
 package org.example.service.resetpassword;
 
+import lombok.AllArgsConstructor;
 import org.example.model.user.Club;
 import org.example.model.user.PasswordResetTokenClub;
 import org.example.repository.ClubRepository;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,18 +23,16 @@ import static org.mockito.ArgumentMatchers.any;
  * que es responsable de generar y gestionar los tokens de restablecimiento de contraseña para los clubes.
  */
 @SpringBootTest
+@AllArgsConstructor
 class PasswordResetClubServiceTest {
 
     @Autowired
     private PasswordResetClubService passwordResetClubService;
 
-    @MockBean
     private ClubRepository clubRepository;
 
-    @MockBean
     private PasswordResetTokenClubRepository tokenRepository;
 
-    @MockBean
     private CorreoService correoService;
 
     /**
