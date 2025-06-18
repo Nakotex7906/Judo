@@ -4,7 +4,6 @@ import org.example.model.user.Club;
 import org.example.model.user.PasswordResetTokenClub;
 import org.example.repository.ClubRepository;
 import org.example.repository.PasswordResetTokenClubRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
