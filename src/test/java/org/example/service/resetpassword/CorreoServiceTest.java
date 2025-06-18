@@ -1,4 +1,4 @@
-package org.example.service.resetPassword;
+package org.example.service.resetpassword;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

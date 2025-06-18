@@ -1,7 +1,7 @@
 package org.example.controllerweb;
 
-import org.example.service.resetPassword.PasswordResetClubService;
-import org.example.service.resetPassword.PasswordResetJudokaService;
+import org.example.service.resetpassword.PasswordResetClubService;
+import org.example.service.resetpassword.PasswordResetJudokaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

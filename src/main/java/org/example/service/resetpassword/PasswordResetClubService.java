@@ -1,4 +1,4 @@
-package org.example.service.resetPassword;
+package org.example.service.resetpassword;
 
 import org.example.model.user.Club;
 import org.example.model.user.PasswordResetTokenClub;

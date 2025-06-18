@@ -1,7 +1,7 @@
 package org.example.controllerweb;
 
-import org.example.service.resetPassword.PasswordResetJudokaService;
-import org.example.service.resetPassword.PasswordResetClubService;
+import org.example.service.resetpassword.PasswordResetJudokaService;
+import org.example.service.resetpassword.PasswordResetClubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
