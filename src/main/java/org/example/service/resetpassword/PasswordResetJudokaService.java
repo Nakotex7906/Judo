@@ -1,26 +1,24 @@
-package org.example.service.resetPassword;
+package org.example.service.resetpassword;
 
+import lombok.AllArgsConstructor;
 import org.example.model.user.Judoka;
 import org.example.model.user.PasswordResetTokenJudoka;
 import org.example.repository.JudokaRepository;
 import org.example.repository.PasswordResetTokenJudokaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Service
 public class PasswordResetJudokaService {
 
-    @Autowired
     private JudokaRepository judokaRepo;
 
-    @Autowired
     private PasswordResetTokenJudokaRepository tokenRepo;
 
-    @Autowired
     private CorreoService correoService;
 
     public void crearToken(String username) {

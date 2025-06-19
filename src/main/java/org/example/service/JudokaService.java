@@ -46,7 +46,7 @@ public class JudokaService {
 
     public boolean validarContrasena(String username, String password) {
         Optional<Judoka> opt = findByUsername(username);
-        return opt.isPresent() && opt.get().getPassword().equals(password);
+        return opt.map(j -> passwordEncoder.matches(password, j.getPassword())).orElse(false);
     }
 
     /**

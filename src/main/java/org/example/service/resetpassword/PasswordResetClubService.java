@@ -1,10 +1,9 @@
-package org.example.service.resetPassword;
+package org.example.service.resetpassword;
 
 import org.example.model.user.Club;
 import org.example.model.user.PasswordResetTokenClub;
 import org.example.repository.ClubRepository;
 import org.example.repository.PasswordResetTokenClubRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +13,18 @@ import java.util.UUID;
 @Service
 public class PasswordResetClubService {
 
-    @Autowired
     private ClubRepository clubRepo;
 
-    @Autowired
     private PasswordResetTokenClubRepository tokenRepo;
 
-    @Autowired
     private CorreoService correoService;
+
+    public PasswordResetClubService(ClubRepository clubRepo, PasswordResetTokenClubRepository tokenRepo,
+                                    CorreoService correoService) {
+        this.clubRepo = clubRepo;
+        this.tokenRepo = tokenRepo;
+        this.correoService = correoService;
+    }
 
     public void crearToken(String username) {
         Club club = clubRepo.findByUsername(username)
