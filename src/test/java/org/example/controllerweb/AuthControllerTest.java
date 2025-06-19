@@ -1,8 +1,7 @@
 package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.service.ClubService;
-import org.example.service.JudokaService;
+import org.example.service.auth.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,10 +21,7 @@ class AuthControllerTest {
     private AuthController authController;
 
     @Mock
-    private JudokaService judokaService;
-
-    @Mock
-    private ClubService clubService;
+    private AuthenticationService authenticationService;
 
     @Mock
     private HttpSession session;
@@ -40,16 +36,16 @@ class AuthControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        authController = new AuthController(judokaService, clubService);
+        authController = new AuthController(authenticationService);
     }
 
     /**
-     * Verifica que el endpoint raíz ("/") redirija correctamente a la página de inicio de sesión ("/login").
+     * Verifica que el endpoint raíz ("/") redirija correctamente a la página de inicio de index ("/index").
      */
     @Test
-    void testRootDireccionaAlLogin() {
+    void testRootDireccionaAlIndex() {
         String result = authController.root();
-        assertEquals("redirect:/login", result);
+        assertEquals("redirect:/index", result);
     }
 
     /**
@@ -74,7 +70,7 @@ class AuthControllerTest {
         String result = authController.doLogin("", "password", "judoka", model, session);
 
         verify(model).addAttribute("error", "Usuario vacío");
-        assertEquals("login", result);
+        assertEquals("Model/login", result);
     }
 
     /**
@@ -86,7 +82,7 @@ class AuthControllerTest {
         String result = authController.doLogin("john_doe", "password", "invalidType", model, session);
 
         verify(model).addAttribute("error", "Tipo inválido");
-        assertEquals("login", result);
+        assertEquals("Model/login", result);
     }
 
     /**
@@ -95,13 +91,15 @@ class AuthControllerTest {
      */
     @Test
     void testDoLoginConCredencialesValidasJudoka() {
-        when(judokaService.validarContrasena("john_doe", "password")).thenReturn(true);
+        when(authenticationService.tipoValido("judoka")).thenReturn(true);
+        when(authenticationService.authenticate("judoka", "john_doe", "password")).thenReturn(true);
 
         String result = authController.doLogin("john_doe", "password", "judoka", model, session);
 
         verify(session).setAttribute("username", "john_doe");
         verify(session).setAttribute("tipo", "judoka");
         assertEquals("redirect:/judoka/home", result);
+
     }
 
     /**
@@ -110,12 +108,13 @@ class AuthControllerTest {
      */
     @Test
     void testDoLoginConCredencialesInvalidasJudoka() {
-        when(judokaService.validarContrasena("john_doe", "password")).thenReturn(false);
+        when(authenticationService.tipoValido("judoka")).thenReturn(true);
+        when(authenticationService.authenticate("judoka", "john_doe", "password")).thenReturn(false);
 
         String result = authController.doLogin("john_doe", "password", "judoka", model, session);
 
         verify(model).addAttribute("error", "Usuario o contraseña incorrectos");
-        assertEquals("login", result);
+        assertEquals("Model/login", result);
     }
 
     /**
@@ -136,6 +135,6 @@ class AuthControllerTest {
     @Test
     void testShowRegistroDevuelveRegistro() {
         String result = authController.showRegistro();
-        assertEquals("registro", result);
+        assertEquals("Model/registro", result);
     }
 }

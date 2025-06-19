@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Restablecer Contraseña - Judoka</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="login-wrapper">
+    <div class="login-container">
+        <h2>Restablecer contraseña (Judoka)</h2>
+        <form th:action="@{/restablecer/judoka}" method="post">
+            <input type="hidden" name="token" th:value="${token}">
+            <label for="nuevaPassword">Nueva contraseña:</label>
+            <input type="password" id="nuevaPassword" name="nuevaPassword" required>
+            <button type="submit">Actualizar</button>
+        </form>
+        <p th:if="${mensaje}" th:text="${mensaje}"></p>
+    </div>
+</div>
+</body>
+</html>

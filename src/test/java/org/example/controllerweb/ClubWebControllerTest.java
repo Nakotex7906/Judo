@@ -1,6 +1,7 @@
 package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.dto.ClubRegistroDTO;
 import org.example.model.user.Club;
 import org.example.service.ClubService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
-
+import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,9 @@ class ClubWebControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +67,7 @@ class ClubWebControllerTest {
 
         String result = clubWebController.clubHome(session, model);
 
-        assertEquals("club_home", result);
+        assertEquals("Club/club_home", result);
         verify(model).addAttribute("nombre", "Club ABC");
     }
 
@@ -75,12 +79,11 @@ class ClubWebControllerTest {
     void TestClubHomeNombreUsuarioComoFallback() {
         when(session.getAttribute("username")).thenReturn("club123");
         when(session.getAttribute("tipo")).thenReturn("club");
-
         when(clubService.findByUsername("club123")).thenReturn(Optional.empty());
 
         String result = clubWebController.clubHome(session, model);
 
-        assertEquals("club_home", result);
+        assertEquals("Club/club_home", result);
         verify(model).addAttribute("nombre", "club123");
     }
 
@@ -94,7 +97,7 @@ class ClubWebControllerTest {
 
         String result = clubWebController.listarClubes(model);
 
-        assertEquals("club_lista", result);
+        assertEquals("Club/club_lista", result);
         verify(model).addAttribute("clubes", clubes);
     }
 
@@ -103,9 +106,13 @@ class ClubWebControllerTest {
      */
     @Test
     void testMostrarRegistroClub() {
-        String result = clubWebController.showRegistroClub();
+        when(model.containsAttribute("clubForm")).thenReturn(false);
 
-        assertEquals("registro_club", result);
+        String result = clubWebController.showRegistroClub(model);
+
+        assertEquals("Club/registro_club", result);
+        verify(model).addAttribute(eq("clubForm"), any(ClubRegistroDTO.class));
+
     }
 
     /**
@@ -113,12 +120,23 @@ class ClubWebControllerTest {
      */
     @Test
     void testDoRegistroClubExitoso() {
-        when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.empty());
+        ClubRegistroDTO dto = new ClubRegistroDTO();
+        dto.setUsername("nuevoClub@email.com");
+        dto.setNombre("Nuevo Club");
+        dto.setPassword("1234");
+        dto.setSensei("Sensei Name");
+        dto.setAnoFundacion("2021");
+        dto.setDireccion("Mi dirección 321");
+        dto.setHorarios("Martes");
 
-        String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
+        when(clubService.findByUsername("nuevoClub@email.com")).thenReturn(Optional.empty());
+        when(bindingResult.hasErrors()).thenReturn(false);
 
-        assertEquals("redirect:/login?registrado=1", result); 
+        String result = clubWebController.doRegistroClub(dto, bindingResult, model);
+
+        assertEquals("redirect:/login", result);
         verify(clubService).guardarClub(any(Club.class));
+        verify(model).addAttribute(eq("success"), contains("Club registrado correctamente"));
     }
 
     /**
@@ -126,11 +144,19 @@ class ClubWebControllerTest {
      */
     @Test
     void testDoRegistroClubSinUsername() {
-        String result = clubWebController.doRegistroClub("", "password123", "Club ABC", model);
+        ClubRegistroDTO dto = new ClubRegistroDTO();
+        dto.setNombre("Club ABC");
+        dto.setPassword("password123");
+        dto.setUsername(""); // Usuario vacio
 
-        assertEquals("registro_club", result);
-        verify(model).addAttribute("error", "Todos los campos son obligatorios.");
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        String result = clubWebController.doRegistroClub(dto, bindingResult, model);
+
+        assertEquals("Club/registro_club", result);
+        verify(bindingResult, never()).rejectValue(eq("username"), anyString(), anyString());
         verify(clubService, never()).guardarClub(any(Club.class));
+
     }
 
     /**
@@ -138,12 +164,19 @@ class ClubWebControllerTest {
      */
     @Test
     void testDoRegistroClubConUsernameYaRegistrado() {
+        ClubRegistroDTO dto = new ClubRegistroDTO();
+        dto.setNombre("Club ABC");
+        dto.setPassword("password123");
+        dto.setUsername("club123@test.com");
+
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.of(new Club()));
+        when(bindingResult.hasErrors()).thenReturn(true);
 
-        String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
+        String result = clubWebController.doRegistroClub(dto, bindingResult, model);
 
-        assertEquals("registro_club", result);
-        verify(model).addAttribute("error", "El correo ya está registrado para un club.");
+        assertEquals("Club/registro_club", result);
+        verify(bindingResult).rejectValue("username", "error.clubForm", "El correo ya está registrado para un club.");
         verify(clubService, never()).guardarClub(any(Club.class));
+
     }
 }

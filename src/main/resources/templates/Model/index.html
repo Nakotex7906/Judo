@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>JSCORE - Inicio</title>
@@ -31,17 +31,24 @@
             align-items: center;
             justify-content: space-between;
             padding: 1rem 2rem;
+            position: relative;
         }
 
         header img {
             height: 40px;
         }
 
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         nav a {
             color: var(--negro);
             background-color: var(--blanco);
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 5px;
             padding: 6px 12px;
             border-radius: 5px;
             font-weight: bold;
@@ -50,19 +57,6 @@
 
         nav a:hover {
             background-color: var(--gris);
-        }
-
-        .btn-login {
-            background-color: var(--rojo);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .btn-login:hover {
-            background-color: var(--rojo-hover);
         }
 
         .hero {
@@ -117,10 +111,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .bio-content h4 {
-            margin-bottom: 1rem;
-        }
-
         .bio-content p {
             margin-bottom: 1rem;
             line-height: 1.5;
@@ -139,6 +129,47 @@
         .btn-vermas:hover {
             background-color: var(--rojo-hover);
         }
+
+        /* Estilos menú hamburguesa */
+        .menu-toggle {
+            width: 30px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .menu-lines {
+            width: 100%;
+            height: 4px;
+            background-color: var(--blanco);
+            border-radius: 2px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background-color: var(--blanco);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--negro);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .dropdown a:hover {
+            background-color: var(--gris);
+        }
     </style>
 </head>
 <body>
@@ -149,8 +180,22 @@
         <a href="/static">Inicio</a>
         <a href="/clubs">Clubs</a>
         <a href="/rankings">Rankings</a>
-        <a class="btn-login" href="/login">Iniciar sesión</a>
+
+        <!-- Menú hamburguesa solo si hay sesión -->
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+        </div>
     </nav>
+
+    <!-- Menú desplegable -->
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
+        <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
+        <a href="#">Términos y condiciones</a>
+        <a href="/logout">Cerrar sesión</a>
+    </div>
 </header>
 
 <section class="hero">
@@ -158,24 +203,35 @@
         <h1><span class="red">LUCHA</span> COMO UN JUDOKA</h1>
         <p>EL CAMINO DE LA SUAVIDAD</p>
     </div>
-
-    <!-- Img de tecnica de judo -->
     <img src="/img/judokas.png" alt="Judokas en acción">
 </section>
 
 <section class="bio">
-    <!-- Img de jigoro kano -->
     <img src="/img/jigoro_kano.png" alt="Jigoro Kano">
     <div class="bio-content">
         <h3>JIGORO KANO</h3>
-
-        <!-- Esto esta de momento nomas, ideal sacar la info directa de otra pag -->
         <p>
-            Texto del Judo o descripcion de jigoro kano
+            Texto del Judo o descripción de Jigoro Kano
         </p>
         <a class="btn-vermas" href="#">VER MÁS</a>
     </div>
 </section>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("dropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+
+    // Ocultar el menú si se hace clic fuera
+    document.addEventListener("click", function (event) {
+        const toggle = document.querySelector(".menu-toggle");
+        const dropdown = document.getElementById("dropdown");
+        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = "none";
+        }
+    });
+</script>
 
 </body>
 </html>

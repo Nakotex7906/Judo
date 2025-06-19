@@ -46,7 +46,7 @@ class TorneoWebControllerTest {
 
         String result = torneoWebController.listarTorneos(model);
 
-        assertEquals("torneos", result);
+        assertEquals("Torneo/torneos", result);
         verify(model).addAttribute("torneos", torneos);
     }
 
@@ -74,7 +74,7 @@ class TorneoWebControllerTest {
     void testMostrarCrearTorneo() {
         String result = torneoWebController.mostrarCrearTorneo();
 
-        assertEquals("crear_torneo", result);
+        assertEquals("Torneo/crear_torneo", result);
     }
 
     /**
@@ -93,6 +93,7 @@ class TorneoWebControllerTest {
         assertEquals("redirect:/torneos", result);
         verify(judokaService).buscarPorIds(participantesIds);
         verify(torneoService).guardarTorneo(any(Torneo.class));
+
     }
 
     /**

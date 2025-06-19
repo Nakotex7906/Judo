@@ -1,23 +1,154 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio Judoka</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>Inicio Judoka - JSCORE</title>
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #3d3d3d;
+            --gris-claro: #ddd;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--negro-suave);
+            color: var(--negro-suave);
+        }
+
+        .header {
+            background-color: var(--blanco);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h3 {
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--rojo);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .banner {
+            background-color: #0f1111;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 50px;
+        }
+
+        .photo-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: var(--gris-claro);
+            border: 4px solid white;
+        }
+
+        .profile-container {
+            background-color: var(--blanco);
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-list {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            font-size: 15px;
+        }
+
+        .info-list p {
+            margin: 6px 0;
+        }
+
+        .stats-section {
+            background-color: var(--gris-oscuro);
+            padding: 2rem 0;
+        }
+
+        .graphic-placeholder {
+            background-color: var(--gris-claro);
+            margin: 0 auto;
+            max-width: 900px;
+            min-height: 250px;
+            border-radius: 10px;
+            border: 1px dashed var(--gris-oscuro);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gris-oscuro);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<header class="header blue-header">
-    <h1>Bienvenido Judoka, [[${nombre}]]</h1>
-</header>
 
-<div class="menu-container">
-    <!-- Menú con botones estilizados -->
-    <ul class="menu-buttons">
-        <li><a class="btn" th:href="@{/competencias}">Ver Competencias disponibles</a></li>
-        <li><a class="btn" th:href="@{/judokas}">Ver Judokas</a></li>
-        <li><a class="btn" th:href="@{/logout}">Cerrar sesión</a></li>
-    </ul>
+<!-- Encabezado -->
+<div class="header">
+    <h3>JSCORE</h3>
+    <div class="nav-links">
+        <a th:href="@{/index}">Inicio</a>
+        <a th:href="@{/clubs}">Clubs</a>
+        <a th:href="@{/rankings}">Rankings</a>
+        <div class="profile-icon">👤</div>
+    </div>
 </div>
+
+<!-- Banner con imagen circular -->
+<div class="banner">
+    <div class="photo-circle"></div>
+</div>
+
+<!-- Contenido del perfil -->
+<div class="profile-container">
+    <h2 th:text="${nombre}">NOMBRE DEL JUDOKA</h2>
+    <div class="info-list">
+        <p><strong>Años de entrenamiento:</strong> <span th:text="${aniosEntrenamiento}">5</span></p>
+        <p><strong>Oficio/Profesión:</strong> <span th:text="${profesion}">Estudiante</span></p>
+        <p><strong>Edad:</strong> <span th:text="${edad}">21</span></p>
+        <p><strong>Categoría:</strong> <span th:text="${categoria}">-66kg</span></p>
+        <p><strong>Club:</strong> <span th:text="${club}">Judo Lonquimay</span></p>
+    </div>
+</div>
+
+<!-- Área para estadísticas / gráficos -->
+<div class="stats-section">
+    <div class="graphic-placeholder">
+        Aquí se mostrarán estadísticas y gráficos próximamente.
+    </div>
+</div>
+
 </body>
 </html>

@@ -1,36 +1,52 @@
 package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.service.ClubService;
-import org.example.service.JudokaService;
+import lombok.RequiredArgsConstructor;
+import org.example.service.auth.AuthenticationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @Controller
 public class AuthController {
 
-    private final JudokaService judokaService;
-    private final ClubService clubService;
-
-    public AuthController(JudokaService judokaService, ClubService clubService) {
-        this.judokaService = judokaService;
-        this.clubService = clubService;
-    }
+    private final AuthenticationService authenticationService;
+    private static final String DIRIGIR_JUDOKA_HOME = "redirect:/judoka/home";
+    private static final String DIRIGIR_LOGIN = "Model/login";
+    private static final String JUDOKA = "judoka";
+    private static final String ERROR = "error";
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/login";
+        return "redirect:/index";
+    }
+
+    @GetMapping("/index")
+    public String index() {
+        return "Model/index";
     }
 
     @GetMapping("/login")
     public String showLogin(HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            String tipo = (String) session.getAttribute("tipo");
-            if ("judoka".equals(tipo)) return "redirect:/judoka/home";
-            if ("club".equals(tipo)) return "redirect:/club/home";
+        if (isUsuarioLogueado(session)) {
+            return destinoSegunTipoUsuario(session);
         }
-        return "Model/login";
+        return DIRIGIR_LOGIN;
+    }
+
+    private boolean isUsuarioLogueado(HttpSession session) {
+        return session.getAttribute("username") != null;
+    }
+
+    private String destinoSegunTipoUsuario(HttpSession session) {
+        String tipo = (String) session.getAttribute("tipo");
+        if (JUDOKA.equals(tipo)) {
+            return DIRIGIR_JUDOKA_HOME;
+        } else if ("club".equals(tipo)) {
+            return "redirect:/club/home";
+        }
+        return DIRIGIR_LOGIN;
     }
 
     @PostMapping("/login")
@@ -41,39 +57,50 @@ public class AuthController {
             Model model,
             HttpSession session
     ) {
-        if (username == null || username.isEmpty()) {
-            model.addAttribute("error", "Usuario vacío");
-            return "Model/login";
-        }
-        if (password == null || password.isEmpty()) {
-            model.addAttribute("error", "Contraseña vacía");
-            return "Model/login";
-        }
-
-        boolean valido = false;
-
-        if ("judoka".equals(tipo)) {
-            valido = judokaService.validarContrasena(username, password);
-        } else if ("club".equals(tipo)) {
-            valido = clubService.validarContrasena(username, password);
-        } else {
-            model.addAttribute("error", "Tipo inválido");
-            return "Model/login";
-        }
-
-        if (!valido) {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "Model/login";
+        String error = validarLogin(username, password, tipo);
+        if (error != null) {
+            model.addAttribute(ERROR, error);
+            return DIRIGIR_LOGIN;
         }
 
         session.setAttribute("username", username);
         session.setAttribute("tipo", tipo);
 
-        if ("judoka".equals(tipo)) {
-            return "redirect:/judoka/home";
-        } else {
-            return "redirect:/club/home";
+        return JUDOKA.equalsIgnoreCase(tipo) ? DIRIGIR_JUDOKA_HOME : "redirect:/club/home";
+    }
+
+    private String validarLogin(String username, String password, String tipo) {
+        String mensajeValidacion = validarCamposObligatorios(username, password);
+        if (mensajeValidacion != null) return mensajeValidacion;
+
+        mensajeValidacion = validarTipoUsuario(tipo);
+        if (mensajeValidacion != null) return mensajeValidacion;
+
+        return validarCredenciales(username, password, tipo);
+    }
+
+    private String validarCamposObligatorios(String username, String password) {
+        if (username == null || username.isEmpty()) {
+            return "Usuario vacío";
         }
+        if (password == null || password.isEmpty()) {
+            return "Contraseña vacía";
+        }
+        return null;
+    }
+
+    private String validarTipoUsuario(String tipo) {
+        if (!authenticationService.tipoValido(tipo)) {
+            return "Tipo inválido";
+        }
+        return null;
+    }
+
+    private String validarCredenciales(String username, String password, String tipo) {
+        if (!authenticationService.authenticate(tipo, username, password)) {
+            return "Usuario o contraseña incorrectos";
+        }
+        return null;
     }
 
     @GetMapping("/logout")
@@ -85,5 +112,18 @@ public class AuthController {
     @GetMapping("/registro")
     public String showRegistro() {
         return "Model/registro";
+    }
+
+    // Nuevo método para redirigir a la vista de perfil correspondiente
+    @GetMapping("/perfil")
+    public String verPerfil(HttpSession session) {
+        if (session.getAttribute("tipo") == null) return "redirect:/login";
+        String tipo = (String) session.getAttribute("tipo");
+        if ("judoka".equalsIgnoreCase(tipo)) {
+            return "Judoka/Perfil_Judoka";
+        } else if ("club".equalsIgnoreCase(tipo)) {
+            return "Club/Perfil_Club";
+        }
+        return "redirect:/login";
     }
 }

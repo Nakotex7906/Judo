@@ -7,8 +7,10 @@ import org.example.service.ClubService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.example.dto.ClubRegistroDTO;
 
 @AllArgsConstructor
 @Controller
@@ -16,12 +18,15 @@ public class ClubWebController {
 
     private final ClubService clubService;
 
+    private static final String REGISTRO_CLUB = "Club/registro_club";
+    private static final String USERNAME = "username";
+
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         if (!esClub(session)) {
             return "redirect:/login";
         }
-        String username = (String) session.getAttribute("username");
+        String username = (String) session.getAttribute(USERNAME);
         Club club = clubService.findByUsername(username).orElse(null);
         if (club != null) {
             model.addAttribute("nombre", club.getNombre());
@@ -38,41 +43,44 @@ public class ClubWebController {
         return "Club/club_lista";
     }
 
-    @GetMapping("/registro-club")
-    public String showRegistroClub() {
-        return "Club/registro_club";
-    }
-
     @PostMapping("/registro-club")
     public String doRegistroClub(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String nombre,
+            @Valid @ModelAttribute("clubForm") ClubRegistroDTO clubForm,
+            BindingResult bindingResult,
             Model model
     ) {
-        if (username == null || username.isBlank() ||
-                password == null || password.isBlank() ||
-                nombre == null || nombre.isBlank()) {
-            model.addAttribute("error", "Todos los campos son obligatorios.");
-            return "Club/registro_club";
+        if (clubService.findByUsername(clubForm.getUsername()).isPresent()) {
+            bindingResult.rejectValue(USERNAME, "error.clubForm", "El correo " +
+                    "ya está registrado para un club.");
         }
 
-        if (clubService.findByUsername(username).isPresent()) {
-            model.addAttribute("error", "El correo ya está registrado para un club.");
-            return "Club/registro_club";
+        if (bindingResult.hasErrors()) {
+            return REGISTRO_CLUB;
         }
 
         Club nuevoClub = new Club();
-        nuevoClub.setUsername(username);
-        nuevoClub.setPassword(password);
-        nuevoClub.setNombre(nombre);
+        nuevoClub.setNombre(clubForm.getNombre());
+        nuevoClub.setUsername(clubForm.getUsername());
+        nuevoClub.setPassword(clubForm.getPassword());
+        nuevoClub.setSensei(clubForm.getSensei());
+        nuevoClub.setAnoFundacion(clubForm.getAnoFundacion());
+        nuevoClub.setDireccion(clubForm.getDireccion());
+        nuevoClub.setHorarios(clubForm.getHorarios());
 
         clubService.guardarClub(nuevoClub);
         model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
-        return "Club/registro_club";
+        return "redirect:/login";
+    }
+
+    @GetMapping("/registro-club")
+    public String showRegistroClub(Model model) {
+        if (!model.containsAttribute("clubForm")) {
+            model.addAttribute("clubForm", new ClubRegistroDTO());
+        }
+        return REGISTRO_CLUB;
     }
 
     private boolean esClub(HttpSession session) {
-        return session.getAttribute("username") != null && "club".equals(session.getAttribute("tipo"));
+        return session.getAttribute(USERNAME) != null && "club".equals(session.getAttribute("tipo"));
     }
 }

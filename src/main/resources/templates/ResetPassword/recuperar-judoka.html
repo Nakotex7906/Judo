@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Contraseña - Judoka</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="login-wrapper">
+    <div class="login-container">
+        <h2>Recuperar contraseña (Judoka)</h2>
+        <form th:action="@{/recuperar/judoka}" method="post">
+            <label for="username">Nombre de usuario o correo:</label>
+            <input type="text" id="username" name="username" required>
+            <button type="submit">Enviar enlace</button>
+        </form>
+        <p th:if="${mensaje}" th:text="${mensaje}"></p>
+    </div>
+</div>
+</body>
+</html>
