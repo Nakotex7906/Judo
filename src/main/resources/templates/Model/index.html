@@ -1,270 +1,237 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JScore - Lucha como un Judoka</title>
-
+    <meta charset="UTF-8">
+    <title>JSCORE - Inicio</title>
     <style>
-        /* ===========================
-           Reset y configuración base
-           =========================== */
-        html, body {
+        :root {
+            --negro: #1e1e1e;
+            --gris: #f2f2f2;
+            --rojo: #e60000;
+            --rojo-hover: #c40000;
+            --blanco: #ffffff;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .jscore * {
             box-sizing: border-box;
         }
-        .jscore {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.4;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gris);
+            color: var(--negro);
         }
 
-        /* ===========================
-           Header (encabezado)
-           =========================== */
-        .jscore header {
-            background-color: #000;
-            color: #fff;
-            width: 100%;
+        header {
+            background-color: var(--negro);
+            color: var(--blanco);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            /* Fijamos el header y le damos sombra */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            padding: 1rem 2rem;
+            position: relative;
         }
-        .jscore header .logo img {
+
+        header img {
             height: 40px;
         }
-        .jscore header nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-        .jscore header nav ul li a {
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .jscore header nav ul li a:hover,
-        .jscore header nav ul li a.active {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        .jscore .btn-red {
-            background-color: #e60000;
-            color: #fff;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 0.9rem;
-        }
-        .jscore .btn-red:hover {
-            background-color: #cc0000;
-        }
 
-        /* ===========================
-           Hero (imagen grande bajo el header)
-           =========================== */
-        .jscore .hero {
-            position: relative;
-            width: 100%;
-            /* Altura: pantalla completa menos la altura del header (~60px) */
-            height: calc(100vh - 60px);
-            margin-top: 60px; /* Para que no quede bajo el header fijo */
-            overflow: hidden;
-        }
-        .jscore .hero-imagen {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .jscore .hero-texto {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            padding: 0 20px;
-            text-align: center;
-        }
-        .jscore .hero-texto h1 {
-            color: #fff;
-            font-size: 6vw;              /* Tamaño responsivo */
-            max-font-size: 48px;
-            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-        .jscore .hero-texto p {
-            color: #fff;
-            font-size: 2vw;              /* Tamaño responsivo */
-            max-font-size: 18px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-        }
-
-        /* ===========================
-           Sección Jigoro Kano
-           =========================== */
-        .jscore .jigoro-seccion {
-            padding: 40px 20px;
-            text-align: center;
-            background-color: #fff;
-            flex-shrink: 0;
-        }
-        .jscore .jigoro-seccion h2 {
-            color: #e60000;
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-        .jscore .jigoro-contenido {
+        nav {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 10px;
         }
-        .jscore .jigoro-foto {
-            width: 200px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 4px;
-            background-color: #ccc;
+
+        nav a {
+            color: var(--negro);
+            background-color: var(--blanco);
+            text-decoration: none;
+            margin: 0 5px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
         }
-        .jscore .jigoro-texto {
-            max-width: 600px;
+
+        nav a:hover {
+            background-color: var(--gris);
+        }
+
+        .hero {
+            background-color: var(--negro);
+            color: var(--blanco);
             text-align: left;
+            padding: 3rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
-        .jscore .jigoro-texto p {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 16px;
+
+        .hero-text {
+            max-width: 50%;
         }
-        .jscore .btn-ver-mas {
-            display: inline-block;
-            background-color: #e60000;
-            color: #fff;
-            padding: 8px 16px;
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-text .red {
+            color: var(--rojo);
+        }
+
+        .hero-text p {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .hero img {
+            max-height: 300px;
+        }
+
+        .bio {
+            display: flex;
+            background-color: var(--blanco);
+            padding: 3rem 2rem;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .bio img {
+            width: 180px;
             border-radius: 4px;
-            transition: background-color 0.3s;
-            font-size: 0.9rem;
-        }
-        .jscore .btn-ver-mas:hover {
-            background-color: #cc0000;
         }
 
-        /* ===========================
-           Footer (pie de página)
-           =========================== */
-        .jscore footer {
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            margin-top: auto;
-        }
-        .jscore footer p {
-            font-size: 0.9rem;
+        .bio-content h3 {
+            color: var(--rojo);
+            margin-bottom: 0.5rem;
         }
 
-        /* ===========================
-           Media Queries para pantallas pequeñas
-           =========================== */
-        @media screen and (max-width: 600px) {
-            .jscore .hero-texto h1 {
-                font-size: 8vw;
-            }
-            .jscore .hero-texto p {
-                font-size: 3vw;
-            }
-            .jscore .jigoro-contenido {
-                flex-direction: column;
-            }
-            .jscore .jigoro-foto {
-                width: 150px;
-                height: 190px;
-            }
+        .bio-content p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn-vermas {
+            background-color: var(--rojo);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-vermas:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        /* Estilos menú hamburguesa */
+        .menu-toggle {
+            width: 30px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .menu-lines {
+            width: 100%;
+            height: 4px;
+            background-color: var(--blanco);
+            border-radius: 2px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background-color: var(--blanco);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--negro);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .dropdown a:hover {
+            background-color: var(--gris);
         }
     </style>
 </head>
-
 <body>
-<div class="jscore">
-    <!-- ==============
-         HEADER
-         ============== -->
-    <header>
-        <div class="logo">
-            <img src="ruta_a_logo_jscore.png" alt="Logo JScore" />
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index" >Inicio</a></li>
-                <li><a th:href="@{/lista}">Clubs</a></li>
-                <li><a href="rankings.html">Rankings</a></li>
-            </ul>
-        </nav>
-        <button class="btn-red" onclick="location.href='/login'">Iniciar sesión</button>
-    </header>
 
-    <!-- =========================
-         SECCIÓN HERO
-         ========================= -->
-    <section class="hero">
-        <img
-                src="ruta_a_imagen_hero.jpg"
-                alt="Judokas luchando"
-                class="hero-imagen"
-        />
-        <div class="hero-texto">
-            <h1>LUCHA COMO UN JUDOKA</h1>
-            <p>El camino de la suavidad</p>
-        </div>
-    </section>
+<header>
+    <img src="/img/logo.png" alt="JSCORE Logo">
+    <nav>
+        <a href="/static">Inicio</a>
+        <a href="/clubs">Clubs</a>
+        <a href="/rankings">Rankings</a>
 
-    <!-- ==============================
-         SECCIÓN JIGORO KANO
-         ============================== -->
-    <section class="jigoro-seccion">
-        <h2>JIGORO KANO</h2>
-        <div class="jigoro-contenido">
-            <img
-                    src="ruta_a_foto_jigoro_kano.jpg"
-                    alt="Jigoro Kano"
-                    class="jigoro-foto"
-            />
-            <div class="jigoro-texto">
-                <p>
-                    Las técnicas en las que el maestro Kano se inspiró fueron derivadas
-                    de las enseñanzas de los estilos de Jiu-jitsu, Tenjin Shin'yô-ryû
-                    (天神真楊流) y Kitô-ryû (起倒流)...
-                </p>
-                <a href="javascript:void(0);" class="btn-ver-mas">VER MÁS</a>
-            </div>
+        <!-- Menú hamburguesa solo si hay sesión -->
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
         </div>
-    </section>
+    </nav>
 
-    <!-- ==============
-         FOOTER
-         ============== -->
-    <footer>
-        <p>&copy; 2025 JScore. Todos los derechos reservados.</p>
-    </footer>
-</div>
+    <!-- Menú desplegable -->
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
+        <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
+        <a href="#">Términos y condiciones</a>
+        <a href="/logout">Cerrar sesión</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1><span class="red">LUCHA</span> COMO UN JUDOKA</h1>
+        <p>EL CAMINO DE LA SUAVIDAD</p>
+    </div>
+    <img src="/img/judokas.png" alt="Judokas en acción">
+</section>
+
+<section class="bio">
+    <img src="/img/jigoro_kano.png" alt="Jigoro Kano">
+    <div class="bio-content">
+        <h3>JIGORO KANO</h3>
+        <p>
+            Texto del Judo o descripción de Jigoro Kano
+        </p>
+        <a class="btn-vermas" href="#">VER MÁS</a>
+    </div>
+</section>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("dropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+
+    // Ocultar el menú si se hace clic fuera
+    document.addEventListener("click", function (event) {
+        const toggle = document.querySelector(".menu-toggle");
+        const dropdown = document.getElementById("dropdown");
+        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = "none";
+        }
+    });
+</script>
+
 </body>
 </html>

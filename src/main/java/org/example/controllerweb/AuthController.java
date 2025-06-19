@@ -6,6 +6,7 @@ import org.example.service.auth.AuthenticationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 @RequiredArgsConstructor
 @Controller
 public class AuthController {
@@ -22,7 +23,9 @@ public class AuthController {
     }
 
     @GetMapping("/index")
-    public String index() {return "Model/index";}
+    public String index() {
+        return "Model/index";
+    }
 
     @GetMapping("/login")
     public String showLogin(HttpSession session) {
@@ -30,7 +33,6 @@ public class AuthController {
             return destinoSegunTipoUsuario(session);
         }
         return DIRIGIR_LOGIN;
-
     }
 
     private boolean isUsuarioLogueado(HttpSession session) {
@@ -46,7 +48,6 @@ public class AuthController {
         }
         return DIRIGIR_LOGIN;
     }
-
 
     @PostMapping("/login")
     public String doLogin(
@@ -76,7 +77,6 @@ public class AuthController {
         if (mensajeValidacion != null) return mensajeValidacion;
 
         return validarCredenciales(username, password, tipo);
-
     }
 
     private String validarCamposObligatorios(String username, String password) {
@@ -103,7 +103,6 @@ public class AuthController {
         return null;
     }
 
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
@@ -113,5 +112,18 @@ public class AuthController {
     @GetMapping("/registro")
     public String showRegistro() {
         return "Model/registro";
+    }
+
+    // Nuevo método para redirigir a la vista de perfil correspondiente
+    @GetMapping("/perfil")
+    public String verPerfil(HttpSession session) {
+        if (session.getAttribute("tipo") == null) return "redirect:/login";
+        String tipo = (String) session.getAttribute("tipo");
+        if ("judoka".equalsIgnoreCase(tipo)) {
+            return "Judoka/Perfil_Judoka";
+        } else if ("club".equalsIgnoreCase(tipo)) {
+            return "Club/Perfil_Club";
+        }
+        return "redirect:/login";
     }
 }
