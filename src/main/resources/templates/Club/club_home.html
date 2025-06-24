@@ -1,3 +1,5 @@
+<!-- Se muestra cuando se quiere ver la info un club pero no permite editar los datos del perfil -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -157,15 +159,12 @@
     <div class="club-info-data">
         <div class="data-box">
             <strong>Año de creación:</strong><br>
-            <span th:text="${club.anioCreacion}">2020</span>
         </div>
         <div class="data-box">
             <strong>Participantes:</strong><br>
-            <span th:text="${club.participantes}">15</span>
         </div>
         <div class="data-box">
             <strong>Sensei:</strong><br>
-            <span th:text="${club.sensei}">Juan Pérez</span>
         </div>
     </div>
 </div>
@@ -173,43 +172,31 @@
 <!-- Integrantes -->
 <div class="section">
     <h4>INTEGRANTES</h4>
-    <div th:if="${#lists.isEmpty(club.integrantes)}" class="empty-message">No hay integrantes registrados aún.</div>
     <table th:if="${!#lists.isEmpty(club.integrantes)}">
-        <tr><th>Nombre</th><th>Edad</th><th>Categoría</th></tr>
-        <tr th:each="i : ${club.integrantes}">
-            <td th:text="${i.nombre}">Nombre</td>
-            <td th:text="${i.edad}">Edad</td>
-            <td th:text="${i.categoria}">Categoría</td>
-        </tr>
+        <tr><th>Nombre</th><th>Edad</th><th>Categoría</th></tr> </tr>
     </table>
+    <div th:if="${#lists.isEmpty(club.integrantes)}" class="empty-message">No hay integrantes registrados aún.</div>
 </div>
 
 <!-- Horarios -->
 <div class="section">
     <h4>HORARIOS</h4>
-    <div th:if="${#lists.isEmpty(club.horarios)}" class="empty-message">No hay horarios registrados aún.</div>
+
     <table th:if="${!#lists.isEmpty(club.horarios)}">
         <tr><th>Día</th><th>Hora</th><th>Rango Edad</th></tr>
-        <tr th:each="h : ${club.horarios}">
-            <td th:text="${h.dia}">Lunes</td>
-            <td th:text="${h.hora}">18:00</td>
-            <td th:text="${h.rangoEdad}">12-18</td>
-        </tr>
+        <tr th:each="h : ${club.horarios}"> </tr>
     </table>
+    <div th:if="${#lists.isEmpty(club.horarios)}" class="empty-message">No hay horarios registrados aún.</div>
 </div>
 
 <!-- Torneos  -->
 <div class="section">
     <h4>TORNEOS</h4>
-    <div th:if="${#lists.isEmpty(club.torneos)}" class="empty-message">No hay torneos registrados aún.</div>
     <table th:if="${!#lists.isEmpty(club.torneos)}">
         <tr><th>Nombre</th><th>Fecha</th><th>Lugar</th></tr>
-        <tr th:each="t : ${club.torneos}">
-            <td th:text="${t.nombre}">Torneo Nacional</td>
-            <td th:text="${t.fecha}">2024-10-10</td>
-            <td th:text="${t.lugar}">Santiago</td>
-        </tr>
+        <tr th:each="t : ${club.torneos}"> </tr>
     </table>
+    <div th:if="${#lists.isEmpty(club.torneos)}" class="empty-message">No hay torneos registrados aún.</div>
 </div>
 
 </body>

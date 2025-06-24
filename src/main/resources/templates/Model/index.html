@@ -1,3 +1,5 @@
+<!-- Se muestra al iniciar sesion como cualquier tipo de usuario -->
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -191,8 +193,13 @@
 
     <!-- Menú desplegable -->
     <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+
+        <!--  Arreglar esto para que solo se muestre el que corresponda al tipo de usuario que ingreso desde su cuenta-->
+
         <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
         <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
+        <!-- -->
+
         <a href="#">Términos y condiciones</a>
         <a href="/logout">Cerrar sesión</a>
     </div>

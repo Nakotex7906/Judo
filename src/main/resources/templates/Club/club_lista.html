@@ -1,3 +1,6 @@
+<!-- Se muestra cuando se quiere ver el listado de clubs registrados -->
+<!-- Arreglar gama de colores y estetica-->
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -51,11 +54,12 @@
     </thead>
     <tbody>
     <tr th:each="club : ${clubes}">
-        <td th:text="${club.nombre}">Nombre Club</td>
-        <td th:text="${club.sensei}">Sensei</td>
-        <td th:text="${club.anoFundacion}">Año</td>
-        <td th:text="${club.direccion}">Dirección</td>
-        <td th:text="${club.horarios}">Horarios</td>
+        <td th:text="${club.nombre}"> </td>
+        <td th:text="${club.sensei}"> </td>
+        <td th:text="${club.anoFundacion}"> </td>
+        <td th:text="${club.direccion}"> </td>
+        <td th:text="${club.horarios}"> </td>
+
     </tr>
     </tbody>
 </table>

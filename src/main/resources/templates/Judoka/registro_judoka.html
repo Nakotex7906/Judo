@@ -1,3 +1,5 @@
+<!-- Se muestra cuando se quiere registrar un nuevo usuario de tipo judoka -->
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -75,17 +77,33 @@
             gap: 1rem;
         }
 
-        input {
+        input, select {
             padding: 0.75rem;
             border: none;
             border-radius: 5px;
             font-size: 14px;
             background-color: #444;
-            color: var(--blanco);
+            color: var(--gris-claro);
+            font-family: inherit;
         }
 
         input::placeholder {
-            color: #aaa;
+            color: var(--gris-claro);
+            opacity: 1;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7.293 8.293a1 1 0 0 1 1.414 0L10 9.586l1.293-1.293a1 1 0 1 1 1.414 1.414l-2 2a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 0-1.414z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 0.75em center;
+            background-size: 1.5em;
+        }
+
+        select::-ms-expand {
+            display: none;
         }
 
         button[type="submit"] {
@@ -130,13 +148,18 @@
 <div class="form-wrapper">
     <div class="form-container">
         <h2>Registrar Judoka</h2>
-        <form th:action="@{/registro-judoka}" method="post">
-            <input type="text" name="nombre" placeholder="Nombre" required/>
-            <input type="text" name="apellido" placeholder="Apellido" required/>
-            <input type="date" name="fechaNacimiento" required/>
-            <input type="text" name="categoria" placeholder="Categoría (peso)" required/>
-            <input type="email" name="username" placeholder="Correo" required/>
-            <input type="password" name="password" placeholder="Contraseña" required/>
+        <form th:action="@{/registro-judoka}" th:object="${judokaRegistroDTO}" method="post">
+            <input type="text" th:field="*{nombre}" placeholder="Nombre" required/>
+            <input type="text" th:field="*{apellido}" placeholder="Apellido" required/>
+            <input type="date" th:field="*{fechaNacimiento}" required/>
+            <select th:field="*{categoria}" required>
+                <option value="" disabled selected>Selecciona una categoría de peso</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat}"
+                        th:text="${cat}"></option>
+            </select>
+            <input type="email" th:field="*{username}" placeholder="Correo" required/>
+            <input type="password" th:field="*{password}" placeholder="Contraseña" required/>
             <button type="submit">Registrar</button>
         </form>
         <div th:if="${error != null}" th:text="${error}" class="error-message"></div>

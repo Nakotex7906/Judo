@@ -1,3 +1,5 @@
+<!-- Se muestra cuando se quiere registrar un nuevo usuario de tipo club -->
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -138,11 +140,8 @@
       <input type="text" th:field="*{sensei}" placeholder="Nombre del sensei" required/>
       <input type="text" th:field="*{anoFundacion}" placeholder="Año de fundación" required/>
       <input type="text" th:field="*{direccion}" placeholder="Dirección del club" required/>
-      <input type="text" th:field="*{horarios}" placeholder="Horarios de entrenamiento" required/>
       <button type="submit">Registrar Club</button>
     </form>
-    <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
-    <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
   </div>
 </div>
 </body>
