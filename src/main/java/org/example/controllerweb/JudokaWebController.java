@@ -12,6 +12,7 @@ import org.example.model.logger.LoggerManager;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,13 +60,19 @@ public class JudokaWebController {
         return "Judoka/judoka_home";
     }
 
+    // -- REGISTRO DE JUDOKA --
+
     @GetMapping("/registro-judoka")
-    public String showRegistroJudoka() {
+    public String showRegistroJudoka(Model model) {
+        model.addAttribute("categorias", getCategoriasDePeso());
+        model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
         return REGISTRO_JUDOKA;
     }
 
     @PostMapping("/registro-judoka")
     public String doRegistroJudoka(@ModelAttribute JudokaRegistroDTO dto, Model model) {
+        model.addAttribute("categorias", getCategoriasDePeso());
+
         String errores = validarDatosRegistro(dto);
         if (errores != null) {
             model.addAttribute("error", errores);
@@ -77,18 +84,29 @@ public class JudokaWebController {
         }
         Judoka nuevo = mapearDtoAJudoka(dto);
         judokaService.guardarJudoka(nuevo);
-        // Redirigir al login tras el registro exitoso
+
+        // Puedes elegir:
+        // 1. Mostrar mensaje de éxito en el mismo formulario (usuario sigue en el registro)
+
         model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
+        model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
         return "redirect:/login";
+
+        // 2. O redirigir directamente al login (en ese caso el mensaje no se mostrará)
+        // return "redirect:/login";
+    }
+
+    private List<String> getCategoriasDePeso() {
+        return Arrays.asList("-60 kg", "-66 kg", "-73 kg", "-81 kg", "-90 kg", "-100 kg", "+100 kg");
     }
 
     private String validarDatosRegistro(JudokaRegistroDTO dto) {
         if (isNuloOVacio(dto.getUsername()) ||
-            isNuloOVacio(dto.getPassword()) ||
-            isNuloOVacio(dto.getNombre()) ||
-            isNuloOVacio(dto.getApellido()) ||
-            isNuloOVacio(dto.getCategoria()) ||
-            isNuloOVacio(dto.getFechaNacimiento())) {
+                isNuloOVacio(dto.getPassword()) ||
+                isNuloOVacio(dto.getNombre()) ||
+                isNuloOVacio(dto.getApellido()) ||
+                isNuloOVacio(dto.getCategoria()) ||
+                isNuloOVacio(dto.getFechaNacimiento())) {
             return "Todos los campos son obligatorios.";
         }
         return null;
@@ -112,5 +130,4 @@ public class JudokaWebController {
         nuevo.setFechaNacimiento(dto.getFechaNacimiento());
         return nuevo;
     }
-
 }

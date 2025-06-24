@@ -131,7 +131,7 @@ class JudokaWebControllerTest {
      */
     @Test
     void showRegistroJudoka_muestraVista() {
-        assertEquals("Judoka/registro_judoka", controller.showRegistroJudoka());
+        assertEquals("Judoka/registro_judoka", controller.showRegistroJudoka(model));
     }
 
     /**
@@ -181,6 +181,10 @@ class JudokaWebControllerTest {
      * Verifica que cuando el registro es exitoso,
      * se llama al guardado del Judoka y se añade un mensaje de éxito al modelo.
      */
+
+
+    // No pasa
+
     @Test
     void doRegistroJudoka_registroExitoso() {
         JudokaRegistroDTO dto = new JudokaRegistroDTO();
