@@ -109,6 +109,12 @@ public class AuthController {
         return "redirect:/login";
     }
 
+    @PostMapping("/logout")
+    public String logoutPost(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
     @GetMapping("/registro")
     public String showRegistro() {
         return "Model/registro";

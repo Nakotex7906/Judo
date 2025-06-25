@@ -4,7 +4,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSCORE - Inicio</title>
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
         :root {
             --negro: #1e1e1e;
@@ -172,6 +174,25 @@
         .dropdown a:hover {
             background-color: var(--gris);
         }
+
+        .dropdown form {
+            margin: 0;
+        }
+
+        .dropdown button {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--negro);
+            cursor: pointer;
+        }
+
+        .dropdown button:hover {
+            background-color: var(--gris);
+        }
     </style>
 </head>
 <body>
@@ -182,6 +203,7 @@
         <a href="/static">Inicio</a>
         <a href="/clubs">Clubs</a>
         <a href="/rankings">Rankings</a>
+        <a th:if="${session.username == null}" href="/login" class="btn">Iniciar sesión</a>
 
         <!-- Menú hamburguesa solo si hay sesión -->
         <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
@@ -201,7 +223,9 @@
         <!-- -->
 
         <a href="#">Términos y condiciones</a>
-        <a href="/logout">Cerrar sesión</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Cerrar sesión</button>
+        </form>
     </div>
 </header>
 
