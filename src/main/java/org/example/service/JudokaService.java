@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.AllArgsConstructor;
 import org.example.model.user.Judoka;
 import org.example.repository.JudokaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +58,25 @@ public class JudokaService {
      */
     public List<Judoka> buscarPorIds(List<Long> participantes) {
         return judokaRepository.findAllById(participantes);
+    }
+
+    // MODIFICADO: Se añade un método para listar con orden.
+    public List<Judoka> listarJudokas(Sort sort) {
+        return judokaRepository.findAll(sort);
+    }
+
+    // MODIFICADO: Se añade un método para buscar por ID.
+    public Optional<Judoka> buscarPorId(Long id) {
+        return judokaRepository.findById(id);
+    }
+
+    // MODIFICADO: Se añade un método de servicio para exponer la nueva consulta del repositorio.
+    public List<Judoka> listarJudokasSinClub() {
+        return judokaRepository.findByClubIsNull();
+    }
+
+    // MODIFICADO: Se añade el nuevo método para usar la consulta con JOIN FETCH.
+    public Optional<Judoka> findByUsernameWithClub(String username) {
+        return judokaRepository.findByUsernameWithClub(username);
     }
 }

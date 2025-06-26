@@ -12,7 +12,6 @@
             background-color: #f3f3f3;
             margin: 0;
             padding: 0;
-
         }
         table {
             width: 70%;
@@ -32,6 +31,11 @@
         }
         tr:nth-child(even) {
             background: #f9f9f9
+        }
+        /* MODIFICADO: Se añade un efecto hover para indicar que la fila es clickeable */
+        tbody tr:hover {
+            background-color: #e9e9e9;
+            cursor: pointer;
         }
         h1 {
             text-align: center;
@@ -53,13 +57,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="club : ${clubes}">
-        <td th:text="${club.nombre}"> </td>
-        <td th:text="${club.sensei}"> </td>
-        <td th:text="${club.anoFundacion}"> </td>
-        <td th:text="${club.direccion}"> </td>
-        <td th:text="${club.horarios}"> </td>
-
+    <tr th:each="club : ${clubes}" th:onclick="|window.location.href='@{/club/publico/{id}(id=${club.id})}'|">
+        <td th:text="${club.nombre}"></td>
+        <td th:text="${club.sensei}"></td>
+        <td th:text="${club.anoFundacion}"></td>
+        <td th:text="${club.direccion}"></td>
+        <td th:text="${club.horarios}"></td>
     </tr>
     </tbody>
 </table>

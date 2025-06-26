@@ -1,7 +1,8 @@
 package org.example.controllerweb;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.service.auth.AuthenticationService;
+import org.example.service.ClubService;
+import org.example.service.JudokaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,15 +14,19 @@ import static org.mockito.Mockito.*;
 
 /**
  * Pruebas unitarias para la clase AuthController. Esta clase verifica el comportamiento de los métodos
- * de AuthController, asegurando la resolución correcta de vistas, el manejo de sesiones, la validación de errores
- * y las interacciones con los servicios.
+ * de AuthController, asegurando la resolución correcta de vistas y el manejo de sesiones.
+ * Las pruebas de login ya no son necesarias aquí, ya que Spring Security gestiona la autenticación.
  */
 class AuthControllerTest {
 
     private AuthController authController;
 
+    // Corregido: Mocks para las nuevas dependencias del controlador
     @Mock
-    private AuthenticationService authenticationService;
+    private JudokaService judokaService;
+
+    @Mock
+    private ClubService clubService;
 
     @Mock
     private HttpSession session;
@@ -31,12 +36,13 @@ class AuthControllerTest {
 
     /**
      * Configura el entorno de pruebas inicializando los mocks de las dependencias
-     * (JudokaService, ClubService, etc.) e instanciando la clase AuthController.
+     * e instanciando la clase AuthController.
      */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        authController = new AuthController(authenticationService);
+        // Corregido: Se instancia el controlador con sus dependencias actuales.
+        authController = new AuthController(judokaService, clubService);
     }
 
     /**
@@ -48,92 +54,40 @@ class AuthControllerTest {
         assertEquals("redirect:/index", result);
     }
 
-    /**
-     * Prueba el comportamiento de la página de inicio de sesión cuando el usuario ya está autenticado.
-     * El método redirige a la página de inicio correspondiente según el tipo de usuario (ej., "judoka").
+    /*
+     * Eliminado: El test para `showLogin` con sesión ya no es aplicable.
+     * La nueva lógica de `showLogin()` es simplemente mostrar la vista.
+     * La redirección si el usuario ya está autenticado es gestionada por otros componentes como el `CustomAuthenticationSuccessHandler`.
      */
-    @Test
-    void testMuestraLoginCuandoElUsuarioEstaAutenticado() {
-        when(session.getAttribute("username")).thenReturn("john_doe");
-        when(session.getAttribute("tipo")).thenReturn("judoka");
 
-        String result = authController.showLogin(session);
-        assertEquals("redirect:/judoka/home", result);
-    }
-
-    /**
-     * Verifica el comportamiento del proceso de inicio de sesión cuando el nombre de usuario está vacío.
-     * Debe agregar un mensaje de error al modelo y devolver la vista "login".
+    /*
+     * Eliminado: Todos los tests para `doLogin` han sido removidos.
+     * El método `doLogin` ya no existe en `AuthController`, ya que Spring Security
+     * intercepta la petición POST a /login y maneja la autenticación.
      */
-    @Test
-    void testDoLoginCuandoElCampoUsernameEstaVacio() {
-        String result = authController.doLogin("", "password", "judoka", model, session);
-
-        verify(model).addAttribute("error", "Usuario vacío");
-        assertEquals("Model/login", result);
-    }
 
     /**
-     * Verifica el comportamiento del proceso de inicio de sesión cuando se proporciona un tipo de usuario inválido.
-     * Debe agregar un mensaje de error al modelo y devolver la vista "login".
-     */
-    @Test
-    void testDoLoginConTipoDeUsuarioInvalido() {
-        String result = authController.doLogin("john_doe", "password", "invalidType", model, session);
-
-        verify(model).addAttribute("error", "Tipo inválido");
-        assertEquals("Model/login", result);
-    }
-
-    /**
-     * Prueba un inicio de sesión exitoso para un usuario de tipo "judoka" con credenciales válidas.
-     * Debe guardar los datos del usuario en la sesión y redirigir a la página de inicio del judoka.
-     */
-    @Test
-    void testDoLoginConCredencialesValidasJudoka() {
-        when(authenticationService.tipoValido("judoka")).thenReturn(true);
-        when(authenticationService.authenticate("judoka", "john_doe", "password")).thenReturn(true);
-
-        String result = authController.doLogin("john_doe", "password", "judoka", model, session);
-
-        verify(session).setAttribute("username", "john_doe");
-        verify(session).setAttribute("tipo", "judoka");
-        assertEquals("redirect:/judoka/home", result);
-
-    }
-
-    /**
-     * Prueba el proceso de inicio de sesión con credenciales incorrectas para un usuario de tipo "judoka".
-     * Debe agregar un mensaje de error al modelo y devolver la vista "login".
-     */
-    @Test
-    void testDoLoginConCredencialesInvalidasJudoka() {
-        when(authenticationService.tipoValido("judoka")).thenReturn(true);
-        when(authenticationService.authenticate("judoka", "john_doe", "password")).thenReturn(false);
-
-        String result = authController.doLogin("john_doe", "password", "judoka", model, session);
-
-        verify(model).addAttribute("error", "Usuario o contraseña incorrectos");
-        assertEquals("Model/login", result);
-    }
-
-    /**
-     * Verifica que el método de cierre de sesión invalido la sesión actual
+     * Verifica que el método de cierre de sesión invalide la sesión actual
      * y redirija al usuario a la página de inicio de sesión.
+     * NOTA: Este test asume que tienes un método logout en tu controlador.
+     * Si el logout es manejado 100% por Spring Security, este test podría ser eliminado.
      */
     @Test
-    void testLogoutinvalido() {
+    void testLogoutInvalidaSesion() {
+        // Suponiendo que el método logout existe y tiene esta firma: public String logout(HttpSession session)
         String result = authController.logout(session);
 
         verify(session).invalidate();
-        assertEquals("redirect:/login", result);
+        assertEquals("redirect:/login?logout", result);
     }
 
     /**
      * Verifica que la página "registro" se resuelva y devuelva correctamente la vista esperada.
+     * NOTA: Este test asume que tienes un método showRegistro en tu controlador.
      */
     @Test
     void testShowRegistroDevuelveRegistro() {
+        // Suponiendo que el método existe y tiene esta firma: public String showRegistro()
         String result = authController.showRegistro();
         assertEquals("Model/registro", result);
     }

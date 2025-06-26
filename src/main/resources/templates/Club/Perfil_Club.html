@@ -1,8 +1,7 @@
 <!-- Se muestra cuando se quiere ver el perfil de un usuario  tipo club y permite editar los datos del perfil -->
 <!-- Solo se muestra al apretar el boton de editar perfil en el menu de hamburguesa que esta en el index-->
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Perfil Club - JSCORE</title>
@@ -160,82 +159,100 @@
 </head>
 <body>
 
-<!-- Encabezado -->
 <div class="header">
   <h3>JSCORE</h3>
   <div class="nav-links">
-    <a href="/static">Inicio</a>
-    <a href="/clubs">Clubs</a>
-    <a href="/rankings">Rankings</a>
+    <a th:href="@{/index}">Inicio</a>
+    <a th:href="@{/lista}">Clubs</a>
+    <a href="#">Rankings</a>
     <div class="profile-icon">👤</div>
   </div>
 </div>
 
-<!-- Banner -->
-<div class="club-banner">
-  <div class="club-photo"></div>
-  <h2>NOMBRE DEL CLUB</h2>
-  <p>Breve descripción</p>
-</div>
+<div th:if="${club != null}">
+  <div class="club-banner">
+    <div class="club-photo"></div>
+    <h2 th:text="${club.nombre}">NOMBRE DEL CLUB</h2>
+    <p>Breve descripción del Club de Judo.</p>
+  </div>
 
-<!-- Información del club -->
-<div class="club-info">
-  <div class="club-info-data">
-    <div class="data-box">
-      <strong>Año de creación:</strong><br>
+  <div class="club-info">
+    <div class="club-info-data">
+      <div class="data-box">
+        <strong>Año de creación:</strong><br>
+        <span th:text="${club.anoFundacion}"></span>
+      </div>
+      <div class="data-box">
+        <strong>Participantes:</strong><br>
+        <span th:text="${#lists.size(club.judokas)}"></span>
+      </div>
+      <div class="data-box">
+        <strong>Sensei:</strong><br>
+        <span th:text="${club.sensei}"></span>
+      </div>
     </div>
-    <div class="data-box">
-      <strong>Participantes:</strong><br>
+  </div>
+
+
+  <div class="section">
+    <h4>INTEGRANTES</h4>
+    <table th:if="${not #lists.isEmpty(club.judokas)}">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Categoría</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="judoka : ${club.judokas}">
+        <td th:text="${judoka.nombre}"></td>
+        <td th:text="${judoka.apellido}"></td>
+        <td th:text="${judoka.categoria}"></td>
+      </tr>
+      </tbody>
+    </table>
+    <div th:if="${#lists.isEmpty(club.judokas)}" class="empty-message">No hay integrantes registrados aún.</div>
+    <div class="add-btn">
+      <form th:action="@{/club/agregar-judoka-form}" method="get">
+        <button type="submit">+</button>
+      </form>
     </div>
-    <div class="data-box">
-      <strong>Sensei:</strong><br>
+  </div>
+
+  <!-- Horarios -->
+  <div class="section">
+    <h4>HORARIOS</h4>
+    <table>
+      <tr>
+        <th>Día</th>
+        <th>Hora</th>
+        <th>Rango Edad</th>
+      </tr>
+    </table>
+    <div class="empty-message">No hay horarios registrados aún.</div>
+    <div class="add-btn">
+      <button>+</button>
     </div>
+  </div>
+
+  <div class="section">
+    <h4>TORNEOS</h4>
+    <table>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha</th>
+      </tr>
+    </table>
+    <div class="empty-message">No hay torneos registrados aún.</div>
+    <form th:action="@{/torneos/crear}" method="get">
+      <button class="create-btn" type="submit">Crear Torneo</button>
+    </form>
   </div>
 </div>
 
-<!-- Integrantes -->
-<div class="section">
-  <h4>INTEGRANTES</h4>
-  <table>
-    <tr>
-      <th>Nombre</th>
-      <th>Edad</th>
-      <th>Categoria</th>
-    </tr>
-  </table>
-  <div class="empty-message">No hay integrantes registrados aún.</div>
-  <div class="add-btn">
-    <button>+</button>
-  </div>
-</div>
-
-<!-- Horarios -->
-<div class="section">
-  <h4>HORARIOS</h4>
-  <table>
-    <tr>
-      <th>Día</th>
-      <th>Hora</th>
-      <th>Rango Edad</th>
-    </tr>
-  </table>
-  <div class="empty-message">No hay horarios registrados aún.</div>
-  <div class="add-btn">
-    <button>+</button>
-  </div>
-</div>
-
-<!-- Torneos -->
-<div class="section">
-  <h4>TORNEOS</h4>
-  <table>
-    <tr>
-      <th>Nombre</th>
-      <th>Fecha</th>
-    </tr>
-  </table>
-  <div class="empty-message">No hay torneos registrados aún.</div>
-  <button class="create-btn">Crear</button>
+<div th:if="${club == null}">
+  <h2 style="text-align: center; margin-top: 3rem;">No se pudo cargar la información del perfil del club.</h2>
 </div>
 
 </body>

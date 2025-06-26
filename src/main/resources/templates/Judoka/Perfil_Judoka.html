@@ -2,7 +2,7 @@
 <!-- Solo se muestra al apretar el boton de editar perfil en el menu de hamburguesa que esta en el index-->
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Perfil Judoka - JSCORE</title>
@@ -118,36 +118,37 @@
 </head>
 <body>
 
-<!-- Encabezado -->
 <div class="header">
     <h3>JSCORE</h3>
     <div class="nav-links">
-        <a href="/static">Inicio</a>
-        <a href="/clubs">Clubs</a>
-        <a href="/rankings">Rankings</a>
+        <a th:href="@{/index}">Inicio</a>
+        <a th:href="@{/lista}">Clubs</a>
+        <a href="#">Rankings</a>
         <div class="profile-icon">👤</div>
     </div>
 </div>
 
-<!-- Banner con imagen circular -->
 <div class="banner">
     <div class="photo-circle"></div>
 </div>
 
-<!-- Contenido del perfil -->
-<div class="profile-container">
-    <h2>NOMBRE DEL JUDOKA</h2>
+<div class="profile-container" th:if="${judoka != null}">
+    <h2 th:text="${judoka.nombre + ' ' + judoka.apellido}">NOMBRE DEL JUDOKA</h2>
     <div class="info-list">
         <p><strong>Años de entrenamiento:</strong> 5</p>
         <p><strong>Oficio/Profesión:</strong> Estudiante</p>
-        <p><strong>Edad:</strong> 21</p>
-        <p><strong>Categoría:</strong> -66kg</p>
-        <p><strong>Club:</strong> Judo Lonquimay</p>
+        <p><strong>Edad:</strong> <span th:if="${judoka.fechaNacimiento != null}" th:text="${#temporals.year(T(java.time.LocalDate).now()) - T(java.lang.Integer).parseInt(#strings.substring(judoka.fechaNacimiento, 0, 4))}"></span></p>
+        <p><strong>Categoría:</strong> <span th:text="${judoka.categoria}">-66kg</span></p>
+        <p><strong>Club:</strong> <span th:text="${judoka.club != null ? judoka.club.nombre : 'Sin club'}">Judo Lonquimay</span></p>
     </div>
     <div class="buttons">
         <button>Editar Perfil</button>
         <button>Ver Estadísticas</button>
     </div>
+</div>
+
+<div th:if="${judoka == null}">
+    <h2 style="text-align: center; margin-top: 3rem;">No se pudo cargar la información del perfil del judoka.</h2>
 </div>
 
 </body>

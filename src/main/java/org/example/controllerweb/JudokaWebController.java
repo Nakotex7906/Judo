@@ -3,17 +3,19 @@ package org.example.controllerweb;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.dto.JudokaRegistroDTO;
+import org.example.model.logger.LoggerManager;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.example.model.logger.LoggerManager;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +25,7 @@ public class JudokaWebController {
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);
     private static final String JUDOKA_VIEW = "judoka/judokas";
     private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
+    private static final String JUDOKA = "judoka";
     private final JudokaService judokaService;
 
     @GetMapping("/judokas")
@@ -35,6 +38,17 @@ public class JudokaWebController {
         return JUDOKA_VIEW;
     }
 
+    // MODIFICADO: Nueva ruta para ver el perfil PÚBLICO de un judoka.
+    @GetMapping("/judoka/publico/{id}")
+    public String verPerfilPublicoJudoka(@PathVariable Long id, Model model) {
+        Optional<Judoka> judokaOpt = judokaService.buscarPorId(id);
+        if (judokaOpt.isEmpty()) {
+            return "redirect:/judokas"; // Si no se encuentra, vuelve a la lista.
+        }
+        model.addAttribute(JUDOKA, judokaOpt.get());
+        return "Judoka/judoka_home"; // Devuelve la vista de solo lectura.
+    }
+
     @PostMapping("/judokas")
     public String mostrarJudokas(Model model) {
         List<Judoka> judokas = judokaService.listarJudokas();
@@ -43,20 +57,20 @@ public class JudokaWebController {
     }
 
     private boolean esJudoka(HttpSession s) {
-        return s.getAttribute("username") != null && "judoka".equals(s.getAttribute("tipo"));
+        return s.getAttribute("username") != null && JUDOKA.equals(s.getAttribute("tipo"));
     }
 
     @GetMapping("/judoka/home")
     public String judokaHome(HttpSession session, Model model) {
+        // Esta ruta ahora la usaremos para los perfiles públicos.
+        // La redirección después del login va a /index.
+        // El perfil personal se maneja con /perfil en AuthController.
+        // Podemos mantenerla por si se necesita en el futuro o eliminarla. Por ahora la dejamos.
         if (!esJudoka(session)) return "redirect:/login";
         String username = (String) session.getAttribute("username");
 
         Judoka judoka = judokaService.findByUsername(username).orElse(null);
-        if (judoka != null) {
-            model.addAttribute("nombre", judoka.getNombre());
-        } else {
-            model.addAttribute("nombre", username);
-        }
+        model.addAttribute(JUDOKA, judoka);
         return "Judoka/judoka_home";
     }
 
@@ -92,8 +106,7 @@ public class JudokaWebController {
         model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
         return "redirect:/login";
 
-        // 2. O redirigir directamente al login (en ese caso el mensaje no se mostrará)
-        // return "redirect:/login";
+
     }
 
     private List<String> getCategoriasDePeso() {

@@ -1,12 +1,10 @@
 <!-- Se muestra al iniciar sesion como cualquier tipo de usuario -->
 
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSCORE - Inicio</title>
-    <link rel="stylesheet" href="/css/styles.css">
     <style>
         :root {
             --negro: #1e1e1e;
@@ -174,25 +172,6 @@
         .dropdown a:hover {
             background-color: var(--gris);
         }
-
-        .dropdown form {
-            margin: 0;
-        }
-
-        .dropdown button {
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 10px 15px;
-            text-align: left;
-            font-size: 0.95rem;
-            color: var(--negro);
-            cursor: pointer;
-        }
-
-        .dropdown button:hover {
-            background-color: var(--gris);
-        }
     </style>
 </head>
 <body>
@@ -200,28 +179,19 @@
 <header>
     <img src="/img/logo.png" alt="JSCORE Logo">
     <nav>
-        <a href="/static">Inicio</a>
-        <a href="/clubs">Clubs</a>
-        <a href="/rankings">Rankings</a>
-        <a sec:authorize="isAnonymous()" href="/login" class="btn">Iniciar sesión</a>
-
-        <!-- Menú hamburguesa solo si hay sesión -->
-        <div sec:authorize="isAuthenticated()" class="menu-toggle" onclick="toggleDropdown()">
-            <div class="menu-lines"></div>
-            <div class="menu-lines"></div>
-            <div class="menu-lines"></div>
-        </div>
+        <a th:href="@{/index}">Inicio</a>
+        <a th:href="@{/lista}">Clubs</a>
+        <a href="#">Rankings</a> <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+        <div class="menu-lines"></div>
+        <div class="menu-lines"></div>
+        <div class="menu-lines"></div>
+    </div>
     </nav>
 
-    <!-- Menú desplegable -->
-    <div id="dropdown" class="dropdown" sec:authorize="isAuthenticated()">
-        <a sec:authorize="hasRole('JUDOKA')" href="/judoka/home">Editar perfil</a>
-        <a sec:authorize="hasRole('CLUB')" href="/club/home">Editar perfil</a>
-        <a href="#">Términos y condiciones</a>
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
 
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Cerrar sesión</button>
-        </form>
+        <a th:href="@{/perfil}">Editar perfil</a> <a href="#">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </header>
 
@@ -254,7 +224,7 @@
     document.addEventListener("click", function (event) {
         const toggle = document.querySelector(".menu-toggle");
         const dropdown = document.getElementById("dropdown");
-        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+        if (dropdown && !toggle.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.style.display = "none";
         }
     });
