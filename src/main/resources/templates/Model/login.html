@@ -178,17 +178,11 @@
 </head>
 <body>
 
-<!-- Encabezado-->
 <div class="header">
-
-    <!--IGNORAR DE MOMENTO (Util para cuando tengamos el logo)
-      <img src="url imagen de logo" alt="JSCORE Logo">-->
-
     <h3>JScore</h3>
     <button type="button" onclick="window.location.href='/registro'">Registrarse</button>
 </div>
 
-<!-- Cuadro Login -->
 <div class="login-wrapper">
     <div class="login-container">
 
@@ -199,24 +193,17 @@
             <input type="text" name="username" placeholder="Correo" required />
             <input type="password" name="password" placeholder="Contraseña" required />
 
-            <!-- Tipo de usuario -->
-            <div class="checkbox-container">
-                <label><input type="radio" name="tipo" value="judoka" required> Judoka</label>
-                <label><input type="radio" name="tipo" value="club" required> Club</label>
-            </div>
-
-            <!-- Botón Iniciar -->
             <button type="submit">INICIAR</button>
 
-            <!-- Enlaces debajo del botón -->
             <div class="form-links">
                 <a href="/recuperar" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                <a href="/Politica" class="privacy-policy">Política de privacidad</a>
-            </div>
+                <a href="#" class="privacy-policy">Política de privacidad</a> </div>
         </form>
 
-        <div th:if="${error != null}" class="error-message">
-            <span th:text="${error}"></span>
+        <div th:if="${param.error != null}" class="error-message">
+            <span>Usuario o contraseña incorrectos.</span> </div>
+        <div th:if="${param.logout != null}" class="success-message">
+            <span>Has cerrado sesión.</span>
         </div>
         <div th:if="${param.registrado}" class="success-message">
             ¡Club registrado correctamente! Ahora puedes iniciar sesión.

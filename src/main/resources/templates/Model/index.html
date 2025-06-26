@@ -179,29 +179,19 @@
 <header>
     <img src="/img/logo.png" alt="JSCORE Logo">
     <nav>
-        <a href="/static">Inicio</a>
-        <a href="/clubs">Clubs</a>
-        <a href="/rankings">Rankings</a>
-
-        <!-- Menú hamburguesa solo si hay sesión -->
-        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
-            <div class="menu-lines"></div>
-            <div class="menu-lines"></div>
-            <div class="menu-lines"></div>
-        </div>
+        <a th:href="@{/index}">Inicio</a>
+        <a th:href="@{/lista}">Clubs</a>
+        <a href="#">Rankings</a> <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+        <div class="menu-lines"></div>
+        <div class="menu-lines"></div>
+        <div class="menu-lines"></div>
+    </div>
     </nav>
 
-    <!-- Menú desplegable -->
     <div id="dropdown" class="dropdown" th:if="${session.username != null}">
 
-        <!--  Arreglar esto para que solo se muestre el que corresponda al tipo de usuario que ingreso desde su cuenta-->
-
-        <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
-        <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
-        <!-- -->
-
-        <a href="#">Términos y condiciones</a>
-        <a href="/logout">Cerrar sesión</a>
+        <a th:href="@{/perfil}">Editar perfil</a> <a href="#">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </header>
 
@@ -234,7 +224,7 @@
     document.addEventListener("click", function (event) {
         const toggle = document.querySelector(".menu-toggle");
         const dropdown = document.getElementById("dropdown");
-        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+        if (dropdown && !toggle.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.style.display = "none";
         }
     });
