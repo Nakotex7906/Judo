@@ -24,20 +24,26 @@ public class ClubWebController {
     private final ClubService clubService;
     private final JudokaService judokaService; // Inyectamos JudokaService para usarlo.
 
-
     private static final String REGISTRO_CLUB = "Club/registro_club";
     private static final String USERNAME = "username";
 
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
-        // Esta ruta ahora se usará para el perfil PÚBLICO.
-        // El perfil personal editable se maneja desde /perfil en AuthController.
         String username = (String) session.getAttribute(USERNAME);
-        Club club = clubService.findByUsername(username).orElse(null);
-        if (club != null) {
-            model.addAttribute("club", club);
+        if (username == null) {
+            return "redirect:/login";
         }
-        return "Club/club_home";
+
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+
+        if (clubOpt.isPresent()) {
+            model.addAttribute("club", clubOpt.get());
+            return "Club/club_home";
+        } else {
+            // Si el usuario de la sesión no corresponde a un club, es un estado inválido.
+            // Lo correcto es redirigir al login.
+            return "redirect:/login";
+        }
     }
 
     //Nueva ruta para ver el perfil público de un club.
@@ -85,7 +91,8 @@ public class ClubWebController {
         nuevoClub.setHorarios(clubForm.getHorarios());
 
         clubService.guardarClub(nuevoClub);
-        model.addAttribute("success", "¡Club registrado correctamente! Ahora puedes iniciar sesión.");
+        model.addAttribute("success", "¡Club registrado correctamente! " +
+                "Ahora puedes iniciar sesión.");
         return "redirect:/login";
     }
 
@@ -95,10 +102,6 @@ public class ClubWebController {
             model.addAttribute("clubForm", new ClubRegistroDTO());
         }
         return REGISTRO_CLUB;
-    }
-
-    private boolean esClub(HttpSession session) {
-        return session.getAttribute(USERNAME) != null && "club".equals(session.getAttribute("tipo"));
     }
 
     // MODIFICADO: Nueva ruta para MOSTRAR el formulario de agregar judokas.

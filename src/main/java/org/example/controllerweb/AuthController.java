@@ -24,7 +24,6 @@ public class AuthController {
     private static final String DIRIGIR_JUDOKA_HOME = "redirect:/judoka/home";
     private static final String DIRIGIR_LOGIN = "Model/login";
     private static final String JUDOKA = "judoka";
-    private static final String ERROR = "error";
 
     @GetMapping("/")
     public String root() {
@@ -43,39 +42,12 @@ public class AuthController {
         return DIRIGIR_LOGIN;
     }
 
-    private boolean isUsuarioLogueado(HttpSession session) {
-        return session.getAttribute("username") != null;
-    }
-
-    private String destinoSegunTipoUsuario(HttpSession session) {
-        String tipo = (String) session.getAttribute("tipo");
-        if (JUDOKA.equals(tipo)) {
-            return DIRIGIR_JUDOKA_HOME;
-        } else if ("club".equals(tipo)) {
-            return "redirect:/club/home";
-        }
-        return DIRIGIR_LOGIN;
-    }
-
-    // MODIFICADO: Se eliminó por completo el método doLogin (@PostMapping). Spring Security ahora lo maneja.
-
-
-
-    private String validarCamposObligatorios(String username, String password) {
-        if (username == null || username.isEmpty()) {
-            return "Usuario vacío";
-        }
-        if (password == null || password.isEmpty()) {
-            return "Contraseña vacía";
-        }
-        return null;
-    }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login?logout";
     }
+
 
     @GetMapping("/registro")
     public String showRegistro() {

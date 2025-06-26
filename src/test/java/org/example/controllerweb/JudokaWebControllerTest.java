@@ -120,7 +120,7 @@ class JudokaWebControllerTest {
 
         String resultado = controller.judokaHome(session, model);
 
-        verify(model).addAttribute("nombre", "Pedro");
+        verify(model).addAttribute("judoka", judoka);
         assertEquals("Judoka/judoka_home", resultado);
 
     }
