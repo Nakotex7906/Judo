@@ -4,10 +4,12 @@ import jakarta.servlet.http.HttpSession;
 import org.example.dto.ClubRegistroDTO;
 import org.example.model.user.Club;
 import org.example.service.ClubService;
+import org.example.service.JudokaService; // Importar el servicio que falta
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import java.util.List;
@@ -23,6 +25,10 @@ class ClubWebControllerTest {
     @Mock
     private ClubService clubService;
 
+    // Añadido: Mock para el servicio de Judoka
+    @Mock
+    private JudokaService judokaService;
+
     @Mock
     private HttpSession session;
 
@@ -35,7 +41,8 @@ class ClubWebControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        clubWebController = new ClubWebController(clubService);
+        // Corregido: Pasar ambos mocks al constructor
+        clubWebController = new ClubWebController(clubService, judokaService);
     }
 
     /**
@@ -53,7 +60,7 @@ class ClubWebControllerTest {
     }
 
     /**
-     * Prueba que el método clubHome muestra el nombre del club correctamente cuando
+     * Prueba que el método clubHome muestra los datos del club correctamente cuando
      * un club válido está logueado.
      */
     @Test
@@ -68,23 +75,26 @@ class ClubWebControllerTest {
         String result = clubWebController.clubHome(session, model);
 
         assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "Club ABC");
+
+        // Corregido: Verificar que se añade el objeto "club" completo al modelo.
+        verify(model).addAttribute("club", club);
     }
 
     /**
-     * Prueba que el método clubHome utiliza el nombre de usuario como fallback
-     * si no encuentra el club.
+     * Prueba que el método clubHome redirige al login si el usuario de la sesión
+     * no corresponde a un club existente en la base de datos.
      */
     @Test
-    void TestClubHomeNombreUsuarioComoFallback() {
+    void testClubHomeRedirigeAlLoginSiClubNoExiste() {
         when(session.getAttribute("username")).thenReturn("club123");
-        when(session.getAttribute("tipo")).thenReturn("club");
         when(clubService.findByUsername("club123")).thenReturn(Optional.empty());
 
         String result = clubWebController.clubHome(session, model);
 
-        assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "club123");
+        // Corregido: Verificar que se redirige al login
+        assertEquals("redirect:/login", result);
+        // Corregido: Verificar que NO se añade ningún atributo al modelo
+        verify(model, never()).addAttribute(anyString(), any());
     }
 
     /**
@@ -93,7 +103,7 @@ class ClubWebControllerTest {
     @Test
     void testListarClubes() {
         List<Club> clubes = List.of(new Club(), new Club());
-        when(clubService.getAllClubs()).thenReturn(clubes);
+        when(clubService.getAllClubs(any(Sort.class))).thenReturn(clubes);
 
         String result = clubWebController.listarClubes(model);
 

@@ -1,26 +1,190 @@
-<!-- HTML LOGIN IDEA 1 (NO TERMINADA, NO FUNCIONAL DEL TODO)-->
+<!-- Se muestra al entrar a la pag (De momento)-->
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login - JSCORE</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #3d3d3d;
+            --gris-claro: #ddd;
+            --blanco: #ffffff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+            --rojo-error: red;
+            --azul-link: #0866fd;
+            --gris-texto: #ccc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--negro-suave);
+        }
+
+        .header {
+            background-color: var(--blanco);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header img {
+            height: 30px;
+        }
+
+        .header button {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px);
+        }
+
+        .login-container {
+            background-color: var(--gris-oscuro);
+            padding: 3rem 3rem 2.5rem;
+            border-radius: 12px;
+            width: 420px;
+            color: var(--blanco);
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .login-container img {
+            width: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .login-container h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            background-color: var(--gris-claro);
+            border: none;
+            border-radius: 4px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .login-container button {
+            background-color: var(--rojo);
+            color: var(--gris-claro);
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: var(--rojo-hover);
+        }
+
+        .error-message {
+            color: var(--rojo-error);
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: #7fff7f;
+            background-color: #1d3a1d;
+            margin-top: 10px;
+            border-radius: 4px;
+            padding: 10px 0;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-size: 34px;
+            font-weight: bold;
+            color: var(--gris-claro);
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            color: var(--rojo);
+        }
+
+        .forgot-password {
+            font-size: 12px;
+            color: var(--gris-claro);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        .form-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 12px;
+            gap: 6px;
+        }
+
+        .forgot-password,
+        .privacy-policy {
+            font-size: 12px;
+            color: var(--gris-claro);
+            text-decoration: none;
+        }
+
+        .forgot-password:hover,
+        .privacy-policy:hover {
+            color: var(--azul-link);
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <body>
 
-<!-- Encabezado-->
 <div class="header">
-     <!--IGNORAR DE MOMENTO (Util para cuando tengamos el logo)
-       <img src="url imagen de logo" alt="JSCORE Logo">-->
     <h3>JScore</h3>
     <button type="button" onclick="window.location.href='/registro'">Registrarse</button>
 </div>
 
-<!-- Cuadro Login -->
 <div class="login-wrapper">
     <div class="login-container">
-
 
         <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User Icon">
         <h2>Iniciar Sesión</h2>
@@ -29,27 +193,21 @@
             <input type="text" name="username" placeholder="Correo" required />
             <input type="password" name="password" placeholder="Contraseña" required />
 
-            <!-- Tipo de usuario -->
-            <div class="checkbox-container">
-                <label><input type="radio" name="tipo" value="judoka" required> Judoka</label>
-                <label><input type="radio" name="tipo" value="club" required> Club</label>
-            </div>
-
-            <!-- Botón Iniciar -->
             <button type="submit">INICIAR</button>
 
-            <!-- Enlaces debajo del botón -->
             <div class="form-links">
                 <a href="/recuperar" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                <a href="/Politica" class="privacy-policy">Política de privacidad</a>
-            </div>
-
+                <a href="#" class="privacy-policy">Política de privacidad</a> </div>
         </form>
 
-        <div th:if="${error != null}" class="error-message">
-            <span th:text="${error}"></span>
+        <div th:if="${param.error != null}" class="error-message">
+            <span>Usuario o contraseña incorrectos.</span> </div>
+        <div th:if="${param.logout != null}" class="success-message">
+            <span>Has cerrado sesión.</span>
         </div>
-        <div th:if="${param.registrado}" class="success-message">¡Club registrado correctamente! Ahora puedes iniciar sesión.</div>
+        <div th:if="${param.registrado}" class="success-message">
+            ¡Club registrado correctamente! Ahora puedes iniciar sesión.
+        </div>
     </div>
 </div>
 </body>

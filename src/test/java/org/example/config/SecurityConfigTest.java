@@ -31,6 +31,9 @@ class SecurityConfigTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private CustomAuthenticationSuccessHandler successHandler; // Añadido: Mock para el nuevo manejador
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,7 +45,8 @@ class SecurityConfigTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        securityConfig = new SecurityConfig(userService);
+        // Corregido: Pasamos ambos mocks al constructor
+        securityConfig = new SecurityConfig(userService, successHandler);
     }
 
     /**
@@ -125,7 +129,8 @@ class SecurityConfigTest {
     @Test
     void testSecurityConfigConstructor() {
         // Given & When
-        SecurityConfig config = new SecurityConfig(userService);
+        // Corregido: Pasamos ambos mocks al constructor
+        SecurityConfig config = new SecurityConfig(userService, successHandler);
 
         // Then
         assertNotNull(config);

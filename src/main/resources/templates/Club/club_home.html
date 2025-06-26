@@ -1,5 +1,7 @@
+<!-- Se muestra cuando se quiere ver la info un club pero no permite editar los datos del perfil -->
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Inicio Club - JSCORE</title>
@@ -134,82 +136,64 @@
 </head>
 <body>
 
-<!-- Encabezado -->
 <div class="header">
     <h3>JSCORE</h3>
     <div class="nav-links">
-        <a href="/static">Inicio</a>
-        <a href="/clubs">Clubs</a>
-        <a href="/rankings">Rankings</a>
+        <a th:href="@{/index}">Inicio</a>
+        <a th:href="@{/lista}">Clubs</a>
+        <a href="#">Rankings</a>
         <div class="profile-icon">👤</div>
     </div>
 </div>
 
-<!-- Banner -->
-<div class="club-banner">
-    <div class="club-photo"></div>
-    <h2 th:text="${club.nombre}">NOMBRE DEL CLUB</h2>
-    <p th:text="${club.descripcion}">Breve descripción</p>
-</div>
+<div th:if="${club != null}">
+    <div class="club-banner">
+        <div class="club-photo"></div>
+        <h2 th:text="${club.nombre}">NOMBRE DEL CLUB</h2>
+        <p>Breve descripción del Club de Judo.</p>
+    </div>
 
-<!-- Información del club -->
-<div class="club-info">
-    <div class="club-info-data">
-        <div class="data-box">
-            <strong>Año de creación:</strong><br>
-            <span th:text="${club.anioCreacion}">2020</span>
-        </div>
-        <div class="data-box">
-            <strong>Participantes:</strong><br>
-            <span th:text="${club.participantes}">15</span>
-        </div>
-        <div class="data-box">
-            <strong>Sensei:</strong><br>
-            <span th:text="${club.sensei}">Juan Pérez</span>
+    <div class="club-info">
+        <div class="club-info-data">
+            <div class="data-box">
+                <strong>Año de creación:</strong><br>
+                <span th:text="${club.anoFundacion}"></span>
+            </div>
+            <div class="data-box">
+                <strong>Participantes:</strong><br>
+                <span th:text="${#lists.size(club.judokas)}"></span>
+            </div>
+            <div class="data-box">
+                <strong>Sensei:</strong><br>
+                <span th:text="${club.sensei}"></span>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Integrantes -->
-<div class="section">
-    <h4>INTEGRANTES</h4>
-    <div th:if="${#lists.isEmpty(club.integrantes)}" class="empty-message">No hay integrantes registrados aún.</div>
-    <table th:if="${!#lists.isEmpty(club.integrantes)}">
-        <tr><th>Nombre</th><th>Edad</th><th>Categoría</th></tr>
-        <tr th:each="i : ${club.integrantes}">
-            <td th:text="${i.nombre}">Nombre</td>
-            <td th:text="${i.edad}">Edad</td>
-            <td th:text="${i.categoria}">Categoría</td>
-        </tr>
-    </table>
-</div>
+    <div class="section">
+        <h4>INTEGRANTES</h4>
+        <table th:if="${not #lists.isEmpty(club.judokas)}">
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+            </tr>
+            <tr th:each="integrante : ${club.judokas}">
+                <td th:text="${integrante.nombre + ' ' + integrante.apellido}"></td>
+                <td th:text="${integrante.categoria}"></td>
+            </tr>
+        </table>
+        <div th:if="${#lists.isEmpty(club.judokas)}" class="empty-message">No hay integrantes registrados aún.</div>
+    </div>
 
-<!-- Horarios -->
-<div class="section">
-    <h4>HORARIOS</h4>
-    <div th:if="${#lists.isEmpty(club.horarios)}" class="empty-message">No hay horarios registrados aún.</div>
-    <table th:if="${!#lists.isEmpty(club.horarios)}">
-        <tr><th>Día</th><th>Hora</th><th>Rango Edad</th></tr>
-        <tr th:each="h : ${club.horarios}">
-            <td th:text="${h.dia}">Lunes</td>
-            <td th:text="${h.hora}">18:00</td>
-            <td th:text="${h.rangoEdad}">12-18</td>
-        </tr>
-    </table>
-</div>
+    <div class="section">
+        <h4>HORARIOS</h4>
+        <p th:text="${club.horarios}" style="text-align: center; padding: 1rem;"></p>
+    </div>
 
-<!-- Torneos  -->
-<div class="section">
-    <h4>TORNEOS</h4>
-    <div th:if="${#lists.isEmpty(club.torneos)}" class="empty-message">No hay torneos registrados aún.</div>
-    <table th:if="${!#lists.isEmpty(club.torneos)}">
-        <tr><th>Nombre</th><th>Fecha</th><th>Lugar</th></tr>
-        <tr th:each="t : ${club.torneos}">
-            <td th:text="${t.nombre}">Torneo Nacional</td>
-            <td th:text="${t.fecha}">2024-10-10</td>
-            <td th:text="${t.lugar}">Santiago</td>
-        </tr>
-    </table>
+    <div class="section">
+        <h4>TORNEOS</h4>
+        <div class="empty-message">No hay torneos registrados para este club.</div>
+    </div>
 </div>
 
 </body>
