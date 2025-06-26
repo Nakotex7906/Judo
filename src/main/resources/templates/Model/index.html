@@ -1,7 +1,7 @@
 <!-- Se muestra al iniciar sesion como cualquier tipo de usuario -->
 
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -203,10 +203,10 @@
         <a href="/static">Inicio</a>
         <a href="/clubs">Clubs</a>
         <a href="/rankings">Rankings</a>
-        <a th:if="${session.username == null}" href="/login" class="btn">Iniciar sesión</a>
+        <a sec:authorize="isAnonymous()" href="/login" class="btn">Iniciar sesión</a>
 
         <!-- Menú hamburguesa solo si hay sesión -->
-        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+        <div sec:authorize="isAuthenticated()" class="menu-toggle" onclick="toggleDropdown()">
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
@@ -214,15 +214,11 @@
     </nav>
 
     <!-- Menú desplegable -->
-    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
-
-        <!--  Arreglar esto para que solo se muestre el que corresponda al tipo de usuario que ingreso desde su cuenta-->
-
-        <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
-        <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
-        <!-- -->
-
+    <div id="dropdown" class="dropdown" sec:authorize="isAuthenticated()">
+        <a sec:authorize="hasRole('JUDOKA')" href="/judoka/home">Editar perfil</a>
+        <a sec:authorize="hasRole('CLUB')" href="/club/home">Editar perfil</a>
         <a href="#">Términos y condiciones</a>
+
         <form th:action="@{/logout}" method="post">
             <button type="submit">Cerrar sesión</button>
         </form>

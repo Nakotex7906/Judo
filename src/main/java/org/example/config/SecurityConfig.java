@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/club/**").hasRole("CLUB")           // Rutas para Club
                         .requestMatchers("/judoka/**").hasRole("JUDOKA")       // Rutas para Judoka
-                        .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**", "/recuperar/**", "/restablecer/**")  // Permitir acceso público a estas rutas
+                        .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**",
+                                "/recuperar/**", "/restablecer/**","registro-judoka","registro-club")  // Permitir acceso público a estas rutas
                         .permitAll()  // Estas rutas son accesibles sin autenticación
                         .anyRequest().authenticated()  // El resto requiere autenticación
                 )
