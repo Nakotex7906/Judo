@@ -25,6 +25,7 @@ public class JudokaWebController {
     private static final Logger logger = LoggerManager.getLogger(JudokaWebController.class);
     private static final String JUDOKA_VIEW = "judoka/judokas";
     private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
+    private static final String JUDOKA = "judoka";
     private final JudokaService judokaService;
 
     @GetMapping("/judokas")
@@ -44,7 +45,7 @@ public class JudokaWebController {
         if (judokaOpt.isEmpty()) {
             return "redirect:/judokas"; // Si no se encuentra, vuelve a la lista.
         }
-        model.addAttribute("judoka", judokaOpt.get());
+        model.addAttribute(JUDOKA, judokaOpt.get());
         return "Judoka/judoka_home"; // Devuelve la vista de solo lectura.
     }
 
@@ -56,7 +57,7 @@ public class JudokaWebController {
     }
 
     private boolean esJudoka(HttpSession s) {
-        return s.getAttribute("username") != null && "judoka".equals(s.getAttribute("tipo"));
+        return s.getAttribute("username") != null && JUDOKA.equals(s.getAttribute("tipo"));
     }
 
     @GetMapping("/judoka/home")
@@ -69,7 +70,7 @@ public class JudokaWebController {
         String username = (String) session.getAttribute("username");
 
         Judoka judoka = judokaService.findByUsername(username).orElse(null);
-        model.addAttribute("judoka", judoka);
+        model.addAttribute(JUDOKA, judoka);
         return "Judoka/judoka_home";
     }
 
@@ -105,8 +106,7 @@ public class JudokaWebController {
         model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
         return "redirect:/login";
 
-        // 2. O redirigir directamente al login (en ese caso el mensaje no se mostrará)
-        // return "redirect:/login";
+
     }
 
     private List<String> getCategoriasDePeso() {

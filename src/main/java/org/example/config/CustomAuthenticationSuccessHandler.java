@@ -19,18 +19,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                                         Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
         String username = authentication.getName();
-        String tipo = "";
 
-        // Revisamos la autoridad (rol) del usuario para determinar su tipo
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            if (authority.getAuthority().equals("ROLE_CLUB")) {
-                tipo = "club";
-                break;
-            } else if (authority.getAuthority().equals("ROLE_JUDOKA")) {
-                tipo = "judoka";
-                break;
-            }
-        }
+        // Refactorizado: Usamos la API de Streams para encontrar el rol de forma más limpia y eficiente.
+        String tipo = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority) // Convierte cada authority a su nombre en String (ej: "ROLE_CLUB")
+                .filter(authority -> authority.equals("ROLE_CLUB") || authority.equals("ROLE_JUDOKA")) // Filtra solo los roles que nos interesan
+                .findFirst() // Busca la primera coincidencia (esto reemplaza la necesidad del break)
+                .map(authority -> authority.equals("ROLE_CLUB") ? "club" : "judoka") // Convierte el rol encontrado al tipo correspondiente
+                .orElse(""); // Si no se encuentra ningún rol, el valor por defecto es una cadena vacía
 
         // Guardamos los datos correctos en la sesión
         session.setAttribute("username", username);

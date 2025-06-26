@@ -24,14 +24,16 @@ public class ClubWebController {
     private final ClubService clubService;
     private final JudokaService judokaService; // Inyectamos JudokaService para usarlo.
 
+
     private static final String REGISTRO_CLUB = "Club/registro_club";
     private static final String USERNAME = "username";
+    private static final String REDIRECT_LOGIN = "redirect:/login";
 
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
         String username = (String) session.getAttribute(USERNAME);
         if (username == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
 
         Optional<Club> clubOpt = clubService.findByUsername(username);
@@ -40,9 +42,7 @@ public class ClubWebController {
             model.addAttribute("club", clubOpt.get());
             return "Club/club_home";
         } else {
-            // Si el usuario de la sesión no corresponde a un club, es un estado inválido.
-            // Lo correcto es redirigir al login.
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
     }
 
@@ -93,7 +93,7 @@ public class ClubWebController {
         clubService.guardarClub(nuevoClub);
         model.addAttribute("success", "¡Club registrado correctamente! " +
                 "Ahora puedes iniciar sesión.");
-        return "redirect:/login";
+        return REDIRECT_LOGIN;
     }
 
     @GetMapping("/registro-club")
@@ -116,9 +116,9 @@ public class ClubWebController {
     @PostMapping("/club/agregar-judoka")
     public String procesarAgregarJudoka(@RequestParam(name = "judokaIds", required = false) List<Long> judokaIds,
                                         HttpSession session, Model model) {
-        String username = (String) session.getAttribute("username");
+        String username = (String) session.getAttribute(USERNAME);
         if (username == null) {
-            return "redirect:/login"; // Si no hay sesión, fuera.
+            return REDIRECT_LOGIN; // Si no hay sesión, fuera.
         }
 
         // Si no se seleccionó ningún judoka, simplemente volvemos al perfil.
@@ -128,7 +128,7 @@ public class ClubWebController {
 
         Club club = clubService.findByUsername(username).orElse(null);
         if (club == null) {
-            return "redirect:/login"; // El usuario de la sesión no corresponde a un club.
+            return REDIRECT_LOGIN; // El usuario de la sesión no corresponde a un club.
         }
 
         // Buscamos a todos los judokas seleccionados por sus IDs.

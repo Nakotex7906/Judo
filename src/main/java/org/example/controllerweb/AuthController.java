@@ -21,9 +21,7 @@ public class AuthController {
     private final ClubService clubService;
 
     // MODIFICADO: Se eliminó la dependencia a AuthenticationService que ya no es necesaria aquí.
-    private static final String DIRIGIR_JUDOKA_HOME = "redirect:/judoka/home";
     private static final String DIRIGIR_LOGIN = "Model/login";
-    private static final String JUDOKA = "judoka";
 
     @GetMapping("/")
     public String root() {
