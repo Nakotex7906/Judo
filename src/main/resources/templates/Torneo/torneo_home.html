@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'Torneo: ' + ${torneo.nombre}">Torneo</title>
+  <style>
+    :root {
+      --gris-navbar: #1e1e1e;
+      --gris-fondo: #232323;
+      --gris-oscuro: #323232;
+      --gris-cabecera: #404040;
+      --gris-claro: #e0e0e0;
+      --blanco: #fff;
+      --rojo: #e60000;
+      --rojo-hover: #cc0000;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--gris-fondo);
+      color: var(--blanco);
+      min-height: 100vh;
+    }
+    header {
+      background-color: var(--gris-navbar);
+      padding: 0.7rem 1.5rem 0.7rem 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+      z-index: 2;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+    .navbar-logo {
+      height: 34px;
+      margin-right: 13px;
+    }
+    .navbar-title {
+      color: var(--blanco);
+      font-size: 1.33rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .navbar-link-btn {
+      background: var(--blanco);
+      color: var(--gris-navbar);
+      border: none;
+      border-radius: 8px;
+      padding: 7px 22px;
+      font-weight: bold;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background 0.17s, color 0.13s;
+      text-decoration: none;
+      margin-right: 2px;
+    }
+    .navbar-link-btn:hover {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    .menu-toggle {
+      margin-left: 15px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 7px;
+      transition: background 0.18s;
+    }
+    .menu-toggle:hover {
+      background: #232323;
+    }
+    .menu-lines {
+      width: 28px;
+      height: 4px;
+      background: var(--blanco);
+      margin: 3.2px 0;
+      border-radius: 2px;
+    }
+    .dropdown {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 57px;
+      right: 30px;
+      background: var(--gris-oscuro);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+      border-radius: 10px;
+      min-width: 180px;
+      z-index: 10;
+      padding: 10px 0;
+      animation: dropdownAnim 0.20s;
+    }
+    @keyframes dropdownAnim {
+      from { opacity: 0; transform: translateY(-14px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .dropdown a {
+      color: var(--blanco);
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      background: none;
+      border-bottom: 1px solid #353535;
+      transition: background 0.11s;
+      border-radius: 0;
+      display: block;
+    }
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 85vh;
+      padding-top: 1.5rem;
+    }
+    .torneo-card {
+      background: var(--gris-oscuro);
+      border-radius: 14px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.48);
+      padding: 2.3rem 2.5rem 2rem 2.5rem;
+      width: 100%;
+      max-width: 520px;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .torneo-card h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      letter-spacing: 1.5px;
+      color: var(--rojo);
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+    .torneo-info {
+      margin-bottom: 1.6rem;
+      width: 100%;
+    }
+    .info-row {
+      margin-bottom: 0.8rem;
+    }
+    .info-label {
+      color: var(--gris-claro);
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .info-value {
+      color: var(--blanco);
+    }
+    .desc {
+      color: var(--gris-claro);
+      font-style: italic;
+      margin-bottom: 1.2rem;
+      padding-left: 2px;
+    }
+    .participants-section {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    .participants-section h3 {
+      color: var(--blanco);
+      font-size: 1.08rem;
+      margin-bottom: 0.6rem;
+      margin-top: 0;
+      letter-spacing: 1px;
+    }
+    .participants-list {
+      background: #232323;
+      border-radius: 7px;
+      border: 1px solid #373737;
+      padding: 1rem;
+      max-height: 180px;
+      overflow-y: auto;
+      margin: 0;
+      list-style: none;
+    }
+    .participants-list li {
+      padding: 5px 0 5px 4px;
+      border-bottom: 1px solid #353535;
+      color: var(--blanco);
+    }
+    .participants-list li:last-child {
+      border-bottom: none;
+    }
+    .volver-btn {
+      background-color: var(--rojo);
+      color: var(--blanco);
+      border: none;
+      padding: 0.6rem 2.4rem;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background 0.13s;
+      margin: 1.6rem auto 0 auto;
+      display: block;
+    }
+    .volver-btn:hover {
+      background-color: var(--rojo-hover);
+    }
+    @media (max-width: 600px) {
+      .torneo-card {padding: 1.2rem 0.4rem;}
+      .main-container {padding-top: 0.4rem;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="navbar-left">
+    <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+  </div>
+  <nav>
+    <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+    <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+    <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+    <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+    </div>
+  </nav>
+  <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+    <a th:href="@{/perfil}">Editar perfil</a>
+    <a th:href="@{/terminos}">Términos y condiciones</a>
+    <a th:href="@{/logout}">Cerrar sesión</a>
+  </div>
+</header>
+
+<div class="main-container">
+  <div class="torneo-card">
+    <h2 th:text="${torneo.nombre}">Torneo Nacional</h2>
+    <div class="torneo-info">
+      <div class="info-row">
+        <span class="info-label">Fecha:</span>
+        <span class="info-value" th:text="${#dates.format(torneo.fecha, 'dd/MM/yyyy')}">10/06/2025</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Club organizador:</span>
+        <span class="info-value" th:text="${torneo.club != null ? torneo.club.nombre : 'No especificado'}">Club Judo Central</span>
+      </div>
+      <div class="info-row" th:if="${torneo.descripcion != null}">
+        <span class="info-label">Descripción:</span>
+        <span class="desc" th:text="${torneo.descripcion}">Torneo anual de judo...</span>
+      </div>
+    </div>
+    <div class="participants-section">
+      <h3>Participantes:</h3>
+      <div th:if="${#lists.isEmpty(torneo.participantes)}">
+        <span style="color:var(--gris-claro)">No hay participantes registrados.</span>
+      </div>
+      <ul class="participants-list" th:if="${not #lists.isEmpty(torneo.participantes)}">
+        <li th:each="j : ${torneo.participantes}"
+            th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}">
+          Judoka 1 (Categoría)
+        </li>
+      </ul>
+    </div>
+    <button class="volver-btn" onclick="location.href='/club/home'">← Volver</button>
+  </div>
+</div>
+<script>
+  function toggleDropdown() {
+    var dd = document.getElementById('dropdown');
+    if (dd.style.display === "flex") {
+      dd.style.display = "none";
+    } else {
+      dd.style.display = "flex";
+    }
+  }
+  window.onclick = function(event) {
+    if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+      var dd = document.getElementById('dropdown');
+      if (dd) dd.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>
