@@ -1,5 +1,3 @@
-<!-- Se muestra cuando se quiere ver el perfil de un usuario  tipo club y permite editar los datos del perfil -->
-<!-- Solo se muestra al apretar el boton de editar perfil en el menu de hamburguesa que esta en el index-->
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,136 +5,229 @@
   <title>Perfil Club - JSCORE</title>
   <style>
     :root {
-      --negro-suave: #1e1e1e;
-      --gris-fondo: #f5f5f5;
-      --gris-oscuro: #3d3d3d;
-      --gris-claro: #ddd;
-      --blanco: #ffffff;
+      --gris-navbar: #1e1e1e;
+      --gris-fondo: #232323;
+      --gris-oscuro: #323232;
+      --gris-cabecera: #404040;
+      --gris-claro: #e0e0e0;
+      --blanco: #919191;
       --rojo: #e60000;
       --rojo-hover: #cc0000;
+      --gris-hover: #2a2a2a;
     }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: var(--gris-fondo);
-      color: var(--negro-suave);
+      color: var(--blanco);
     }
-
-    .header {
-      background-color: var(--blanco);
-      padding: 1rem 2rem;
+    header {
+      background-color: var(--gris-navbar);
+      padding: 0.7rem 1.5rem 0.7rem 2.2rem;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ccc;
+      position: relative;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+      z-index: 2;
     }
-
-    .header h3 {
-      margin: 0;
-    }
-
-    .nav-links {
+    .navbar-left {
       display: flex;
-      gap: 1.5rem;
       align-items: center;
     }
+    .navbar-logo {
+      height: 34px;
+      margin-right: 13px;
+    }
 
-    .nav-links a {
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .navbar-link-btn {
+      background: var(--blanco);
+      color: var(--gris-navbar);
+      border: none;
+      border-radius: 8px;
+      padding: 7px 22px;
+      font-weight: bold;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background 0.17s, color 0.13s;
       text-decoration: none;
-      color: black;
-      font-weight: bold;
+      margin-right: 2px;
     }
-
-    .profile-icon {
-      width: 35px;
-      height: 35px;
-      background-color: var(--rojo);
-      border-radius: 50%;
+    .navbar-link-btn:hover {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    .menu-toggle {
+      margin-left: 15px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 7px;
+      transition: background 0.18s;
     }
-
+    .menu-toggle:hover {
+      background: #232323;
+    }
+    .menu-lines {
+      width: 28px;
+      height: 4px;
+      background: var(--blanco);
+      margin: 3.2px 0;
+      border-radius: 2px;
+    }
+    .dropdown {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 57px;
+      right: 30px;
+      background: var(--gris-oscuro);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+      border-radius: 10px;
+      min-width: 180px;
+      z-index: 10;
+      padding: 10px 0;
+      animation: dropdownAnim 0.20s;
+    }
+    @keyframes dropdownAnim {
+      from { opacity: 0; transform: translateY(-14px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .dropdown a {
+      color: var(--blanco);
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      background: none;
+      border-bottom: 1px solid #353535;
+      transition: background 0.11s;
+      border-radius: 0;
+      display: block;
+    }
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    /* Banner Club */
     .club-banner {
-      background-color: #0f1111;
-      color: white;
-      padding: 2rem;
+      background-color: #181a1b;
+      color: var(--blanco);
+      padding: 2.5rem 1rem 2rem 1rem;
       text-align: center;
       position: relative;
+      border-radius: 0 0 18px 18px;
+      margin-bottom: 1.6rem;
+      box-shadow: 0 3px 18px rgba(0,0,0,0.16);
     }
-
     .club-photo {
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      background-color: var(--gris-claro);
-      margin: 0 auto 1rem;
+      background: linear-gradient(120deg, var(--gris-claro) 70%, var(--gris-oscuro));
+      margin: 0 auto 1.1rem auto;
+      border: 5px solid var(--gris-oscuro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      color: var(--gris-oscuro);
     }
-
+    .club-banner h2 {
+      margin: 0;
+      font-size: 2.1rem;
+      color: var(--rojo);
+      font-weight: bold;
+    }
+    .club-banner p {
+      margin: 0.4rem 0 0 0;
+      font-style: italic;
+      color: var(--gris-claro);
+    }
+    /* Info general */
     .club-info {
-      padding: 2rem 1rem;
-      background-color: var(--blanco);
+      padding: 2rem 1rem 1.5rem 1rem;
+      background-color: var(--gris-oscuro);
       text-align: center;
+      border-radius: 14px;
+      max-width: 760px;
+      margin: -50px auto 1.5rem auto;
+      box-shadow: 0 2px 13px rgba(0,0,0,0.12);
     }
-
     .club-info-data {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
+      gap: 2.3rem;
       flex-wrap: wrap;
-      gap: 1rem;
       margin-top: 1rem;
     }
-
     .data-box {
-      background-color: var(--gris-claro);
-      padding: 0.8rem;
-      border-radius: 5px;
-      min-width: 120px;
-      font-size: 14px;
+      background-color: #232323;
+      padding: 0.9rem 1.5rem;
+      border-radius: 8px;
+      min-width: 150px;
+      font-size: 15px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.09);
     }
-
+    .data-box strong {
+      color: var(--blanco);
+    }
+    /* Secciones */
     .section {
-      background-color: var(--gris-claro);
+      background-color: #282828;
       margin: 1.5rem auto;
-      padding: 1rem;
-      width: 90%;
-      max-width: 800px;
-      border-radius: 6px;
+      padding: 1.2rem 1rem 1.5rem 1rem;
+      width: 92%;
+      max-width: 850px;
+      border-radius: 10px;
+      box-shadow: 0 1px 13px rgba(0,0,0,0.12);
     }
-
     .section h4 {
-      margin: 0 0 1rem;
-      font-size: 16px;
+      margin: 0 0 1rem 0;
+      font-size: 18px;
+      color: var(--blanco);
+      letter-spacing: 1px;
+      font-weight: bold;
     }
-
     .section table {
       width: 100%;
       border-collapse: collapse;
+      margin-bottom: 0.5rem;
     }
-
     .section table th, .section table td {
-      border-bottom: 1px solid #bbb;
-      padding: 0.5rem;
+      border-bottom: 1px solid #3c3c3c;
+      padding: 0.6rem 0.7rem;
       text-align: left;
-      font-size: 14px;
+      font-size: 15px;
     }
-
+    .section table th {
+      color: var(--blanco);
+      font-size: 1.01rem;
+      background: #232323;
+    }
+    /* CAMBIO SOLICITADO: los datos en blanco */
+    .section table td {
+      color: #fff;
+    }
     .section .empty-message {
-      color: #666;
+      color: #a0a0a0;
       font-style: italic;
       text-align: center;
-      padding: 1rem;
+      padding: 0.6rem 0 0.7rem 0;
     }
-
-    .section .add-btn {
+    .add-btn {
       text-align: right;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
     }
-
     .add-btn button, .create-btn {
       background-color: var(--rojo);
       color: white;
@@ -145,33 +236,50 @@
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 1.04rem;
     }
-
     .add-btn button:hover, .create-btn:hover {
       background-color: var(--rojo-hover);
     }
-
     .create-btn {
-      margin: 1rem auto;
+      margin: 1rem auto 0 auto;
       display: block;
+    }
+    @media (max-width: 700px) {
+      .club-info-data {gap: 1rem;}
+      .club-info {padding: 1.1rem 0.4rem;}
+      .section {padding: 1rem 0.3rem;}
     }
   </style>
 </head>
 <body>
-
-<div class="header">
-  <h3>JSCORE</h3>
-  <div class="nav-links">
-    <a th:href="@{/index}">Inicio</a>
-    <a th:href="@{/lista}">Clubs</a>
-    <a href="#">Rankings</a>
-    <div class="profile-icon">👤</div>
+<header>
+  <div class="navbar-left">
+    <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
   </div>
-</div>
+  <nav>
+    <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+    <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+    <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+    <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+    </div>
+  </nav>
+  <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+    <a th:href="@{/perfil}">Editar perfil</a>
+    <a th:href="@{/terminos}">Términos y condiciones</a>
+    <a th:href="@{/logout}">Cerrar sesión</a>
+  </div>
+</header>
 
 <div th:if="${club != null}">
+
   <div class="club-banner">
-    <div class="club-photo"></div>
+    <div class="club-photo">
+      <span>Club</span>
+    </div>
     <h2 th:text="${club.nombre}">NOMBRE DEL CLUB</h2>
     <p>Breve descripción del Club de Judo.</p>
   </div>
@@ -192,7 +300,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="section">
     <h4>INTEGRANTES</h4>
@@ -215,12 +322,11 @@
     <div th:if="${#lists.isEmpty(club.judokas)}" class="empty-message">No hay integrantes registrados aún.</div>
     <div class="add-btn">
       <form th:action="@{/club/agregar-judoka-form}" method="get">
-        <button type="submit">+</button>
+        <button type="submit" title="Agregar Judoka">+</button>
       </form>
     </div>
   </div>
 
-  <!-- Horarios -->
   <div class="section">
     <h4>HORARIOS</h4>
     <table>
@@ -232,19 +338,27 @@
     </table>
     <div class="empty-message">No hay horarios registrados aún.</div>
     <div class="add-btn">
-      <button>+</button>
+      <button title="Agregar Horario">+</button>
     </div>
   </div>
 
   <div class="section">
     <h4>TORNEOS</h4>
-    <table>
+    <table th:if="${not #lists.isEmpty(torneos)}">
+      <thead>
       <tr>
         <th>Nombre</th>
         <th>Fecha</th>
       </tr>
+      </thead>
+      <tbody>
+      <tr th:each="torneo : ${torneos}">
+        <td th:text="${torneo.nombre}"></td>
+        <td th:text="${torneo.fecha}"></td>
+      </tr>
+      </tbody>
     </table>
-    <div class="empty-message">No hay torneos registrados aún.</div>
+    <div th:if="${#lists.isEmpty(torneos)}" class="empty-message">No hay torneos registrados aún.</div>
     <form th:action="@{/torneos/crear}" method="get">
       <button class="create-btn" type="submit">Crear Torneo</button>
     </form>
@@ -255,5 +369,21 @@
   <h2 style="text-align: center; margin-top: 3rem;">No se pudo cargar la información del perfil del club.</h2>
 </div>
 
+<script>
+  function toggleDropdown() {
+    var dd = document.getElementById('dropdown');
+    if (dd.style.display === "flex") {
+      dd.style.display = "none";
+    } else {
+      dd.style.display = "flex";
+    }
+  }
+  window.onclick = function(event) {
+    if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+      var dd = document.getElementById('dropdown');
+      if (dd) dd.style.display = 'none';
+    }
+  }
+</script>
 </body>
 </html>
