@@ -14,15 +14,18 @@ public class FileFormatter extends Formatter {
 
     @Override
     public String format(LogRecord logRecord) {
-    return dateFormat.format(new Date(logRecord.getMillis())) +
-            " - [" +
-            logRecord.getLevel().getName() +
-            "] - " +
-            logRecord.getSourceClassName() +
-            "." +
-            logRecord.getSourceMethodName() +
-            " - " +
-            formatMessage(logRecord) +
-            System.lineSeparator();
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(dateFormat.format(new Date(logRecord.getMillis())))
+                .append(" - [")
+                .append(logRecord.getLevel().getName())
+                .append("] - ")
+                .append(logRecord.getSourceClassName())
+                .append(".")
+                .append(logRecord.getSourceMethodName())
+                .append(" - ")
+                .append(formatMessage(logRecord))
+                .append(System.lineSeparator());
+        return builder.toString();
     }
 }
