@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.example.demo.model.logger.LoggerManager;
 import org.example.model.user.Judoka;
-import org.example.model.logger.LoggerManager;
 
 import java.util.List;
 import java.util.logging.Level;

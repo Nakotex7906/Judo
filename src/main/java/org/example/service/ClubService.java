@@ -1,9 +1,9 @@
 package org.example.service;
 
-import org.example.model.user.Club;
-import org.example.repository.ClubRepository;
 import org.springframework.transaction.annotation.Transactional; // MODIFICADO: Se añade esta línea de import que faltaba.
 import lombok.AllArgsConstructor;
+import org.example.model.user.Club;
+import org.example.repository.ClubRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,5 +72,9 @@ public class ClubService{
         clubRepository.save(club);
     }
 
+    // Metodo para busacr club por nombre
+    public List<Club> buscarPorNombre(String nombre) {
+        return clubRepository.findByNombreContainingIgnoreCase(nombre);
+    }
 
 }

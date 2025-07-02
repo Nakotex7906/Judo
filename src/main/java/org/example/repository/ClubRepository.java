@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ClubRepository extends JpaRepository<Club, Long> {
@@ -18,5 +19,6 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
     @Query("SELECT c FROM Club c LEFT JOIN FETCH c.judokas WHERE c.username = :username")
     Optional<Club> findByUsernameWithJudokas(@Param("username") String username);
 
-
+    //Metodo necesario para buscar por Letra
+    List<Club> findByNombreContainingIgnoreCase(String nombre);
 }
