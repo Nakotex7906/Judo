@@ -1,14 +1,15 @@
 package org.example.controllerweb;
 
+import org.example.service.RankingService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.dto.JudokaRegistroDTO;
-import org.example.model.logger.LoggerManager;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.example.model.logger.LoggerManager;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,8 @@ public class JudokaWebController {
     private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
     private static final String JUDOKA = "judoka";
     private final JudokaService judokaService;
+    private final RankingService rankingService; // <-- AÑADE RANKING SERVICE
+
 
     @GetMapping("/judokas")
     public String listarJudokas(Model model) {
@@ -45,8 +48,24 @@ public class JudokaWebController {
         if (judokaOpt.isEmpty()) {
             return "redirect:/judokas"; // Si no se encuentra, vuelve a la lista.
         }
-        model.addAttribute(JUDOKA, judokaOpt.get());
-        return "Judoka/judoka_home"; // Devuelve la vista de solo lectura.
+        Judoka judoka = judokaOpt.get();
+        model.addAttribute("judoka", judoka);
+        // --- VVV AÑADE ESTA MISMA LÓGICA QUE EN AUTHCONTROLLER VVV ---
+        model.addAttribute("victoriasPodio", judoka.getVictorias());
+        model.addAttribute("derrotas", judoka.getDerrotas());
+
+        List<Judoka> rankingCompleto = rankingService.obtenerRankingJudokas();
+        int puesto = -1;
+        for (int i = 0; i < rankingCompleto.size(); i++) {
+            if (rankingCompleto.get(i).getId() == judoka.getId()) {
+                puesto = i + 1;
+                break;
+            }
+        }
+        if (puesto != -1) {
+            model.addAttribute("rankingPuesto", puesto);
+        }
+        return "Judoka/judoka_home";
     }
 
     @PostMapping("/judokas")
@@ -107,6 +126,32 @@ public class JudokaWebController {
         return "redirect:/login";
 
 
+    }
+
+    //Editar Perfil.
+
+    @PostMapping("/perfil/guardar")
+    public String guardarPerfilJudoka(@ModelAttribute Judoka judokaActualizado, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        // Buscamos al judoka original en la BBDD para no perder datos
+        Optional<Judoka> judokaOpt = judokaService.findByUsername(username);
+        if (judokaOpt.isPresent()) {
+            Judoka judokaOriginal = judokaOpt.get();
+
+            // Actualizamos solo los campos que vienen del formulario
+            judokaOriginal.setCategoria(judokaActualizado.getCategoria());
+            judokaOriginal.setDescripcion(judokaActualizado.getDescripcion());
+            judokaOriginal.setAniosEntrenamiento(judokaActualizado.getAniosEntrenamiento());
+            judokaOriginal.setOficio(judokaActualizado.getOficio());
+
+            judokaService.guardarJudoka(judokaOriginal); // Guardamos el objeto completo
+        }
+
+        return "redirect:/perfil"; // Redirigimos de vuelta al perfil
     }
 
     private List<String> getCategoriasDePeso() {
