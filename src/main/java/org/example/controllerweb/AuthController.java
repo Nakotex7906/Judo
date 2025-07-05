@@ -3,7 +3,6 @@ package org.example.controllerweb;
 
 import java.util.List;
 import org.example.model.competencia.Torneo;
-import org.example.model.user.Club;
 import org.example.model.user.Judoka;
 import org.example.service.ClubService;
 import org.example.service.JudokaService;
@@ -14,24 +13,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 public class AuthController {
 
-    // MODIFICADO: Inyectamos los servicios para buscar los datos del usuario.
+    private static final String REDIRECT_LOGIN_USER_NOT_FOUND = "redirect:/login?error=user_not_found";
+
     private final JudokaService judokaService;
     private final ClubService clubService;
-    private final TorneoService torneoService; // <-- AÑADE ESTA LÍNEA
-    private final RankingService rankingService; // <-- AÑADE RANKING SERVICE
+    private final TorneoService torneoService;
+    private final RankingService rankingService;
 
-
-
-    // MODIFICADO: Se eliminó la dependencia a AuthenticationService que ya no es necesaria aquí.
     private static final String DIRIGIR_LOGIN = "Model/login";
 
     @GetMapping("/")
@@ -40,12 +33,12 @@ public class AuthController {
     }
 
     @GetMapping("/index")
-    public String index(Model model) { // <-- AÑADE EL MODELO COMO PARÁMETRO
+    public String index(Model model) {
         // 1. Cargar el Top 3 del Ranking
         List<Judoka> top3Ranking = rankingService.obtenerRankingJudokas()
                 .stream()
                 .limit(3) // Tomamos solo los primeros 3
-                .collect(Collectors.toList());
+                .toList();
         model.addAttribute("top3Ranking", top3Ranking);
 
         // 2. Cargar los próximos torneos
@@ -79,56 +72,78 @@ public class AuthController {
     @GetMapping("/perfil")
     public String verPerfil(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
-        String tipo = (String) session.getAttribute("tipo");
-
         if (username == null) {
             return "redirect:/login";
         }
 
+        String tipo = (String) session.getAttribute("tipo");
+
         if ("judoka".equalsIgnoreCase(tipo)) {
-            Optional<Judoka> judokaOpt = judokaService.findByUsername(username);
-            if (judokaOpt.isPresent()) {
-                Judoka judoka = judokaOpt.get();
-                model.addAttribute("judoka", judoka);
-                // --- VVV LÓGICA NUEVA PARA DATOS ADICIONALES VVV ---
-                // 1. Añadir datos para el gráfico
-                model.addAttribute("victoriasPodio", judoka.getVictorias());
-                model.addAttribute("derrotas", judoka.getDerrotas());
-
-                // 2. Calcular y añadir el puesto en el ranking
-                List<Judoka> rankingCompleto = rankingService.obtenerRankingJudokas();
-                int puesto = -1;
-                for (int i = 0; i < rankingCompleto.size(); i++) {
-                    if (rankingCompleto.get(i).getId() == judoka.getId()) {
-                        puesto = i + 1;
-                        break;
-                    }
-                }
-                if (puesto != -1) {
-                    model.addAttribute("rankingPuesto", puesto);
-                }
-
-                // Nota: La sección de "Historial de Competencias" requiere una estructura de datos
-                // que tu modelo actual no tiene (ej. la tabla de resultados).
-                // Por ahora, la dejaremos vacía en la vista.
-
-                // --- ^^^ FIN DE LA LÓGICA NUEVA ^^^ ---
-                return "Judoka/Perfil_Judoka";
-            }
+            return handleJudokaProfile(username, model);
         } else if ("club".equalsIgnoreCase(tipo)) {
-            Optional<Club> clubOpt = clubService.findByUsernameWithJudokas(username);
-            if (clubOpt.isPresent()) {
-                model.  addAttribute("club", clubOpt.get());
-                List<Torneo> todosLosTorneos = torneoService.listarTorneos();
-                model.addAttribute("torneos", todosLosTorneos);
-                return "Club/Perfil_Club";
-
-            }
+            return handleClubProfile(username, model);
         }
 
         session.invalidate();
-        return "redirect:/login?error=user_not_found";
+        return REDIRECT_LOGIN_USER_NOT_FOUND;
+
     }
+
+    /**
+     * Maneja la lógica para mostrar el perfil de un judoka.
+     * Utiliza Optional para un manejo más limpio de la posible ausencia del judoka.
+     *
+     * @param username El nombre de usuario del judoka.
+     * @param model    El modelo para pasar datos a la vista.
+     * @return El nombre de la vista o una redirección si el judoka no se encuentra.
+     */
+    private String handleJudokaProfile(String username, Model model) {
+        return judokaService.findByUsername(username)
+                .map(judoka -> {
+                    prepareModelForJudokaProfile(model, judoka);
+                    return "Judoka/Perfil_Judoka";
+                })
+                .orElse(REDIRECT_LOGIN_USER_NOT_FOUND);
+    }
+
+    /**
+     * Prepara el modelo con todos los datos necesarios para la vista del perfil del judoka.
+     *
+     * @param model  El modelo a preparar.
+     * @param judoka El judoka cuyos datos se usarán.
+     */
+    private void prepareModelForJudokaProfile(Model model, Judoka judoka) {
+        model.addAttribute("judoka", judoka);
+        model.addAttribute("victoriasPodio", judoka.getVictorias());
+        model.addAttribute("derrotas", judoka.getDerrotas());
+
+        // Calcula y añade el puesto en el ranking de forma más funcional
+        rankingService.obtenerRankingJudokas().stream()
+                .filter(j -> j.getId() == judoka.getId())
+                .findFirst()
+                .ifPresent(j -> {
+                    int puesto = rankingService.obtenerRankingJudokas().indexOf(j) + 1;
+                    model.addAttribute("rankingPuesto", puesto);
+                });
+    }
+
+    /**
+     * Maneja la lógica para mostrar el perfil de un club.
+     *
+     * @param username El nombre de usuario del club.
+     * @param model    El modelo para pasar datos a la vista.
+     * @return El nombre de la vista o una redirección si el club no se encuentra.
+     */
+    private String handleClubProfile(String username, Model model) {
+        return clubService.findByUsernameWithJudokas(username)
+                .map(club -> {
+                    model.addAttribute("club", club);
+                    model.addAttribute("torneos", torneoService.listarTorneos());
+                    return "Club/Perfil_Club";
+                })
+                .orElse(REDIRECT_LOGIN_USER_NOT_FOUND);
+    }
+
 
     //Metodo para acceder a terminar y condiciones
     @GetMapping("/terminos")
