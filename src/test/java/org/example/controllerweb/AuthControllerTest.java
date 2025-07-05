@@ -3,6 +3,8 @@ package org.example.controllerweb;
 import jakarta.servlet.http.HttpSession;
 import org.example.service.ClubService;
 import org.example.service.JudokaService;
+import org.example.service.RankingService;
+import org.example.service.TorneoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +31,13 @@ class AuthControllerTest {
     private ClubService clubService;
 
     @Mock
+    private TorneoService torneoService;
+
+    @Mock
+    private RankingService rankingService;
+
+
+    @Mock
     private HttpSession session;
 
     @Mock
@@ -42,7 +51,8 @@ class AuthControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         // Corregido: Se instancia el controlador con sus dependencias actuales.
-        authController = new AuthController(judokaService, clubService);
+        authController = new AuthController(judokaService, clubService, torneoService, rankingService);
+
     }
 
     /**
