@@ -70,6 +70,15 @@ public class JudokaService {
         return judokaRepository.findById(id);
     }
 
+    public void eliminarPorUsername(String username) {
+        judokaRepository.findByUsername(username)
+                .ifPresent(judokaRepository::delete);
+    }
+
+    public void eliminarPorId(Long id) {
+        judokaRepository.deleteById(id);
+    }
+
     // MODIFICADO: Se añade un método de servicio para exponer la nueva consulta del repositorio.
     public List<Judoka> listarJudokasSinClub() {
         return judokaRepository.findByClubIsNull();

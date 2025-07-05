@@ -106,6 +106,7 @@ public class ClubWebController {
         nuevoClub.setAnoFundacion(clubForm.getAnoFundacion());
         nuevoClub.setDireccion(clubForm.getDireccion());
         nuevoClub.setHorarios(clubForm.getHorarios());
+        nuevoClub.setDescripcion(clubForm.getDescripcion());
 
         clubService.guardarClub(nuevoClub);
         model.addAttribute("success", "¡Club registrado correctamente! " +
@@ -157,5 +158,42 @@ public class ClubWebController {
         }
 
         return "redirect:/perfil"; // Redirigimos de vuelta al perfil del club.
+    }
+
+    // Permite eliminar un integrante del club
+    @PostMapping("/club/eliminar-judoka/{judokaId}")
+    public String eliminarJudoka(@PathVariable Long judokaId, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+
+        Optional<Judoka> judokaOpt = judokaService.buscarPorId(judokaId);
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+
+        if (judokaOpt.isPresent() && clubOpt.isPresent()) {
+            Judoka judoka = judokaOpt.get();
+            Club club = clubOpt.get();
+            if (judoka.getClub() != null && judoka.getClub().getId().equals(club.getId())) {
+                judoka.setClub(null);
+                judokaService.guardarJudoka(judoka);
+            }
+        }
+        return "redirect:/perfil";
+    }
+
+    // Actualiza horarios y descripcion del club
+    @PostMapping("/club/actualizar")
+    public String actualizarClub(@ModelAttribute Club clubActualizado, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+        clubService.findByUsername(username).ifPresent(club -> {
+            club.setHorarios(clubActualizado.getHorarios());
+            club.setDescripcion(clubActualizado.getDescripcion());
+            clubService.guardarClub(club);
+        });
+        return "redirect:/perfil";
     }
 }

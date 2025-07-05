@@ -27,5 +27,7 @@ public class ClubRegistroDTO {
     @NotBlank(message = "Los horarios son obligatorios")
     private String horarios;
 
+    private String descripcion;
+
 
 }

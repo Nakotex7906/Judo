@@ -151,4 +151,15 @@ public class AuthController {
         return "Model/terminos_y_condiciones";
     }
 
+    @PostMapping("/judoka/eliminar")
+    public String eliminarCuentaJudoka(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username != null && "judoka".equals(session.getAttribute("tipo"))) {
+            judokaService.eliminarPorUsername(username);
+            session.invalidate();
+            return "redirect:/login?deleted";
+        }
+        return "redirect:/login";
+    }
+
 }

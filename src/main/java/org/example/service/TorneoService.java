@@ -72,4 +72,12 @@ public class TorneoService {
         torneoRepository.deleteById(id);
     }
 
+    public void eliminarParticipante(Long torneoId, Long judokaId) {
+        torneoRepository.findById(torneoId).ifPresent(t -> {
+            t.getParticipantes().removeIf(j -> j.getId() == judokaId);
+            torneoRepository.save(t);
+        });
+    }
+
+
 }

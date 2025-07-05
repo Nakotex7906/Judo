@@ -261,6 +261,10 @@
         <span class="info-label">Descripción:</span>
         <span class="desc" th:text="${torneo.descripcion}">Torneo anual de judo...</span>
       </div>
+      <div class="info-row" th:if="${torneo.ganador != null}">
+        <span class="info-label">Ganador:</span>
+        <span class="info-value" th:text="${torneo.ganador.nombre}">Ganador</span>
+      </div>
     </div>
     <div class="participants-section">
       <h3>Participantes:</h3>
@@ -268,9 +272,11 @@
         <span style="color:var(--gris-claro)">No hay participantes registrados.</span>
       </div>
       <ul class="participants-list" th:if="${not #lists.isEmpty(torneo.participantes)}">
-        <li th:each="j : ${torneo.participantes}"
-            th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}">
-          Judoka 1 (Categoría)
+        <li th:each="j : ${torneo.participantes}">
+          <span th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}"></span>
+          <form th:action="@{/torneos/{id}/eliminar-participante/{jid}(id=${torneo.id},jid=${j.id})}" method="post" style="display:inline">
+            <button type="submit">Eliminar</button>
+          </form>
         </li>
       </ul>
     </div>

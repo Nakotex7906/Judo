@@ -337,9 +337,11 @@
       </tr>
     </table>
     <div class="empty-message">No hay horarios registrados aún.</div>
-    <div class="add-btn">
-      <button title="Agregar Horario">+</button>
-    </div>
+    <form th:action="@{/club/actualizar}" method="post">
+      <input type="text" name="horarios" th:value="${club.horarios}" placeholder="Horarios"/>
+      <textarea name="descripcion" th:text="${club.descripcion}" placeholder="Descripción" rows="3"></textarea>
+      <button type="submit" class="create-btn">Guardar</button>
+    </form>
   </div>
 
   <div class="section">

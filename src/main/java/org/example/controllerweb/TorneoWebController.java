@@ -62,4 +62,20 @@ public class TorneoWebController {
 
         return "redirect:/torneos";
     }
+
+    @GetMapping("/torneos/{id}")
+    public String verTorneo(@PathVariable Long id, Model model) {
+        return torneoService.buscarPorId(id)
+                .map(t -> {
+                    model.addAttribute("torneo", t);
+                    return "Torneo/torneo_home";
+                })
+                .orElse("redirect:/torneos");
+    }
+
+    @PostMapping("/torneos/{id}/eliminar-participante/{judokaId}")
+    public String eliminarParticipante(@PathVariable Long id, @PathVariable Long judokaId) {
+        torneoService.eliminarParticipante(id, judokaId);
+        return "redirect:/torneos/" + id;
+    }
 }
