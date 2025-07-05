@@ -251,15 +251,7 @@
     <div class="torneo-info">
       <div class="info-row">
         <span class="info-label">Fecha:</span>
-        <span class="info-value" th:text="${#dates.format(torneo.fecha, 'dd/MM/yyyy')}">10/06/2025</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Club organizador:</span>
-        <span class="info-value" th:text="${torneo.club != null ? torneo.club.nombre : 'No especificado'}">Club Judo Central</span>
-      </div>
-      <div class="info-row" th:if="${torneo.descripcion != null}">
-        <span class="info-label">Descripción:</span>
-        <span class="desc" th:text="${torneo.descripcion}">Torneo anual de judo...</span>
+        <span class="info-value" th:text="${torneo.fecha}">10/06/2025</span>
       </div>
     </div>
     <div class="participants-section">
@@ -267,14 +259,18 @@
       <div th:if="${#lists.isEmpty(torneo.participantes)}">
         <span style="color:var(--gris-claro)">No hay participantes registrados.</span>
       </div>
-      <ul class="participants-list" th:if="${not #lists.isEmpty(torneo.participantes)}">
-        <li th:each="j : ${torneo.participantes}"
-            th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}">
-          Judoka 1 (Categoría)
-        </li>
-      </ul>
+      <form th:if="${not #lists.isEmpty(torneo.participantes)}" th:action="@{'/torneos/' + ${torneo.id} +
+       '/eliminar-participantes'}" method="post">
+        <ul class="participants-list">
+          <li th:each="j : ${torneo.participantes}">
+            <input type="checkbox" name="participantesIds" th:value="${j.id}" th:id="'judoka-' + ${j.id}">
+            <label th:for="'judoka-' + ${j.id}" th:text="${j.nombre + ' ' + j.apellido + ' (' + j.categoria + ')'}"></label>
+          </li>
+        </ul>
+        <button type="submit" class="volver-btn" style="margin-top:1.2rem;">Eliminar seleccionados</button>
+      </form>
     </div>
-    <button class="volver-btn" onclick="location.href='/club/home'">← Volver</button>
+    <button class="volver-btn" onclick="location.href='/torneos'">← Volver a Torneos</button>
   </div>
 </div>
 <script>

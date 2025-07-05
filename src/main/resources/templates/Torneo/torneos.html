@@ -235,6 +235,7 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Fecha</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -242,6 +243,9 @@
             <td th:text="${torneo.id}">1</td>
             <td th:text="${torneo.nombre}">Torneo Nacional</td>
             <td th:text="${torneo.fecha}">2025-06-10</td>
+            <td>
+                <a th:href="@{'/torneos/' + ${torneo.id}}" style="color: var(--blanco); text-decoration: underline;">Ver</a>
+            </td>
         </tr>
         </tbody>
     </table>

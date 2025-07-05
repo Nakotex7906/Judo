@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.demo.model.logger.LoggerManager;
+import org.example.model.logger.LoggerManager;
 import org.example.model.user.Judoka;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class Torneo {
     private String nombre;
     private String fecha;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "torneo_judoka",
             joinColumns = @JoinColumn(name = "torneo_id"),

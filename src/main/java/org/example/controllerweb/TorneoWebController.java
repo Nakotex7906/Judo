@@ -17,7 +17,6 @@ public class TorneoWebController {
 
     private final TorneoService torneoService;
     private final JudokaService judokaService;
-    private static final Logger logger = LoggerManager.getLogger(TorneoWebController.class);
 
     public TorneoWebController(TorneoService torneoService, JudokaService judokaService) {
         this.torneoService = torneoService;
@@ -61,5 +60,21 @@ public class TorneoWebController {
         torneoService.guardarTorneo(nuevoTorneo);
 
         return "redirect:/torneos";
+    }
+
+    @PostMapping("/torneos/{torneoId}/eliminar-participantes")
+    public String eliminarParticipantes(@PathVariable Long torneoId, @RequestParam List<Long> participantesIds) {
+        torneoService.eliminarParticipantesDeTorneo(torneoId, participantesIds);
+        return "redirect:/torneos";
+    }
+
+    @GetMapping("/torneos/{id}")
+    public String verTorneo(@PathVariable Long id, Model model) {
+        Torneo torneo = torneoService.buscarPorId(id).orElse(null);
+        if (torneo == null) {
+            return "redirect:/torneos?error=TorneoNoEncontrado";
+        }
+        model.addAttribute("torneo", torneo);
+        return "Torneo/torneo_home";
     }
 }
