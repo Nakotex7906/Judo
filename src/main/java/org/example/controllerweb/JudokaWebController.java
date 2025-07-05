@@ -1,5 +1,6 @@
 package org.example.controllerweb;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.service.RankingService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -156,6 +157,30 @@ public class JudokaWebController {
         return "redirect:/perfil"; // Redirigimos de vuelta al perfil
     }
 
+    @GetMapping("/perfil/eliminar")
+    public String mostrarConfirmacionEliminarCuenta(HttpSession session, Model model) {
+        if (!esJudoka(session)) {
+            return LOGIN;
+        }
+        return "Judoka/confirmar_eliminacion";
+    }
+
+    @PostMapping("/perfil/eliminar")
+    public String eliminarCuenta(HttpSession session) {
+        if (!esJudoka(session)) {
+            return LOGIN;
+        }
+
+        String username = (String) session.getAttribute(USERNAME);
+        try {
+            judokaService.eliminarCuentaJudoka(username);
+            session.invalidate();
+            return LOGIN + "?eliminado=true";
+        } catch (EntityNotFoundException e) {
+            return "redirect:/error";
+        }
+    }
+
     private List<String> getCategoriasDePeso() {
         return Arrays.asList("-60 kg", "-66 kg", "-73 kg", "-81 kg", "-90 kg", "-100 kg", "+100 kg");
     }
@@ -190,4 +215,5 @@ public class JudokaWebController {
         nuevo.setFechaNacimiento(dto.getFechaNacimiento());
         return nuevo;
     }
+
 }

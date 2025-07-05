@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.example.model.user.Judoka;
 import org.example.repository.JudokaRepository;
@@ -79,4 +80,15 @@ public class JudokaService {
     public Optional<Judoka> findByUsernameWithClub(String username) {
         return judokaRepository.findByUsernameWithClub(username);
     }
+
+    public void eliminarCuentaJudoka(String username) {
+        Optional<Judoka> judoka = findByUsername(username);
+        if (judoka.isPresent()) {
+            // Eliminar registros relacionados primero
+            // TODO: Implementar lógica para eliminar registros en tablas relacionadas si existen
+            judokaRepository.delete(judoka.get());
+        } else {
+            throw new EntityNotFoundException("No se encontró el judoka con username: " + username);
+        }
+}
 }

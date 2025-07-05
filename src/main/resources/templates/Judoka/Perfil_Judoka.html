@@ -50,6 +50,24 @@
             align-items: center;
             gap: 18px;
         }
+        .delete-btn {
+            padding: 11px 28px;
+            background-color: #444;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--blanco);
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.13);
+            text-decoration: none;
+            margin-left: 1rem;
+        }
+        .delete-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
         .navbar-link-btn {
             background: var(--blanco);
             color: var(--gris-navbar);
@@ -540,6 +558,11 @@
             <button class="submit-btn" type="submit">Guardar Cambios</button>
         </form>
     </div>
+</div>
+
+<div class="edit-btn-container">
+    <button class="edit-btn" onclick="openModal()">Editar Perfil</button>
+    <a href="/perfil/eliminar" class="delete-btn">Eliminar Cuenta</a>
 </div>
 
 <script>
