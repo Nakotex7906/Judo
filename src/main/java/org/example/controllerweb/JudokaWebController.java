@@ -27,6 +27,8 @@ public class JudokaWebController {
     private static final String JUDOKA_VIEW = "judoka/judokas";
     private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
     private static final String JUDOKA = "judoka";
+    private static final String USERNAME = "username";
+    private static final String LOGIN = "redirect:/login";
     private final JudokaService judokaService;
     private final RankingService rankingService; // <-- AÑADE RANKING SERVICE
 
@@ -49,7 +51,7 @@ public class JudokaWebController {
             return "redirect:/judokas"; // Si no se encuentra, vuelve a la lista.
         }
         Judoka judoka = judokaOpt.get();
-        model.addAttribute("judoka", judoka);
+        model.addAttribute(JUDOKA, judoka);
         // --- VVV AÑADE ESTA MISMA LÓGICA QUE EN AUTHCONTROLLER VVV ---
         model.addAttribute("victoriasPodio", judoka.getVictorias());
         model.addAttribute("derrotas", judoka.getDerrotas());
@@ -76,7 +78,7 @@ public class JudokaWebController {
     }
 
     private boolean esJudoka(HttpSession s) {
-        return s.getAttribute("username") != null && JUDOKA.equals(s.getAttribute("tipo"));
+        return s.getAttribute(USERNAME) != null && JUDOKA.equals(s.getAttribute("tipo"));
     }
 
     @GetMapping("/judoka/home")
@@ -85,8 +87,8 @@ public class JudokaWebController {
         // La redirección después del login va a /index.
         // El perfil personal se maneja con /perfil en AuthController.
         // Podemos mantenerla por si se necesita en el futuro o eliminarla. Por ahora la dejamos.
-        if (!esJudoka(session)) return "redirect:/login";
-        String username = (String) session.getAttribute("username");
+        if (!esJudoka(session)) return LOGIN;
+        String username = (String) session.getAttribute(USERNAME);
 
         Judoka judoka = judokaService.findByUsername(username).orElse(null);
         model.addAttribute(JUDOKA, judoka);
@@ -123,7 +125,7 @@ public class JudokaWebController {
 
         model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
         model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
-        return "redirect:/login";
+        return LOGIN;
 
 
     }
@@ -132,9 +134,9 @@ public class JudokaWebController {
 
     @PostMapping("/perfil/guardar")
     public String guardarPerfilJudoka(@ModelAttribute Judoka judokaActualizado, HttpSession session) {
-        String username = (String) session.getAttribute("username");
+        String username = (String) session.getAttribute(USERNAME);
         if (username == null) {
-            return "redirect:/login";
+            return LOGIN;
         }
 
         // Buscamos al judoka original en la BBDD para no perder datos
