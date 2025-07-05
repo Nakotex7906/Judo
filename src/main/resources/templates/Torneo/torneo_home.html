@@ -217,6 +217,45 @@
     .volver-btn:hover {
       background-color: var(--rojo-hover);
     }
+    .edit-input {
+      background: var(--gris-oscuro);
+      color: var(--blanco);
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 0.6rem;
+      width: calc(100% - 12px);
+      margin-top: 0.3rem;
+    }
+    .edit-btn {
+      background: var(--gris-navbar);
+      color: var(--blanco);
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.17s;
+      margin-top: 1rem;
+    }
+    .edit-btn:hover {
+      background: var(--rojo);
+    }
+    .delete-btn {
+      background: var(--rojo);
+      color: var(--blanco);
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.17s;
+      margin-top: 1rem;
+    }
+    .delete-btn:hover {
+      background: #cc0000;
+    }
     @media (max-width: 600px) {
       .torneo-card {padding: 1.2rem 0.4rem;}
       .main-container {padding-top: 0.4rem;}
@@ -248,12 +287,26 @@
 <div class="main-container">
   <div class="torneo-card">
     <h2 th:text="${torneo.nombre}">Torneo Nacional</h2>
+
     <div class="torneo-info">
-      <div class="info-row">
-        <span class="info-label">Fecha:</span>
-        <span class="info-value" th:text="${torneo.fecha}">10/06/2025</span>
-      </div>
+      <form th:action="@{'/torneos/' + ${torneo.id} + '/editar'}" method="post" style="margin-bottom: 2rem;">
+        <div class="info-row">
+          <span class="info-label">Nombre:</span>
+          <input type="text" name="nombre" th:value="${torneo.nombre}" class="edit-input">
+        </div>
+        <div class="info-row">
+          <span class="info-label">Fecha:</span>
+          <input type="date" name="fecha" th:value="${torneo.fecha}" class="edit-input">
+        </div>
+        <button type="submit" class="edit-btn">Guardar Cambios</button>
+      </form>
+
+      <form th:action="@{'/torneos/' + ${torneo.id} + '/eliminar'}" method="post"
+            style="margin-bottom: 2rem;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este torneo?');">
+        <button type="submit" class="delete-btn">Eliminar Torneo</button>
+      </form>
     </div>
+
     <div class="participants-section">
       <h3>Participantes:</h3>
       <div th:if="${#lists.isEmpty(torneo.participantes)}">

@@ -359,9 +359,12 @@
       </tbody>
     </table>
     <div th:if="${#lists.isEmpty(torneos)}" class="empty-message">No hay torneos registrados aún.</div>
-    <form th:action="@{/torneos/crear}" method="get">
-      <button class="create-btn" type="submit">Crear Torneo</button>
-    </form>
+    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+      <form th:action="@{/torneos/crear}" method="get" style="margin: 0;">
+        <button class="create-btn" type="submit">Crear Torneo</button>
+      </form>
+      <a href="/torneos" class="create-btn" style="text-decoration: none;">Gestionar Torneos</a>
+    </div>
   </div>
 </div>
 
