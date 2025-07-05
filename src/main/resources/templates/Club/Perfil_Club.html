@@ -281,7 +281,17 @@
       <span>Club</span>
     </div>
     <h2 th:text="${club.nombre}">NOMBRE DEL CLUB</h2>
-    <p>Breve descripción del Club de Judo.</p>
+    <div style="position: relative;">
+      <p id="descripcion" th:text="${club.descripcion ?: 'Breve descripción del Club de Judo.'}"></p>
+      <form id="formDescripcion" style="display: none;" th:action="@{/club/actualizar-descripcion}" method="post">
+        <textarea name="descripcion" rows="3" style="width: 80%; margin: 10px auto; padding: 8px; border-radius: 4px; background: var(--gris-oscuro); color: var(--blanco); border: 1px solid var(--gris-claro);"
+                  th:text="${club.descripcion}"></textarea>
+        <button type="submit" style="background: var(--rojo); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 5px;">Guardar Cambios</button>
+      </form>
+      <button onclick="toggleEdicion()" style="position: absolute; right: 10px; top: 0; background: none; border: none; color: var(--blanco); cursor: pointer; font-size: 1.2em;" title="Editar descripción">
+        ✎
+      </button>
+    </div>
   </div>
 
   <div class="club-info">
@@ -381,6 +391,20 @@
       dd.style.display = "flex";
     }
   }
+
+  function toggleEdicion() {
+    const descripcion = document.getElementById('descripcion');
+    const form = document.getElementById('formDescripcion');
+
+    if (form.style.display === 'none') {
+      descripcion.style.display = 'none';
+      form.style.display = 'block';
+    } else {
+      descripcion.style.display = 'block';
+      form.style.display = 'none';
+    }
+  }
+
   window.onclick = function(event) {
     if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
       var dd = document.getElementById('dropdown');

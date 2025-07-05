@@ -22,8 +22,6 @@ public class ClubService{
         return clubRepository.findByUsername(username);
     }
 
-
-
     //Se añade un método para buscar un club por su ID.
     public Optional<Club> buscarPorId(Long id) {
         return clubRepository.findById(id);
@@ -76,5 +74,4 @@ public class ClubService{
     public List<Club> buscarPorNombre(String nombre) {
         return clubRepository.findByNombreContainingIgnoreCase(nombre);
     }
-
 }

@@ -28,6 +28,7 @@ public class ClubWebController {
     private static final String REGISTRO_CLUB = "Club/registro_club";
     private static final String USERNAME = "username";
     private static final String REDIRECT_LOGIN = "redirect:/login";
+    private static final String REDIRECT_PERFIL = "redirect:/perfil";
 
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
@@ -140,7 +141,7 @@ public class ClubWebController {
 
         // Si no se seleccionó ningún judoka, simplemente volvemos al perfil.
         if (judokaIds == null || judokaIds.isEmpty()) {
-            return "redirect:/perfil";
+            return REDIRECT_PERFIL;
         }
 
         Club club = clubService.findByUsername(username).orElse(null);
@@ -156,6 +157,23 @@ public class ClubWebController {
             judokaService.guardarJudoka(judoka); // Guardamos el judoka actualizado.
         }
 
-        return "redirect:/perfil"; // Redirigimos de vuelta al perfil del club.
+        return REDIRECT_PERFIL; // Redirigimos de vuelta al perfil del club.
+    }
+
+    @PostMapping("/club/actualizar-descripcion")
+    public String actualizarDescripcion(@RequestParam("descripcion") String descripcion, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            club.setDescripcion(descripcion);
+            clubService.guardarClub(club);
+            return REDIRECT_PERFIL;
+        }
+        return REDIRECT_LOGIN;
     }
 }

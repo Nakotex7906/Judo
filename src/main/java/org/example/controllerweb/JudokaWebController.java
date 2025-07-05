@@ -176,7 +176,7 @@ public class JudokaWebController {
             judokaService.eliminarCuentaJudoka(username);
             session.invalidate();
             return LOGIN + "?eliminado=true";
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException _) {
             return "redirect:/error";
         }
     }
