@@ -1,5 +1,6 @@
 package org.example.controllerweb;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import jakarta.servlet.http.HttpSession;
@@ -193,4 +194,25 @@ public class ClubWebController {
         }
         return REDIRECT_LOGIN;
     }
+
+    @GetMapping("/perfil/eliminar_club")
+    public String mostrarConfirmacionEliminarCuenta(HttpSession session, Model model) {
+        return "Club/confirmar_eliminacion";
+    }
+
+    @PostMapping("/perfil/eliminar_club")
+    public String eliminarCuentaClub(HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+
+        try {
+            clubService.eliminarCuentaClub(username);
+            session.invalidate();
+            return REDIRECT_LOGIN + "?eliminado=true";
+        }catch (EntityNotFoundException _) {
+            return "redirect:/error?mensaje=Club no encontrado";
+        }
+
+    }
+
+
 }

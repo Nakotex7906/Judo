@@ -59,4 +59,19 @@ public class ClubService{
     public List<Club> buscarPorNombre(String nombre) {
         return clubRepository.findByNombreContainingIgnoreCase(nombre);
     }
+
+    public void eliminarCuentaClub(String username) {
+        Optional<Club> clubOpt = findByUsername(username);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            // Elimina todos los judokas asociados al club
+            club.getJudokas().forEach(judoka -> judoka.setClub(null));
+            club.getJudokas().clear();
+            // Elimina el club
+            clubRepository.delete(club);
+        }else {
+            throw new IllegalArgumentException("Club no encontrado con el username: " + username);
+        }
+    }
+
 }
