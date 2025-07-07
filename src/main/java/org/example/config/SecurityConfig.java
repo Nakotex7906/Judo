@@ -29,7 +29,8 @@ public class SecurityConfig {
                         // Se reordenan y especifican las reglas de seguridad.
                         // 1. Rutas públicas que no requieren autenticación.
                         .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**",
-                                "/recuperar/**", "/restablecer/**", "/registro-judoka", "/registro-club").permitAll()
+                                "/recuperar/**", "/restablecer/**", "/registro-judoka", "/registro-club",
+                                "/judoka/publico/**").permitAll()
 
                         // 2. Rutas que puede ver cualquier usuario que haya iniciado sesión (sea Judoka o Club).
                         .requestMatchers("/lista", "/judokas", "/club/publico/**").authenticated()
