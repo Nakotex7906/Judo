@@ -1,5 +1,6 @@
 package org.example.controllerweb;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.example.dto.ClubRegistroDTO;
 import org.example.model.user.Club;
@@ -195,4 +196,43 @@ class ClubWebControllerTest {
         verify(clubService, never()).guardarClub(any(Club.class));
 
     }
+
+    /**
+     * Prueba que se muestre correctamente la vista de confirmación para eliminar el club.
+     */
+    @Test
+    void testMostrarConfirmacionEliminarCuenta() {
+        String result = clubWebController.mostrarConfirmacionEliminarCuenta(session, model);
+        assertEquals("Club/confirmar_eliminacion", result);
+    }
+
+    /**
+     * Prueba que se elimine correctamente la cuenta del club y se invalide la sesión.
+     */
+    @Test
+    void testEliminarCuentaClubExitosamente() {
+        when(session.getAttribute("username")).thenReturn("club123");
+
+        String result = clubWebController.eliminarCuentaClub(session);
+
+        assertEquals("redirect:/login?eliminado=true", result);
+        verify(clubService).eliminarCuentaClub("club123");
+        verify(session).invalidate();
+    }
+
+    /**
+     * Prueba que se redirija al error si la cuenta del club no existe.
+     */
+    @Test
+    void testEliminarCuentaClubCuandoNoExiste() {
+        when(session.getAttribute("username")).thenReturn("clubInexistente");
+        doThrow(new EntityNotFoundException("Club no encontrado")).when(clubService).eliminarCuentaClub("clubInexistente");
+
+        String result = clubWebController.eliminarCuentaClub(session);
+
+        assertEquals("redirect:/error?mensaje=Club no encontrado", result);
+        verify(clubService).eliminarCuentaClub("clubInexistente");
+        verify(session, never()).invalidate();
+    }
+
 }
