@@ -4,89 +4,261 @@
     <meta charset="UTF-8">
     <title>Agregar Judokas al Club</title>
     <style>
-        body {
-            font-family: Arial,
-            sans-serif;
-            background-color: #f5f5f5;
-            margin: 2rem;
+        :root {
+            --negro-suave: #1e1e1e;
+            --gris-oscuro: #3d3d3d;
+            --gris-claro: #ddd;
+            --blanco: #fff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+            --gris-texto: #ccc;
         }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--negro-suave);
+        }
+
+        header {
+            background-color: var(--negro-suave);
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .navbar-link-btn {
+            background: var(--blanco);
+            color: var(--negro-suave);
+            border: none;
+            border-radius: 8px;
+            padding: 7px 22px;
+            font-weight: bold;
+            font-size: 1.08rem;
+            cursor: pointer;
+            transition: background 0.17s, color 0.13s;
+            text-decoration: none;
+            margin-right: 2px;
+        }
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+        .menu-toggle {
+            margin-left: 15px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
+        }
+        .menu-toggle:hover {
+            background: #232323;
+        }
+        .menu-lines {
+            width: 28px;
+            height: 4px;
+            background: var(--blanco);
+            margin: 3.2px 0;
+            border-radius: 2px;
+        }
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-oscuro);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
+        }
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dropdown a {
+            color: var(--blanco);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+
+        /* FORMULARIO Y LISTA */
         .form-container {
             max-width: 600px;
-            margin: auto;
-            background: white;
+            margin: 3.5rem auto 0 auto;
+            background: var(--gris-oscuro);
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.17);
         }
         h2 {
             text-align: center;
-            color: #333;
+            color: var(--blanco);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
         }
         .judoka-list {
             list-style: none;
             padding: 0;
             max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid var(--gris-claro);
+            border-radius: 6px;
             margin-bottom: 1.5rem;
+            background: var(--gris-oscuro); /* Cambiado a gris oscuro */
         }
         .judoka-list li {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 12px;
+            border-bottom: 1px solid #444; /* Un poco más oscuro que #eee */
+            display: flex;
+            align-items: center;
+            color: var(--gris-claro);
         }
         .judoka-list li:last-child {
             border-bottom: none;
         }
         .judoka-list label {
-            margin-left: 10px;
+            margin-left: 12px;
+        }
+        .judoka-list input[type="checkbox"] {
+            accent-color: var(--rojo);
         }
         .button-group {
             display: flex;
             justify-content: space-between;
+            gap: 18px;
         }
         button {
-            background-color: #e60000;
-            color: white;
+            background-color: var(--rojo);
+            color: var(--blanco);
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 11px 22px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.13s;
         }
         button:hover {
-            background-color: #cc0000;
+            background-color: var(--rojo-hover);
         }
         .btn-secondary {
-            background-color: #6c757d;
+            background-color: var(--gris-oscuro);
+            color: var(--gris-claro);
         }
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #272727;
+            color: var(--blanco);
+        }
+        @media (max-width: 700px) {
+            nav { gap: 7px;}
+            .navbar-link-btn { padding: 6px 11px; font-size: 1rem;}
+            .navbar-title { font-size: 1rem;}
+            header {padding: 0.7rem 7px 0.7rem 13px;}
+        }
+        @media (max-width: 510px) {
+            .form-container { padding: 1rem; }
         }
     </style>
 </head>
 <body>
+<!-- NAVBAR SUPERIOR -->
+<header>
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
+    <nav>
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+        </div>
+    </nav>
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:href="@{/perfil}">Editar perfil</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</header>
+
 <div class="form-container">
     <h2>Seleccionar Judokas para Agregar</h2>
     <form th:action="@{/club/agregar-judoka}" method="post">
-
         <div th:if="${#lists.isEmpty(judokasDisponibles)}">
-            <p>No hay judokas sin club disponibles para agregar.</p>
+            <p style="color:var(--gris-claro)">No hay judokas sin club disponibles para agregar.</p>
         </div>
-
         <ul class="judoka-list" th:if="${not #lists.isEmpty(judokasDisponibles)}">
             <li th:each="judoka : ${judokasDisponibles}">
                 <input type="checkbox" name="judokaIds" th:value="${judoka.id}" th:id="'judoka-' + ${judoka.id}">
                 <label th:for="'judoka-' + ${judoka.id}" th:text="${judoka.nombre + ' ' + judoka.apellido + ' (' + judoka.categoria + ')'}"></label>
             </li>
         </ul>
-
         <div class="button-group">
             <button type="button" class="btn-secondary" onclick="window.location.href='/perfil'">Cancelar</button>
             <button type="submit" th:if="${not #lists.isEmpty(judokasDisponibles)}">Agregar Seleccionados</button>
         </div>
     </form>
 </div>
-
+<script>
+    function toggleDropdown() {
+        var dd = document.getElementById('dropdown');
+        if (dd.style.display === "flex") {
+            dd.style.display = "none";
+        } else {
+            dd.style.display = "flex";
+        }
+    }
+    // Cerrar el dropdown al hacer click fuera
+    window.onclick = function(event) {
+        if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+            var dd = document.getElementById('dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>

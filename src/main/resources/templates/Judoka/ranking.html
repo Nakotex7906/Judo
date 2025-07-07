@@ -6,153 +6,298 @@
     <link rel="icon" href="/img/logo.png">
     <style>
         :root {
-            --negro: #1e1e1e;
-            --gris: #f2f2f2;
+            --negro-suave: #1e1e1e;
+            --gris-navbar: #1e1e1e;
+            --gris-fondo: #232323;
+            --gris-tabla: #323232;
+            --gris-cabecera: #404040;
+            --gris-hover: #2a2a2a;
+            --gris-claro: #e0e0e0;
+            --blanco: #fff;
             --rojo: #e60000;
-            --rojo-hover: #c40000;
-            --blanco: #ffffff;
+            --rojo-hover: #cc0000;
+            --dorado: #ffd700;
+            --plata: #c0c0c0;
+            --bronce: #cd7f32;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--gris);
-            color: var(--negro);
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
         }
 
         header {
-            background-color: var(--negro);
+            background-color: var(--gris-navbar);
             color: var(--blanco);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 2rem;
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
             position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
         }
-
-        header img {
-            height: 40px;
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
         }
 
         nav {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 18px;
         }
-
-        nav a {
-            color: var(--negro);
-            background-color: var(--blanco);
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 5px;
+        .navbar-link-btn {
+            background: var(--blanco);
+            color: var(--negro-suave);
+            border: none;
+            border-radius: 8px;
+            padding: 7px 22px;
             font-weight: bold;
-            transition: background 0.3s;
+            font-size: 1.08rem;
+            cursor: pointer;
+            transition: background 0.17s, color 0.13s;
+            text-decoration: none;
+            margin-right: 2px;
         }
-
-        nav a:hover {
-            background-color: var(--gris);
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
         }
-
         .menu-toggle {
-            width: 30px;
-            height: 25px;
+            margin-left: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
         }
-
+        .menu-toggle:hover {
+            background: #232323;
+        }
         .menu-lines {
-            width: 100%;
+            width: 28px;
             height: 4px;
-            background-color: var(--blanco);
+            background: var(--blanco);
+            margin: 3.2px 0;
             border-radius: 2px;
         }
-
         .dropdown {
             display: none;
+            flex-direction: column;
             position: absolute;
-            top: 70px;
-            right: 20px;
-            background-color: var(--blanco);
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            z-index: 999;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-tabla);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
         }
-
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
         .dropdown a {
-            display: block;
-            padding: 10px 15px;
-            color: var(--negro);
+            color: var(--blanco);
+            padding: 12px 24px;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
         }
-
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
         .dropdown a:hover {
-            background-color: var(--gris);
+            background: var(--rojo);
+            color: var(--blanco);
         }
-
         h1 {
             text-align: center;
-            color: var(--rojo);
-            margin: 2rem 0 1rem 0;
+            color: var(--blanco);
+            font-size: 2.2rem;
+            margin: 2rem 0 1.5rem 0;
+            letter-spacing: 2px;
         }
-
+        .h1-acento {
+            color: var(--rojo);
+            font-weight: bold;
+            font-size: 2.3rem;
+            letter-spacing: 1px;
+        }
         .filter-container {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
-
-        select {
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .filter-form label {
+            font-weight: bold;
+            color: var(--gris-claro);
+            margin-right: 8px;
+        }
+        .filter-form select,
+        .filter-form input[type="text"] {
             padding: 0.5rem;
             font-size: 1rem;
+            border-radius: 5px;
+            border: none;
+            background: var(--gris-tabla);
+            color: var(--blanco);
+            margin-right: 0.6rem;
         }
-
+        .filter-form input[type="text"] {
+            width: 180px;
+            margin-right: 0;
+        }
+        .filter-form button {
+            background: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0.5rem 1.4rem;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+        .filter-form button:hover {
+            background: var(--rojo-hover);
+        }
+        select option {
+            color: var(--negro-suave);
+        }
+        /* TABLA ESTILO OSCURO */
         table {
-            width: 85%;
+            width: 90%;
             margin: 0 auto 3rem auto;
             border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: var(--gris-tabla);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.23);
+            border-radius: 9px;
+            overflow: hidden;
         }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: .75rem 1rem;
-            text-align: left;
+        thead tr {
+            background: var(--gris-cabecera);
         }
-
         th {
-            background-color: var(--rojo);
-            color: white;
+            color: var(--blanco);
+            font-weight: bold;
+            border: none;
+            font-size: 1.06rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            letter-spacing: 0.5px;
         }
-
+        tr {
+            background-color: var(--gris-tabla);
+            transition: background 0.14s;
+        }
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #282828;
         }
-
         tbody tr:hover {
-            background-color: #e9e9e9;
+            background-color: var(--gris-hover);
+            cursor: pointer;
         }
-
+        td {
+            color: var(--gris-claro);
+            border-top: 1px solid #252525;
+            border-bottom: 1px solid #252525;
+            font-size: 1rem;
+        }
+        td:first-child {
+            color: var(--blanco);
+            font-weight: bold;
+        }
+        /* TOP 1 */
+        .top1 {
+            background: linear-gradient(90deg, var(--gris-tabla) 85%, #ffd70014 100%);
+        }
+        .top1 td:first-child {
+            color: var(--dorado);
+            text-shadow: 0 1px 3px #333;
+        }
+        .top1 td {
+            border-left: 3px solid var(--dorado);
+        }
+        /* TOP 2 */
+        .top2 {
+            background: linear-gradient(90deg, var(--gris-tabla) 85%, #c0c0c015 100%);
+        }
+        .top2 td:first-child {
+            color: var(--plata);
+        }
+        .top2 td {
+            border-left: 3px solid var(--plata);
+        }
+        /* TOP 3 */
+        .top3 {
+            background: linear-gradient(90deg, var(--gris-tabla) 85%, #cd7f3217 100%);
+        }
+        .top3 td:first-child {
+            color: var(--bronce);
+        }
+        .top3 td {
+            border-left: 3px solid var(--bronce);
+        }
         .centered {
             text-align: center;
             margin-bottom: 2rem;
+        }
+        .centered a {
+            background: var(--rojo);
+            color: var(--blanco);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            transition: background 0.14s;
+            font-size: 0.98rem;
+            display: inline-block;
+        }
+        .centered a:hover {
+            background: var(--rojo-hover);
+        }
+        @media (max-width: 700px) {
+            nav { gap: 7px;}
+            .navbar-link-btn { padding: 6px 11px; font-size: 1rem;}
+            .navbar-title { font-size: 1rem;}
+            header {padding: 0.7rem 7px 0.7rem 13px;}
+            table { font-size: 0.9rem;}
+            .filter-form { flex-direction: column; gap: 0.7rem;}
         }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="/img/logo.png" alt="JSCORE Logo">
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
     <nav>
-        <a th:href="@{/index}">Inicio</a>
-        <a th:href="@{/lista}">Clubs</a>
-        <a th:href="@{/ranking}">Rankings</a>
-        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
@@ -160,24 +305,32 @@
     </nav>
     <div id="dropdown" class="dropdown" th:if="${session.username != null}">
         <a th:href="@{/perfil}">Editar perfil</a>
-        <a href="#">Términos y condiciones</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
         <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </header>
 
-<h1>Ranking de Judokas</h1>
+<h1><span class="h1-acento">Ranking</span> de Judokas</h1>
 
 <div class="filter-container">
-    <form method="get" th:action="@{/ranking}">
-        <label for="categoria">Filtrar por categoría:</label>
-        <select name="categoria" id="categoria" onchange="this.form.submit()">
-            <option value="" th:selected="${categoriaSeleccionada == null}">Todas</option>
-            <option th:each="cat : ${categorias}"
-                    th:value="${cat}"
-                    th:text="${cat}"
-                    th:selected="${cat == categoriaSeleccionada}">
-            </option>
-        </select>
+    <form class="filter-form" method="get" th:action="@{/ranking}">
+        <div>
+            <label for="categoria">Filtrar por categoría:</label>
+            <select name="categoria" id="categoria" onchange="this.form.submit()">
+                <option value="" th:selected="${categoriaSeleccionada == null}">Todas</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat}"
+                        th:text="${cat}"
+                        th:selected="${cat == categoriaSeleccionada}">
+                </option>
+            </select>
+        </div>
+        <div>
+            <label for="busquedaNombre">Buscar por nombre:</label>
+            <input type="text" id="busquedaNombre" name="busquedaNombre" placeholder="Nombre o Apellido"
+                   th:value="${busquedaNombre}">
+            <button type="submit">Buscar</button>
+        </div>
     </form>
 </div>
 
@@ -195,7 +348,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="judoka, iterStat : ${ranking}">
+    <tr th:each="judoka, iterStat : ${ranking}"
+        th:classappend="${iterStat.count == 1} ? 'top1' : ( ${iterStat.count == 2} ? 'top2' : ( ${iterStat.count == 3} ? 'top3' : '' ) )"
+        th:onclick="|window.location.href='@{/judoka/publico/{id}(id=${judoka.id})}'|">
         <td th:text="${iterStat.count}">1</td>
         <td th:text="${judoka.nombre + ' ' + judoka.apellido}">Nombre</td>
         <td th:text="${judoka.club != null ? judoka.club.nombre : 'Sin club'}">Club</td>
@@ -209,23 +364,24 @@
 </table>
 
 <div class="centered">
-    <a href="/" style="color: var(--rojo); text-decoration: none;">← Volver al inicio</a>
+    <a href="/">← Volver al inicio</a>
 </div>
 
 <script>
     function toggleDropdown() {
-        const dropdown = document.getElementById("dropdown");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    }
-
-    document.addEventListener("click", function (event) {
-        const toggle = document.querySelector(".menu-toggle");
-        const dropdown = document.getElementById("dropdown");
-        if (dropdown && !toggle.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.style.display = "none";
+        var dd = document.getElementById('dropdown');
+        if (dd.style.display === "flex") {
+            dd.style.display = "none";
+        } else {
+            dd.style.display = "flex";
         }
-    });
+    }
+    window.onclick = function(event) {
+        if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+            var dd = document.getElementById('dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    }
 </script>
-
 </body>
 </html>

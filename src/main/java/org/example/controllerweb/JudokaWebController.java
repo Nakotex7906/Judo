@@ -1,14 +1,16 @@
 package org.example.controllerweb;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.example.service.RankingService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.dto.JudokaRegistroDTO;
-import org.example.model.logger.LoggerManager;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.example.model.logger.LoggerManager;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,11 @@ public class JudokaWebController {
     private static final String JUDOKA_VIEW = "judoka/judokas";
     private static final String REGISTRO_JUDOKA = "Judoka/registro_judoka";
     private static final String JUDOKA = "judoka";
+    private static final String USERNAME = "username";
+    private static final String LOGIN = "redirect:/login";
     private final JudokaService judokaService;
+    private final RankingService rankingService; // <-- AÑADE RANKING SERVICE
+
 
     @GetMapping("/judokas")
     public String listarJudokas(Model model) {
@@ -45,8 +51,24 @@ public class JudokaWebController {
         if (judokaOpt.isEmpty()) {
             return "redirect:/judokas"; // Si no se encuentra, vuelve a la lista.
         }
-        model.addAttribute(JUDOKA, judokaOpt.get());
-        return "Judoka/judoka_home"; // Devuelve la vista de solo lectura.
+        Judoka judoka = judokaOpt.get();
+        model.addAttribute(JUDOKA, judoka);
+        // --- VVV AÑADE ESTA MISMA LÓGICA QUE EN AUTHCONTROLLER VVV ---
+        model.addAttribute("victoriasPodio", judoka.getVictorias());
+        model.addAttribute("derrotas", judoka.getDerrotas());
+
+        List<Judoka> rankingCompleto = rankingService.obtenerRankingJudokas();
+        int puesto = -1;
+        for (int i = 0; i < rankingCompleto.size(); i++) {
+            if (rankingCompleto.get(i).getId() == judoka.getId()) {
+                puesto = i + 1;
+                break;
+            }
+        }
+        if (puesto != -1) {
+            model.addAttribute("rankingPuesto", puesto);
+        }
+        return "Judoka/judoka_home";
     }
 
     @PostMapping("/judokas")
@@ -57,7 +79,7 @@ public class JudokaWebController {
     }
 
     private boolean esJudoka(HttpSession s) {
-        return s.getAttribute("username") != null && JUDOKA.equals(s.getAttribute("tipo"));
+        return s.getAttribute(USERNAME) != null && JUDOKA.equals(s.getAttribute("tipo"));
     }
 
     @GetMapping("/judoka/home")
@@ -66,8 +88,8 @@ public class JudokaWebController {
         // La redirección después del login va a /index.
         // El perfil personal se maneja con /perfil en AuthController.
         // Podemos mantenerla por si se necesita en el futuro o eliminarla. Por ahora la dejamos.
-        if (!esJudoka(session)) return "redirect:/login";
-        String username = (String) session.getAttribute("username");
+        if (!esJudoka(session)) return LOGIN;
+        String username = (String) session.getAttribute(USERNAME);
 
         Judoka judoka = judokaService.findByUsername(username).orElse(null);
         model.addAttribute(JUDOKA, judoka);
@@ -104,9 +126,59 @@ public class JudokaWebController {
 
         model.addAttribute("success", "¡Judoka registrado correctamente! Ahora puedes iniciar sesión.");
         model.addAttribute("judokaRegistroDTO", new JudokaRegistroDTO());
-        return "redirect:/login";
+        return LOGIN;
 
 
+    }
+
+    //Editar Perfil.
+
+    @PostMapping("/perfil/guardar")
+    public String guardarPerfilJudoka(@ModelAttribute Judoka judokaActualizado, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return LOGIN;
+        }
+
+        // Buscamos al judoka original en la BBDD para no perder datos
+        Optional<Judoka> judokaOpt = judokaService.findByUsername(username);
+        if (judokaOpt.isPresent()) {
+            Judoka judokaOriginal = judokaOpt.get();
+
+            // Actualizamos solo los campos que vienen del formulario
+            judokaOriginal.setCategoria(judokaActualizado.getCategoria());
+            judokaOriginal.setDescripcion(judokaActualizado.getDescripcion());
+            judokaOriginal.setAniosEntrenamiento(judokaActualizado.getAniosEntrenamiento());
+            judokaOriginal.setOficio(judokaActualizado.getOficio());
+
+            judokaService.guardarJudoka(judokaOriginal); // Guardamos el objeto completo
+        }
+
+        return "redirect:/perfil"; // Redirigimos de vuelta al perfil
+    }
+
+    @GetMapping("/perfil/eliminar")
+    public String mostrarConfirmacionEliminarCuenta(HttpSession session, Model model) {
+        if (!esJudoka(session)) {
+            return LOGIN;
+        }
+        return "Judoka/confirmar_eliminacion";
+    }
+
+    @PostMapping("/perfil/eliminar")
+    public String eliminarCuenta(HttpSession session) {
+        if (!esJudoka(session)) {
+            return LOGIN;
+        }
+
+        String username = (String) session.getAttribute(USERNAME);
+        try {
+            judokaService.eliminarCuentaJudoka(username);
+            session.invalidate();
+            return LOGIN + "?eliminado=true";
+        } catch (EntityNotFoundException _) {
+            return "redirect:/error";
+        }
     }
 
     private List<String> getCategoriasDePeso() {
@@ -143,4 +215,5 @@ public class JudokaWebController {
         nuevo.setFechaNacimiento(dto.getFechaNacimiento());
         return nuevo;
     }
+
 }

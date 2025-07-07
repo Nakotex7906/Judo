@@ -1,9 +1,8 @@
 package org.example.service;
 
+import lombok.AllArgsConstructor;
 import org.example.model.user.Club;
 import org.example.repository.ClubRepository;
-import org.springframework.transaction.annotation.Transactional; // MODIFICADO: Se añade esta línea de import que faltaba.
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,6 @@ public class ClubService{
         return clubRepository.findByUsername(username);
     }
 
-
-
-    //Se añade un método para buscar un club por su ID.
-    public Optional<Club> buscarPorId(Long id) {
-        return clubRepository.findById(id);
-    }
-
     // MODIFICADO: Se añade un nuevo método de servicio para llamar a nuestra consulta personalizada.
     public Optional<Club> buscarPorIdConJudokas(Long id) {
         return clubRepository.findByIdWithJudokas(id);
@@ -42,15 +34,6 @@ public class ClubService{
     //Se añade el nuevo método que llama a la consulta del repositorio.
     public Optional<Club> findByUsernameWithJudokas(String username) {
         return clubRepository.findByUsernameWithJudokas(username);
-    }
-
-    // MODIFICADO: Se añade este nuevo método transaccional. Es la forma más segura de cargar un club y su lista de judokas.
-    @Transactional(readOnly = true)
-    public Optional<Club> findAndInitializeJudokasByUsername(String username) {
-        Optional<Club> clubOpt = clubRepository.findByUsername(username);
-        // Al acceder a la lista de judokas aquí, forzamos a Hibernate a cargarla mientras la sesión de BD está abierta.
-        clubOpt.ifPresent(club -> club.getJudokas().size());
-        return clubOpt;
     }
 
     public boolean validarContrasena(String username, String password) {
@@ -72,5 +55,8 @@ public class ClubService{
         clubRepository.save(club);
     }
 
-
+    // Metodo para busacr club por nombre
+    public List<Club> buscarPorNombre(String nombre) {
+        return clubRepository.findByNombreContainingIgnoreCase(nombre);
+    }
 }

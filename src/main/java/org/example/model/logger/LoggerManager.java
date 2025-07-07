@@ -1,5 +1,6 @@
 package org.example.model.logger;
 
+
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -26,11 +27,11 @@ public final class LoggerManager {  //
         if (logger.getHandlers().length == 0) {
             try {
                 FileHandler fileHandler = new FileHandler("competencias.log", true);
-                fileHandler.setFormatter(new FileFormatter());
+                fileHandler.setFormatter(new org.example.model.logger.FileFormatter());
                 logger.addHandler(fileHandler);
 
                 ConsoleHandler consoleHandler = new ConsoleHandler();
-                consoleHandler.setFormatter(new ColorFormatter());
+                consoleHandler.setFormatter(new org.example.model.logger.ColorFormatter());
                 logger.addHandler(consoleHandler);
 
                 logger.setLevel(Level.ALL);

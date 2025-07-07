@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Términos y Condiciones - JSCORE</title>
+  <style>
+    :root {
+      --gris-navbar: #1e1e1e;
+      --gris-fondo: #232323;
+      --gris-oscuro: #323232;
+      --gris-claro: #e0e0e0;
+      --blanco: #fff;
+      --rojo: #e60000;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--gris-fondo);
+      color: var(--gris-claro);
+      line-height: 1.6;
+    }
+    header {
+      background-color: var(--gris-navbar);
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+    .navbar-logo {
+      height: 34px;
+      margin-right: 13px;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .navbar-link-btn {
+      background: var(--blanco);
+      color: var(--gris-navbar);
+      border: none;
+      border-radius: 8px;
+      padding: 7px 22px;
+      font-weight: bold;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background 0.17s, color 0.13s;
+      text-decoration: none;
+    }
+    .navbar-link-btn:hover {
+      background: var(--rojo);
+      color: var(--blanco);
+    }
+    .menu-toggle {
+      margin-left: 15px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 7px;
+      transition: background 0.18s;
+    }
+    .menu-toggle:hover {
+      background: #232323;
+    }
+    .menu-lines {
+      width: 28px;
+      height: 4px;
+      background: var(--blanco);
+      margin: 3.2px 0;
+      border-radius: 2px;
+    }
+    .dropdown {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 57px;
+      right: 30px;
+      background: var(--gris-oscuro);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+      border-radius: 10px;
+      min-width: 180px;
+      z-index: 10;
+      padding: 10px 0;
+    }
+    .dropdown a {
+      color: var(--blanco);
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid #353535;
+      transition: background 0.11s;
+    }
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover {
+      background: var(--rojo);
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: var(--gris-oscuro);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: var(--rojo);
+      border-bottom: 2px solid var(--gris-navbar);
+      padding-bottom: 10px;
+      margin-top: 1.5rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+    }
+    p, li {
+      font-size: 1rem;
+      color: var(--gris-claro);
+    }
+    a {
+      color: var(--rojo);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .btn-volver {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 10px 20px;
+      background-color: var(--rojo);
+      color: var(--blanco);
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="navbar-left">
+    <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+  </div>
+  <nav>
+    <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+    <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+    <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+    <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+      <div class="menu-lines"></div>
+    </div>
+  </nav>
+  <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+    <a th:href="@{/perfil}">Editar perfil</a>
+    <a href="#">Términos y condiciones</a>
+    <a th:href="@{/logout}">Cerrar sesión</a>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Términos y Condiciones de Uso</h1>
+
+  <p>Última actualización: 1 de Julio de 2025</p>
+  <p>Bienvenido a JSCORE. Por favor, lee estos términos y condiciones cuidadosamente antes de usar nuestra plataforma. Al acceder y utilizar este sitio web, aceptas estar sujeto a los siguientes términos y condiciones.</p>
+
+  <h2>1. Aceptación de los Términos</h2>
+  <p>Al registrarte o utilizar la plataforma JSCORE, confirmas que has leído, entendido y aceptado estar legalmente obligado por estos Términos y Condiciones. Si no estás de acuerdo con alguno de estos términos, no debes utilizar nuestros servicios.</p>
+
+  <h2>2. Cuentas de Usuario</h2>
+  <p>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran en tu cuenta. Notifícanos inmediatamente sobre cualquier uso no autorizado.</p>
+
+  <h2>3. Conducta del Usuario</h2>
+  <p>Te comprometes a no utilizar la plataforma para ningún propósito ilegal. Aceptas no publicar contenido falso, engañoso o que infrinja los derechos de terceros.</p>
+
+  <h2>4. Limitación de Responsabilidad</h2>
+  <p>JSCORE no será responsable por ningún daño directo o indirecto que resulte del uso de nuestros servicios, incluyendo la exactitud de los datos, los cuales son gestionados por los propios usuarios.</p>
+
+  <a href="javascript:history.back()" class="btn-volver">← Volver</a>
+</div>
+
+<script>
+  function toggleDropdown() {
+    var dd = document.getElementById('dropdown');
+    if (dd.style.display === "flex") {
+      dd.style.display = "none";
+    } else {
+      dd.style.display = "flex";
+    }
+  }
+  window.onclick = function(event) {
+    if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+      var dd = document.getElementById('dropdown');
+      if (dd) dd.style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>

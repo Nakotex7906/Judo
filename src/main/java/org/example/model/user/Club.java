@@ -20,6 +20,8 @@ public class Club {
     private String anoFundacion;
     private String direccion;
     private String horarios;
+    @Column(length = 1000)
+    private String descripcion;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Judoka> judokas = new ArrayList<>();

@@ -1,8 +1,8 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.model.user.Judoka;
 import org.example.repository.RankingRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;

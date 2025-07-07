@@ -3,6 +3,7 @@ package org.example.controllerweb;
 import org.example.dto.JudokaRegistroDTO;
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
+import org.example.service.RankingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -28,6 +29,9 @@ class JudokaWebControllerTest {
     private JudokaService judokaService;
 
     @Mock
+    private RankingService rankingService;
+
+    @Mock
     private Model model;
 
     @Mock
@@ -42,7 +46,7 @@ class JudokaWebControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        controller = new JudokaWebController(judokaService);
+        controller = new JudokaWebController(judokaService,rankingService);
     }
 
     /**

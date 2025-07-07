@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -132,5 +133,78 @@ class TorneoWebControllerTest {
         assertEquals("redirect:/torneos/crear?error=ParticipantesNoValidos", result);
         verify(judokaService).buscarPorIds(participantesIds);
         verify(torneoService, never()).guardarTorneo(any(Torneo.class));
+    }
+
+    @Test
+    void testEliminarParticipantesExitoso() {
+        Long torneoId = 1L;
+        List<Long> participantesIds = List.of(1L, 2L);
+
+        String result = torneoWebController.eliminarParticipantes(torneoId, participantesIds);
+
+        assertEquals("redirect:/torneos", result);
+        verify(torneoService).eliminarParticipantesDeTorneo(torneoId, participantesIds);
+    }
+
+    @Test
+    void testVerTorneoExistente() {
+        Long torneoId = 1L;
+        Torneo torneo = new Torneo("Torneo Test", "2025-10-20", List.of());
+
+        when(torneoService.buscarPorId(torneoId)).thenReturn(Optional.of(torneo));
+
+        String result = torneoWebController.verTorneo(torneoId, model);
+
+        assertEquals("Torneo/torneo_home", result);
+        verify(model).addAttribute("torneo", torneo);
+    }
+
+    @Test
+    void testVerTorneoNoExistente() {
+        Long torneoId = 1L;
+        when(torneoService.buscarPorId(torneoId)).thenReturn(Optional.empty());
+
+        String result = torneoWebController.verTorneo(torneoId, model);
+
+        assertEquals("redirect:/torneos?error=TorneoNoEncontrado", result);
+        verify(model, never()).addAttribute(eq("torneo"), any());
+    }
+
+    @Test
+    void testEditarTorneoExitoso() {
+        Long torneoId = 1L;
+        Torneo torneo = new Torneo("Torneo Original", "2025-10-20", List.of());
+        String nuevoNombre = "Torneo Actualizado";
+        String nuevaFecha = "2025-11-15";
+
+        when(torneoService.buscarPorId(torneoId)).thenReturn(Optional.of(torneo));
+
+        String result = torneoWebController.editarTorneo(torneoId, nuevoNombre, nuevaFecha);
+
+        assertEquals("redirect:/torneos/" + torneoId, result);
+        verify(torneoService).guardarTorneo(torneo);
+        assertEquals(nuevoNombre, torneo.getNombre());
+        assertEquals(nuevaFecha, torneo.getFecha());
+    }
+
+    @Test
+    void testEditarTorneoNoExistente() {
+        Long torneoId = 1L;
+        when(torneoService.buscarPorId(torneoId)).thenReturn(Optional.empty());
+
+        String result = torneoWebController.editarTorneo(torneoId, "Nuevo Nombre", "2025-12-01");
+
+        assertEquals("redirect:/torneos/" + torneoId, result);
+        verify(torneoService, never()).guardarTorneo(any());
+    }
+
+    @Test
+    void testEliminarTorneoExitoso() {
+        Long torneoId = 1L;
+
+        String result = torneoWebController.eliminarTorneo(torneoId);
+
+        assertEquals("redirect:/torneos", result);
+        verify(torneoService).eliminarTorneo(torneoId);
     }
 }

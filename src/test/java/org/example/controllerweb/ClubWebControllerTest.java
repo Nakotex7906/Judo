@@ -12,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,13 +104,17 @@ class ClubWebControllerTest {
      */
     @Test
     void testListarClubes() {
-        List<Club> clubes = List.of(new Club(), new Club());
-        when(clubService.getAllClubs(any(Sort.class))).thenReturn(clubes);
+        // Given
+        List<Club> clubes = Collections.singletonList(new Club());
+        when(clubService.getAllClubs(Sort.by("nombre"))).thenReturn(clubes);
 
-        String result = clubWebController.listarClubes(model);
+        // When
+        String result = clubWebController.listarClubes(null, null, model);
 
+        // Then
         assertEquals("Club/club_lista", result);
-        verify(model).addAttribute("clubes", clubes);
+        verify(model, times(1)).addAttribute("clubes", clubes);
+
     }
 
     /**

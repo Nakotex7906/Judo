@@ -25,6 +25,12 @@ public class Judoka {
     private int empates;
     private String fechaNacimiento;
 
+    //Nuevos campos
+    private String oficio;
+    private Integer aniosEntrenamiento;
+    @Column(length = 1000)
+    private String descripcion;
+
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;

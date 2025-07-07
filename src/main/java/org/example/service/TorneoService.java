@@ -1,8 +1,12 @@
 package org.example.service;
 
+import lombok.AllArgsConstructor;
 import org.example.model.competencia.Torneo;
+import org.example.model.user.Judoka;
 import org.example.repository.TorneoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -10,19 +14,11 @@ import java.util.Optional;
 /**
  * The type Torneo service.
  */
+@AllArgsConstructor
 @Service
 public class TorneoService {
 
     private final TorneoRepository torneoRepository;
-
-    /**
-     * Instantiates a new Torneo service.
-     *
-     * @param torneoRepository the torneo repository
-     */
-    public TorneoService(TorneoRepository torneoRepository) {
-        this.torneoRepository = torneoRepository;
-    }
 
     /**
      * Listar torneos list.
@@ -39,6 +35,7 @@ public class TorneoService {
      * @param id the id
      * @return the optional
      */
+    @Transactional(readOnly = true)
     public Optional<Torneo> buscarPorId(Long id) {
         return torneoRepository.findById(id);
     }
@@ -70,6 +67,24 @@ public class TorneoService {
      */
     public void eliminarTorneo(Long id) {
         torneoRepository.deleteById(id);
+    }
+
+    /**
+     * Elimina participantes de un torneo específico.
+     *
+     * @param torneoId id del torneo
+     * @param participantesIds lista de ids de judokas a eliminar
+     */
+    @Transactional
+    public void eliminarParticipantesDeTorneo(Long torneoId, List<Long> participantesIds) {
+        Optional<Torneo> torneoOpt = torneoRepository.findById(torneoId);
+        if (torneoOpt.isPresent()) {
+            Torneo torneo = torneoOpt.get();
+            List<Judoka> participantes = torneo.getParticipantes();
+            participantes.removeIf(j -> participantesIds.contains(j.getId()));
+            torneo.setParticipantes(participantes);
+            torneoRepository.save(torneo);
+        }
     }
 
 }

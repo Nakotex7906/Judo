@@ -1,0 +1,27 @@
+  version: '3.8'
+  services:
+    db:
+      image: postgres:15-alpine
+      container_name: postgres_db
+      environment:
+        POSTGRES_DB: spring
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+      ports:
+        - "5432:5432"
+      volumes:
+        - db_data:/var/lib/postgresql/data
+      restart: always
+
+    app:
+      build: .
+      container_name: spring_app
+      depends_on:
+        - db
+      env_file: .env
+      ports:
+        - "8080:8080"
+      restart: always
+
+  volumes:
+    db_data:

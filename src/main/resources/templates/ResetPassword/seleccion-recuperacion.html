@@ -1,9 +1,71 @@
+<!-- Se muestra cuando el usuario deve indicar a que tipo de cuenta quiere reestablecer la contraseña-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Seleccionar tipo de usuario</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .login-container {
+            background-color: #222;
+            padding: 2.5rem 2rem;
+            border-radius: 14px;
+            box-shadow: 0 0 18px rgba(0,0,0,0.25);
+            color: #fff;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 1rem;
+        }
+
+        .login-container p {
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-container button[type="submit"] {
+            background-color: #e60000;
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 7px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            letter-spacing: 1px;
+        }
+        .login-container button[type="submit"]:hover {
+            background-color: #b30000;
+        }
+
+        .login-container a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.98rem;
+            transition: color 0.2s;
+        }
+        .login-container a:hover {
+            color: #e60000;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,16 +73,14 @@
     <div class="login-container">
         <h2>¿Olvidaste tu contraseña?</h2>
         <p>Selecciona tu tipo de usuario para continuar con la recuperación:</p>
-
-        <form action="/recuperar/judoka" method="get">
-            <button type="submit">Restablecer Judoka</button>
-        </form>
-        <form action="/recuperar/club" method="get">
-            <button type="submit">Restablecer Club</button>
-        </form>
-
-
-        <br>
+        <div class="button-group">
+            <form action="/recuperar/judoka" method="get">
+                <button type="submit">Restablecer Judoka</button>
+            </form>
+            <form action="/recuperar/club" method="get">
+                <button type="submit">Restablecer Club</button>
+            </form>
+        </div>
         <a href="/login">← Volver al inicio de sesión</a>
     </div>
 </div>

@@ -2,7 +2,6 @@ package org.example.controllerweb;
 
 import org.example.model.competencia.Torneo;
 import org.example.model.user.Judoka;
-import org.example.model.logger.LoggerManager;
 import org.example.service.TorneoService;
 import org.example.service.JudokaService;
 import org.springframework.stereotype.Controller;
@@ -10,14 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Optional;
 
 @Controller
 public class TorneoWebController {
 
+    private static final String REDIRECT_TORNEOS = "redirect:/torneos";
+
     private final TorneoService torneoService;
     private final JudokaService judokaService;
-    private static final Logger logger = LoggerManager.getLogger(TorneoWebController.class);
 
     public TorneoWebController(TorneoService torneoService, JudokaService judokaService) {
         this.torneoService = torneoService;
@@ -60,6 +60,40 @@ public class TorneoWebController {
         Torneo nuevoTorneo = new Torneo(nombre, fecha, judokasSeleccionados);
         torneoService.guardarTorneo(nuevoTorneo);
 
-        return "redirect:/torneos";
+        return REDIRECT_TORNEOS;
+    }
+
+    @PostMapping("/torneos/{torneoId}/eliminar-participantes")
+    public String eliminarParticipantes(@PathVariable Long torneoId, @RequestParam List<Long> participantesIds) {
+        torneoService.eliminarParticipantesDeTorneo(torneoId, participantesIds);
+        return REDIRECT_TORNEOS;
+    }
+
+    @GetMapping("/torneos/{id}")
+    public String verTorneo(@PathVariable Long id, Model model) {
+        Torneo torneo = torneoService.buscarPorId(id).orElse(null);
+        if (torneo == null) {
+            return "redirect:/torneos?error=TorneoNoEncontrado";
+        }
+        model.addAttribute("torneo", torneo);
+        return "Torneo/torneo_home";
+    }
+
+    @PostMapping("/torneos/{id}/editar")
+    public String editarTorneo(@PathVariable Long id, @RequestParam String nombre, @RequestParam String fecha) {
+        Optional<Torneo> torneoOpt = torneoService.buscarPorId(id);
+        if (torneoOpt.isPresent()) {
+            Torneo torneo = torneoOpt.get();
+            torneo.setNombre(nombre);
+            torneo.setFecha(fecha);
+            torneoService.guardarTorneo(torneo);
+        }
+        return "redirect:/torneos/" + id;
+    }
+
+    @PostMapping("/torneos/{id}/eliminar")
+    public String eliminarTorneo(@PathVariable Long id) {
+        torneoService.eliminarTorneo(id);
+        return REDIRECT_TORNEOS;
     }
 }

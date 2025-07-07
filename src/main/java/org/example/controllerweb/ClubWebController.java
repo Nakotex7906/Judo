@@ -1,12 +1,11 @@
 package org.example.controllerweb;
 
+import org.example.model.user.Judoka;
+import org.example.service.JudokaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.dto.ClubRegistroDTO;
 import org.example.model.user.Club;
-import org.example.model.user.Judoka;
 import org.example.service.ClubService;
-import org.example.service.JudokaService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +15,7 @@ import java.util.Optional;
 
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.example.dto.ClubRegistroDTO;
 
 @AllArgsConstructor
 @Controller
@@ -28,6 +28,7 @@ public class ClubWebController {
     private static final String REGISTRO_CLUB = "Club/registro_club";
     private static final String USERNAME = "username";
     private static final String REDIRECT_LOGIN = "redirect:/login";
+    private static final String REDIRECT_PERFIL = "redirect:/perfil";
 
     @GetMapping("/club/home")
     public String clubHome(HttpSession session, Model model) {
@@ -59,10 +60,27 @@ public class ClubWebController {
     }
 
     @GetMapping("/lista")
-    public String listarClubes(Model model) {
-        // MODIFICADO: Obtenemos los clubes ordenados por nombre.
-        List<Club> clubes = clubService.getAllClubs(Sort.by("nombre"));
+    public String listarClubes(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "letra", required = false) String letra,
+            Model model) {
+        List<Club> clubes;
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            // Si hay un término de búsqueda, se usa
+            clubes = clubService.buscarPorNombre(nombre);
+        } else {
+            // Si no, se obtienen todos los clubes
+            clubes = clubService.getAllClubs(Sort.by("nombre"));
+        }
+        // Si se ha seleccionado una letra, filtramos la lista resultante
+        if (letra != null && !letra.trim().isEmpty() && letra.length() == 1) {
+            clubes = clubes.stream()
+                    .filter(club -> club.getNombre().toUpperCase().startsWith(letra.toUpperCase()))
+                    .toList();
+        }
         model.addAttribute("clubes", clubes);
+        model.addAttribute("nombre", nombre); // Para mantener el valor en el buscador
+        model.addAttribute("letra", letra);   // Para resaltar la letra activa
         return "Club/club_lista";
     }
 
@@ -123,7 +141,7 @@ public class ClubWebController {
 
         // Si no se seleccionó ningún judoka, simplemente volvemos al perfil.
         if (judokaIds == null || judokaIds.isEmpty()) {
-            return "redirect:/perfil";
+            return REDIRECT_PERFIL;
         }
 
         Club club = clubService.findByUsername(username).orElse(null);
@@ -139,6 +157,40 @@ public class ClubWebController {
             judokaService.guardarJudoka(judoka); // Guardamos el judoka actualizado.
         }
 
-        return "redirect:/perfil"; // Redirigimos de vuelta al perfil del club.
+        return REDIRECT_PERFIL; // Redirigimos de vuelta al perfil del club.
+    }
+
+    @PostMapping("/club/actualizar-descripcion")
+    public String actualizarDescripcion(@RequestParam("descripcion") String descripcion, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            club.setDescripcion(descripcion);
+            clubService.guardarClub(club);
+            return REDIRECT_PERFIL;
+        }
+        return REDIRECT_LOGIN;
+    }
+
+    @PostMapping("/club/actualizar-horarios")
+    public String actualizarHorarios(@RequestParam String horarios, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            club.setHorarios(horarios);
+            clubService.guardarClub(club);
+            return REDIRECT_PERFIL;
+        }
+        return REDIRECT_LOGIN;
     }
 }
