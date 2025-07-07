@@ -176,4 +176,21 @@ public class ClubWebController {
         }
         return REDIRECT_LOGIN;
     }
+
+    @PostMapping("/club/actualizar-horarios")
+    public String actualizarHorarios(@RequestParam String horarios, HttpSession session) {
+        String username = (String) session.getAttribute(USERNAME);
+        if (username == null) {
+            return REDIRECT_LOGIN;
+        }
+
+        Optional<Club> clubOpt = clubService.findByUsername(username);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            club.setHorarios(horarios);
+            clubService.guardarClub(club);
+            return REDIRECT_PERFIL;
+        }
+        return REDIRECT_LOGIN;
+    }
 }

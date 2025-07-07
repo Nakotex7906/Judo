@@ -40,6 +40,44 @@
       margin-right: 13px;
     }
 
+    .horarios-section {
+      background-color: var(--gris-oscuro);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px;
+    }
+
+    .horarios-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .horarios-textarea {
+      background-color: var(--gris-fondo);
+      border: 1px solid var(--gris-claro);
+      border-radius: 4px;
+      color: var(--blanco);
+      padding: 10px;
+      min-height: 100px;
+      width: 100%;
+      resize: vertical;
+    }
+
+    .horarios-submit {
+      background-color: var(--rojo);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+
+    .horarios-submit:hover {
+      background-color: var(--rojo-hover);
+    }
+
     nav {
       display: flex;
       align-items: center;
@@ -339,16 +377,20 @@
 
   <div class="section">
     <h4>HORARIOS</h4>
-    <table>
-      <tr>
-        <th>Día</th>
-        <th>Hora</th>
-        <th>Rango Edad</th>
-      </tr>
-    </table>
-    <div class="empty-message">No hay horarios registrados aún.</div>
-    <div class="add-btn">
-      <button title="Agregar Horario">+</button>
+    <div class="horarios-section">
+      <div id="horariosDisplay" style="position: relative;">
+        <p th:text="${club.horarios ?: 'No hay horarios definidos.'}"></p>
+        <button onclick="toggleHorarios()" style="position: absolute; right: 10px; top: 0; background: none; border: none; color: var(--blanco); cursor: pointer; font-size: 1.2em;" title="Editar horarios">
+          ✎
+        </button>
+      </div>
+      <form id="formHorarios" class="horarios-form" th:action="@{/club/actualizar-horarios}" method="post" style="display: none;">
+        <textarea class="horarios-textarea" name="horarios" placeholder="Ingrese los horarios del club aquí..." th:text="${club.horarios}"></textarea>
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="horarios-submit">Guardar Horarios</button>
+          <button type="button" class="horarios-submit" onclick="toggleHorarios()" style="background-color: var(--gris-oscuro);">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -401,6 +443,19 @@
       form.style.display = 'block';
     } else {
       descripcion.style.display = 'block';
+      form.style.display = 'none';
+    }
+  }
+
+  function toggleHorarios() {
+    const displayDiv = document.getElementById('horariosDisplay');
+    const form = document.getElementById('formHorarios');
+
+    if (form.style.display === 'none' || form.style.display === '') {
+      displayDiv.style.display = 'none';
+      form.style.display = 'block';
+    } else {
+      displayDiv.style.display = 'block';
       form.style.display = 'none';
     }
   }
