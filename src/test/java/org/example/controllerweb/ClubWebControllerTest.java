@@ -200,6 +200,7 @@ class ClubWebControllerTest {
     /**
      * Prueba que se muestre correctamente la vista de confirmación para eliminar el club.
      */
+
     @Test
     void testMostrarConfirmacionEliminarCuenta() {
         String result = clubWebController.mostrarConfirmacionEliminarCuenta(session, model);
