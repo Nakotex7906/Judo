@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.integration;
 
 import org.example.model.user.Judoka;
 import org.example.service.JudokaService;
