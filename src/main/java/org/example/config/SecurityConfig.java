@@ -12,35 +12,44 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Configuración principal de seguridad para la aplicación.
+ * Define las reglas de acceso a las rutas, manejo de sesiones y autenticación con Spring Security.
+ * <p>
+ * Esta clase utiliza inyección de dependencias para personalizar el proceso de login y protección de recursos,
+ * incluyendo un manejador de autenticación personalizado y un servicio de usuarios propio.
+ * </p>
+ *
+ * @author Ignacio Essus
+ */
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
+    /** Servicio personalizado que carga los datos del usuario desde la base de datos */
     private final UserService userService;
-    private final CustomAuthenticationSuccessHandler successHandler; // MODIFICADO: Inyectamos nuestro nuevo manejador.
 
+    /** Manejador personalizado que redirige después de un login exitoso */
+    private final CustomAuthenticationSuccessHandler successHandler;
 
-    // Configuración de seguridad para la aplicación, aquí se definen las reglas de acceso a las rutas
+    /**
+     * Define las reglas de autorización y configuración del formulario de login.
+     *
+     * @param http instancia de {@link HttpSecurity} proporcionada por Spring Security
+     * @return el filtro de seguridad configurado
+     * @throws Exception en caso de error en la configuración
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Se reordenan y especifican las reglas de seguridad.
-                        // 1. Rutas públicas que no requieren autenticación.
                         .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**",
                                 "/recuperar/**", "/restablecer/**", "/registro-judoka", "/registro-club",
                                 "/judoka/publico/**").permitAll()
-
-                        // 2. Rutas que puede ver cualquier usuario que haya iniciado sesión (sea Judoka o Club).
                         .requestMatchers("/lista", "/judokas", "/club/publico/**").authenticated()
-
-                        // 3. Rutas específicas para cada rol. La regla más específica de "/club/publico/**" ya fue procesada.
-                        //    Esta regla ahora se aplica al resto de URLs bajo /club/, como editar horarios, etc.
                         .requestMatchers("/club/**").hasRole("CLUB")
                         .requestMatchers("/judoka/**").hasRole("JUDOKA")
-
-                        // 4. Cualquier otra petición que no coincida con las anteriores, requiere autenticación.
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -56,7 +65,14 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Configuración del AuthenticationManager, que se encarga de autenticar los usuarios
+    /**
+     * Configura el administrador de autenticación que usará el servicio de usuarios personalizado
+     * y el codificador de contraseñas.
+     *
+     * @param http instancia de {@link HttpSecurity}
+     * @return el administrador de autenticación
+     * @throws Exception en caso de error en la construcción
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -66,6 +82,11 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 
+    /**
+     * Proporciona el codificador de contraseñas que utiliza BCrypt para mayor seguridad.
+     *
+     * @return una instancia de {@link PasswordEncoder}
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

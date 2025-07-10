@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
-
 /**
- * Servicio que gestiona el ranking de los judokas.
+ * Servicio encargado de calcular y entregar el ranking de judokas,
+ * ya sea general o filtrado por categoría de peso.
  */
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,9 @@ public class RankingService {
     private final RankingRepository rankingRepository;
 
     /**
-     * Retorna ranking completo por % de victorias.
+     * Obtiene el ranking completo de judokas ordenado por porcentaje de victorias.
+     *
+     * @return lista de judokas ordenada de mayor a menor según su porcentaje de victorias
      */
     public List<Judoka> obtenerRankingJudokas() {
         return rankingRepository.findAll().stream()
@@ -28,10 +30,11 @@ public class RankingService {
     }
 
     /**
-     * Retorna ranking por categoría específica.
+     * Obtiene el ranking de judokas filtrado por categoría de peso.
+     * Los judokas se ordenan de mayor a menor según su porcentaje de victorias.
      *
-     * @param categoria Categoría de peso
-     * @return Lista ordenada por porcentaje de victorias
+     * @param categoria la categoría de peso por la que se desea filtrar (por ejemplo: "-66 kg")
+     * @return lista de judokas de la categoría indicada, ordenada por rendimiento
      */
     public List<Judoka> obtenerRankingPorCategoria(String categoria) {
         return rankingRepository.findAll().stream()

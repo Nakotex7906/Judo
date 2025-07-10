@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type Judoka service.
+ * Servicio que gestiona las operaciones relacionadas con la entidad {@link Judoka}.
+ * Incluye métodos para registrar, buscar, eliminar y validar judokas.
  */
 @AllArgsConstructor
 @Service
@@ -21,18 +22,18 @@ public class JudokaService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Listar judokas list.
+     * Lista todos los judokas registrados en el sistema.
      *
-     * @return the list
+     * @return lista de judokas
      */
     public List<Judoka> listarJudokas() {
         return judokaRepository.findAll();
     }
 
     /**
-     * Guardarjudoka judoka.
+     * Guarda un judoka, encriptando su contraseña si aún no lo está.
      *
-     * @param judoka the judoka
+     * @param judoka el judoka a guardar
      */
     public void guardarJudoka(Judoka judoka) {
         if (!judoka.getPassword().startsWith("$2a") && !judoka.getPassword().startsWith("$2b")) {
@@ -41,42 +42,69 @@ public class JudokaService {
         judokaRepository.save(judoka);
     }
 
+    /**
+     * Busca un judoka por su nombre de usuario.
+     *
+     * @param username el username del judoka
+     * @return un {@link Optional} con el judoka si existe
+     */
     public Optional<Judoka> findByUsername(String username) {
         return judokaRepository.findByUsername(username);
     }
 
+    /**
+     * Valida la contraseña de un judoka verificando que coincida con la almacenada en la base de datos.
+     *
+     * @param username nombre de usuario del judoka
+     * @param password contraseña sin encriptar
+     * @return true si la contraseña es válida, false si no o si el usuario no existe
+     */
     public boolean validarContrasena(String username, String password) {
         Optional<Judoka> opt = findByUsername(username);
         return opt.map(j -> passwordEncoder.matches(password, j.getPassword())).orElse(false);
     }
 
     /**
-     * Buscar por ids list.
+     * Busca una lista de judokas a partir de una lista de IDs.
      *
-     * @param participantes the participantes
-     * @return the list
+     * @param participantes lista de IDs de judokas
+     * @return lista de judokas encontrados
      */
     public List<Judoka> buscarPorIds(List<Long> participantes) {
         return judokaRepository.findAllById(participantes);
     }
 
-    // MODIFICADO: Se añade un método para buscar por ID.
+    /**
+     * Busca un judoka por su ID.
+     *
+     * @param id el ID del judoka
+     * @return un {@link Optional} con el judoka si existe
+     */
     public Optional<Judoka> buscarPorId(Long id) {
         return judokaRepository.findById(id);
     }
 
-    // MODIFICADO: Se añade un método de servicio para exponer la nueva consulta del repositorio.
+    /**
+     * Lista todos los judokas que no están asociados a ningún club.
+     *
+     * @return lista de judokas sin club
+     */
     public List<Judoka> listarJudokasSinClub() {
         return judokaRepository.findByClubIsNull();
     }
 
+    /**
+     * Elimina la cuenta de un judoka identificado por su username.
+     *
+     * @param username el nombre de usuario del judoka
+     * @throws EntityNotFoundException si no se encuentra el judoka
+     */
     public void eliminarCuentaJudoka(String username) {
         Optional<Judoka> judoka = findByUsername(username);
         if (judoka.isPresent()) {
-            // Eliminar registros relacionados primero
             judokaRepository.delete(judoka.get());
         } else {
             throw new EntityNotFoundException("No se encontró el judoka con username: " + username);
         }
-}
+    }
 }

@@ -4,18 +4,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The type Judo application.
+ * Clase principal que inicia la aplicación Spring Boot para el sistema de gestión de judokas y clubes.
  */
 @SpringBootApplication
-class JudoApplication {
+public class JudoApplication {
 
     /**
-     * The entry point of application.
+     * Método principal que lanza la aplicación.
      *
-     * @param args the input arguments
+     * @param args argumentos de la línea de comandos
      */
     public static void main(String[] args) {
         SpringApplication.run(JudoApplication.class, args);
     }
-
 }

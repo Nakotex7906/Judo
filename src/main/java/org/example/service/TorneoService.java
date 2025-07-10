@@ -7,12 +7,11 @@ import org.example.repository.TorneoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
 
 /**
- * The type Torneo service.
+ * Servicio que maneja la lógica de negocio relacionada con los torneos.
  */
 @AllArgsConstructor
 @Service
@@ -21,19 +20,19 @@ public class TorneoService {
     private final TorneoRepository torneoRepository;
 
     /**
-     * Listar torneos list.
+     * Obtiene la lista completa de torneos registrados.
      *
-     * @return the list
+     * @return lista de torneos
      */
     public List<Torneo> listarTorneos() {
         return torneoRepository.findAll();
     }
 
     /**
-     * Buscar por id optional.
+     * Busca un torneo por su ID.
      *
-     * @param id the id
-     * @return the optional
+     * @param id el ID del torneo
+     * @return un Optional con el torneo encontrado, o vacío si no existe
      */
     @Transactional(readOnly = true)
     public Optional<Torneo> buscarPorId(Long id) {
@@ -41,29 +40,29 @@ public class TorneoService {
     }
 
     /**
-     * Buscar por nombre list.
+     * Busca torneos por su nombre exacto.
      *
-     * @param nombre the nombre
-     * @return the list
+     * @param nombre el nombre del torneo
+     * @return lista de torneos que coinciden con el nombre
      */
     public List<Torneo> buscarPorNombre(String nombre) {
         return torneoRepository.findByNombre(nombre);
     }
 
     /**
-     * Guardar torneo.
+     * Guarda o actualiza un torneo en la base de datos.
      *
-     * @param torneo the torneo
-     * @return the torneo
+     * @param torneo el torneo a guardar
+     * @return el torneo guardado con ID actualizado si fue creado
      */
     public Torneo guardarTorneo(Torneo torneo) {
         return torneoRepository.save(torneo);
     }
 
     /**
-     * Eliminar torneo.
+     * Elimina un torneo de la base de datos según su ID.
      *
-     * @param id the id
+     * @param id el ID del torneo a eliminar
      */
     public void eliminarTorneo(Long id) {
         torneoRepository.deleteById(id);
@@ -72,8 +71,8 @@ public class TorneoService {
     /**
      * Elimina participantes de un torneo específico.
      *
-     * @param torneoId id del torneo
-     * @param participantesIds lista de ids de judokas a eliminar
+     * @param torneoId ID del torneo
+     * @param participantesIds lista de IDs de judokas a eliminar del torneo
      */
     @Transactional
     public void eliminarParticipantesDeTorneo(Long torneoId, List<Long> participantesIds) {
@@ -86,5 +85,4 @@ public class TorneoService {
             torneoRepository.save(torneo);
         }
     }
-
 }

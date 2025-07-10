@@ -6,15 +6,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * The interface Competencia repository.
+ * Repositorio para acceder y manipular los datos de torneos.
+ * <p>
+ * Extiende de {@link JpaRepository} para proporcionar operaciones CRUD sobre la entidad {@link Torneo}.
+ * </p>
+ *
+ * Este repositorio permite buscar torneos por nombre y puede ser extendido con consultas personalizadas.
+ *
+ * @author Ignacio Essus, Alonso Romero, Benjamin Beroiza
  */
 public interface TorneoRepository extends JpaRepository<Torneo, Long> {
 
     /**
-     * Find by nombre list.
+     * Busca una lista de torneos por su nombre exacto.
      *
-     * @param nombre the nombre
-     * @return the list
+     * @param nombre el nombre del torneo a buscar
+     * @return una lista de torneos que coincidan con el nombre dado
      */
     List<Torneo> findByNombre(String nombre);
 
