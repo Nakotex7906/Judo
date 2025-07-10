@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirmar Eliminación de Club - JSCORE</title>
+    <style>
+        .confirm-box {
+            background: var(--gris-oscuro);
+            border-radius: 18px;
+            padding: 2rem;
+            max-width: 500px;
+            margin: 3rem auto;
+            text-align: center;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="confirm-box">
+    <h2>¿Estás seguro de que deseas eliminar este club?</h2>
+    <p>Esta acción no se puede deshacer. Perderás todo tu historial y datos asociados.</p>
+
+    <div class="btn-container">
+        <form th:action="@{/perfil/eliminar_club}" method="post">
+            <button type="submit" class="edit-btn">Confirmar Eliminación</button>
+        </form>
+        <a href="/perfil" class="delete-btn">Cancelar</a>
+    </div>
+</div>
+</body>
+</html>

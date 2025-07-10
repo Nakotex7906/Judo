@@ -5,11 +5,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias para la clase {@link Club}.
+ * Se validan los métodos de agregar/eliminar judokas y mostrar información.
+ */
 class ClubTest {
 
     private Club club;
     private Judoka judoka;
 
+    /**
+     * Inicializa un club y un judoka antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         club = new Club();
@@ -22,6 +29,11 @@ class ClubTest {
         judoka = new Judoka(1L, "Benjamín", "Beroiza", "73kg", "2003-09-21");
     }
 
+    /**
+     * Verifica que al agregar un judoka al club:
+     * - la lista de judokas aumente en uno.
+     * - el club del judoka se actualice correctamente.
+     */
     @Test
     void testAgregarJudoka() {
         club.agregarJudoka(judoka);
@@ -29,6 +41,11 @@ class ClubTest {
         assertEquals(club, judoka.getClub());
     }
 
+    /**
+     * Verifica que al eliminar un judoka del club:
+     * - la lista de judokas se vacíe.
+     * - el club del judoka quede en null.
+     */
     @Test
     void testEliminarJudoka() {
         club.agregarJudoka(judoka);
@@ -37,6 +54,10 @@ class ClubTest {
         assertNull(judoka.getClub());
     }
 
+    /**
+     * Verifica que el método {@code mostrarInformacion} incluya
+     * correctamente los datos del club y la cantidad de judokas.
+     */
     @Test
     void testMostrarInformacion() {
         club.agregarJudoka(judoka);
