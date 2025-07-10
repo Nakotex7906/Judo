@@ -1,3 +1,5 @@
+<!-- Lista de judokas registrados -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -16,18 +18,19 @@
   <table class="styled-table">
     <thead>
     <tr>
-      <th>ID</th>
       <th>Nombre</th>
       <th>Apellido</th>
       <th>Categoría</th>
-    </tr>
+      <th>Acciones</th> </tr>
     </thead>
     <tbody>
     <tr th:each="judoka : ${judokas}">
-      <td th:text="${judoka.id}"></td>
       <td th:text="${judoka.nombre}"></td>
       <td th:text="${judoka.apellido}"></td>
       <td th:text="${judoka.categoria}"></td>
+      <td>
+        <a th:href="@{/judoka/publico/{id}(id=${judoka.id})}" class="btn">Ver Perfil</a>
+      </td>
     </tr>
     </tbody>
   </table>

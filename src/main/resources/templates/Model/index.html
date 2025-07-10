@@ -6,57 +6,118 @@
     <style>
         :root {
             --negro: #1e1e1e;
-            --gris: #f2f2f2;
+            --gris: #232323;
+            --gris-oscuro: #3d3d3d;
+            --gris-tabla: #323232;
+            --gris-claro: #e6e6e6;
+            --blanco: #fff;
             --rojo: #e60000;
             --rojo-hover: #c40000;
-            --blanco: #ffffff;
+            --top1: #ffd700;
+            --top2: #c0c0c0;
+            --top3: #cd7f32;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
             background-color: var(--gris);
-            color: var(--negro);
+            color: var(--blanco);
         }
-
         header {
             background-color: var(--negro);
             color: var(--blanco);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 2rem;
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
             position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
         }
-
-        header img {
-            height: 40px;
+        .navbar-left {
+            display: flex;
+            align-items: center;
         }
-
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
+        }
         nav {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 18px;
         }
-
-        nav a {
+        .navbar-link-btn {
+            background: var(--blanco);
             color: var(--negro);
-            background-color: var(--blanco);
-            text-decoration: none;
-            margin: 0 5px;
-            padding: 6px 12px;
-            border-radius: 5px;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 22px;
             font-weight: bold;
-            transition: background 0.3s;
+            font-size: 1.08rem;
+            cursor: pointer;
+            transition: background 0.17s, color 0.13s;
+            text-decoration: none;
+            margin-right: 2px;
         }
-
-        nav a:hover {
-            background-color: var(--gris);
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+        .menu-toggle {
+            margin-left: 15px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
+        }
+        .menu-toggle:hover {
+            background: #232323;
+        }
+        .menu-lines {
+            width: 28px;
+            height: 4px;
+            background: var(--blanco);
+            margin: 3.2px 0;
+            border-radius: 2px;
+        }
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-oscuro);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
+        }
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dropdown a {
+            color: var(--blanco);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background: var(--rojo);
+            color: var(--blanco);
         }
 
         .hero {
@@ -69,135 +130,208 @@
             justify-content: space-between;
             flex-wrap: wrap;
         }
-
         .hero-text {
             max-width: 50%;
         }
-
         .hero-text h1 {
             font-size: 2.5rem;
         }
-
         .hero-text .red {
             color: var(--rojo);
         }
-
         .hero-text p {
             margin-top: 1rem;
             font-style: italic;
             color: #ccc;
         }
-
         .hero img {
             max-height: 300px;
         }
 
-        .bio {
+        .main-info-bg {
+            background: var(--gris);
+            padding: 2rem 0 3.5rem 0;
+        }
+        .bio-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.3rem 1.5rem 1.3rem;
             display: flex;
-            background-color: var(--blanco);
-            padding: 3rem 2rem;
-            align-items: flex-start;
-            gap: 2rem;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 2.2rem;
+            background: var(--gris-tabla);
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
-
-        .bio img {
-            width: 180px;
-            border-radius: 4px;
+        .bio-img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #c0c0c0;
+            background: #fff;
         }
-
+        .bio-content {
+            flex: 1;
+        }
         .bio-content h3 {
             color: var(--rojo);
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
         }
-
         .bio-content p {
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            color: #e0e0e0;
+            font-size: 1.08rem;
         }
-
         .btn-vermas {
             background-color: var(--rojo);
             color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 3px;
-            font-size: 0.8rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            font-size: 1rem;
             font-weight: bold;
             text-decoration: none;
+            border: none;
+            margin-top: 0.8rem;
+            cursor: pointer;
         }
-
         .btn-vermas:hover {
             background-color: var(--rojo-hover);
         }
 
-        /* Estilos menú hamburguesa */
-        .menu-toggle {
-            width: 30px;
-            height: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
+        .section-box {
+            max-width: 1200px;
+            margin: 2.2rem auto;
+            background: var(--gris-tabla);
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 1.5rem 1.3rem 1.7rem 1.3rem;
         }
-
-        .menu-lines {
+        .section-box h4 {
+            color: var(--rojo);
+            margin-bottom: 1rem;
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+        }
+        .section-box table {
             width: 100%;
-            height: 4px;
-            background-color: var(--blanco);
-            border-radius: 2px;
+            border-collapse: collapse;
+            margin-bottom: 0.8rem;
+            background: none;
         }
+        .section-box th, .section-box td {
+            padding: 0.7rem 0.8rem;
+            font-size: 1.07rem;
+            text-align: left;
+        }
+        .section-box th {
+            background: #2a2a2a;
+            color: #fff;
+            font-weight: bold;
+        }
+        .section-box td {
+            color: #fff;
+            background: none;
+        }
+        /* Top Ranking colores */
+        .top1 td { color: var(--top1); font-weight: bold; }
+        .top2 td { color: var(--top2); }
+        .top3 td { color: var(--top3); }
 
-        .dropdown {
+        /* Hover en filas de torneos y ranking */
+        .fila-boton, .fila-torneo {
+            cursor: pointer;
+            transition: background 0.16s, box-shadow 0.16s;
+        }
+        .fila-boton:hover, .fila-torneo:hover {
+            background-color: #444a;
+            box-shadow: 0 1px 8px #000a;
+        }
+        /* Modal más grande */
+        .modal-bg {
             display: none;
-            position: absolute;
-            top: 70px;
-            right: 20px;
-            background-color: var(--blanco);
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            z-index: 999;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(32,32,32,0.74);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
         }
-
-        .dropdown a {
+        .modal-bg.active { display: flex; }
+        .modal-content {
+            background: #222;
+            color: #e0e0e0;
+            border-radius: 18px;
+            padding: 2.7rem 2.2rem 2.2rem 2.2rem;
+            width: 95vw;
+            max-width: 850px; /* el doble de antes */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+            position: relative;
+            animation: modalPop 0.21s;
+        }
+        .perfil-img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 0.7rem auto;
             display: block;
-            padding: 10px 15px;
-            color: var(--negro);
-            text-decoration: none;
-            font-size: 0.95rem;
         }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.94);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        .close-modal {
+            position: absolute;
+            top: 17px; right: 19px;
+            color: #aaa;
+            font-size: 2rem;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.16s;
+        }
+        .close-modal:hover { color: var(--rojo); }
 
-        .dropdown a:hover {
-            background-color: var(--gris);
+        @media (max-width: 1000px) {
+            .bio-main, .section-box { max-width: 97vw; }
+            .bio-main { flex-direction: column; align-items: flex-start; }
+            .modal-content { max-width: 98vw; }
+        }
+        @media (max-width: 700px) {
+            nav { gap: 7px;}
+            .navbar-link-btn { padding: 6px 11px; font-size: 1rem;}
+            .navbar-title { font-size: 1rem;}
+            header {padding: 0.7rem 7px 0.7rem 13px;}
+            .hero { flex-direction: column; align-items: flex-start;}
+            .hero img { margin-top: 1rem; }
+            .hero-text { max-width: 100%; }
         }
     </style>
 </head>
 <body>
-
+<!-- HEADER + HERO -->
 <header>
-    <img src="/img/logo.png" alt="JSCORE Logo">
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
     <nav>
-        <a href="/static">Inicio</a>
-        <a href="/clubs">Clubs</a>
-        <a href="/rankings">Rankings</a>
-
-        <!-- Menú hamburguesa solo si hay sesión -->
-        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()">
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
             <div class="menu-lines"></div>
         </div>
     </nav>
-
-    <!-- Menú desplegable -->
     <div id="dropdown" class="dropdown" th:if="${session.username != null}">
-        <a th:if="${session.tipo == 'judoka'}" href="/judoka/home">Editar perfil</a>
-        <a th:if="${session.tipo == 'club'}" href="/club/home">Editar perfil</a>
-        <a href="#">Términos y condiciones</a>
-        <a href="/logout">Cerrar sesión</a>
+        <a th:href="@{/perfil}">Editar perfil</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
     </div>
 </header>
-
 <section class="hero">
     <div class="hero-text">
         <h1><span class="red">LUCHA</span> COMO UN JUDOKA</h1>
@@ -205,33 +339,123 @@
     </div>
     <img src="/img/judokas.png" alt="Judokas en acción">
 </section>
+<!-- INFORMACIÓN PRINCIPAL EN FONDO GRIS OSCURO -->
+<div class="main-info-bg">
+    <!-- Biografía Jigoro Kano -->
+    <section class="bio-main">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Jigoro-Kano-BW-4375px.jpg" alt="Jigoro Kano" class="bio-img">
+        <div class="bio-content">
+            <h3>JIGORO KANO</h3>
+            <p>
+                Fundador del Judo. Innovador en la enseñanza y difusión de las artes marciales japonesas.
+                <br><span style="font-style: italic;">"El Judo es el camino de la suavidad".</span>
+            </p>
+            <button class="btn-vermas" onclick="openModal()">VER MÁS</button>
+        </div>
+    </section>
 
-<section class="bio">
-    <img src="/img/jigoro_kano.png" alt="Jigoro Kano">
-    <div class="bio-content">
-        <h3>JIGORO KANO</h3>
-        <p>
-            Texto del Judo o descripción de Jigoro Kano
-        </p>
-        <a class="btn-vermas" href="#">VER MÁS</a>
+    <!-- Top 3 del Ranking -->
+    <div class="section-box">
+        <h4>Top 3 del Ranking</h4>
+        <table th:if="${not #lists.isEmpty(top3Ranking)}">
+            <thead>
+            <tr>
+                <th>Puesto</th>
+                <th>Nombre</th>
+                <th>Club</th>
+                <th>Victorias</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="judoka, iterStat : ${top3Ranking}"
+                th:classappend="${iterStat.count == 1} ? 'top1 fila-boton' : ( ${iterStat.count == 2} ? 'top2 fila-boton' : ( ${iterStat.count == 3} ? 'top3 fila-boton' : 'fila-boton' ) )"
+                th:onclick="|window.location.href='@{/judoka/publico/{id}(id=${judoka.id})}'|">
+                <td>
+                    <span th:switch="${iterStat.count}">
+                        <span th:case="1">🥇 1</span>
+                        <span th:case="2">🥈 2</span>
+                        <span th:case="3">🥉 3</span>
+                        <span th:case="*" th:text="${iterStat.count}"></span>
+                    </span>
+                </td>
+                <td th:text="${judoka.nombre + ' ' + judoka.apellido}">Nombre</td>
+                <td th:text="${judoka.club != null ? judoka.club.nombre : 'Sin club'}">Club</td>
+                <td th:text="${judoka.victorias}">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(top3Ranking)}">
+            <p>Aún no hay judokas en el ranking.</p>
+        </div>
     </div>
-</section>
+</div>
+<!-- Próximos torneos -->
+<div class="section-box">
+    <h4>Próximos Torneos</h4>
+    <table th:if="${not #lists.isEmpty(proximosTorneos)}">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Lugar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="torneo : ${proximosTorneos}" class="fila-torneo">
+            <td th:text="${torneo.nombre}">Copa Sur</td>
+            <td th:text="${torneo.fecha}">2025-07-20</td>
+            <td>Por definir</td> </tr>
+        </tbody>
+    </table>
+    <div th:if="${#lists.isEmpty(proximosTorneos)}">
+        <p>No hay torneos programados por el momento.</p>
+    </div>
+</div>
 
-<script>
-    function toggleDropdown() {
-        const dropdown = document.getElementById("dropdown");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    }
-
-    // Ocultar el menú si se hace clic fuera
-    document.addEventListener("click", function (event) {
-        const toggle = document.querySelector(".menu-toggle");
-        const dropdown = document.getElementById("dropdown");
-        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.style.display = "none";
+<div class="modal-bg" id="modalJigoro">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Jigoro-Kano-BW-4375px.jpg" alt="Jigoro Kano" class="bio-img">        <div class="bio-content">
+        <h2>Jigoro Kano</h2>
+        <p><strong>Fundador del Judo</strong></p>
+        <p>
+            Nacido en 1860, Japón. Maestro, pedagogo, pionero del deporte educativo y olímpico.<br>
+            Revolucionó las artes marciales creando el Judo como vía de crecimiento físico, mental y moral. <br><br>
+            <i>“Lo importante no es vencer, sino participar, y progresar cada día”.</i>
+        </p>
+    </div>
+    </div>
+    <script>
+        function toggleDropdown() {
+            var dd = document.getElementById('dropdown');
+            if (dd.style.display === "flex") {
+                dd.style.display = "none";
+            } else {
+                dd.style.display = "flex";
+            }
         }
-    });
-</script>
-
+        window.onclick = function(event) {
+            // Dropdown
+            if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+                var dd = document.getElementById('dropdown');
+                if (dd) dd.style.display = 'none';
+            }
+            // Modal close
+            var modal = document.getElementById('modalJigoro');
+            if (modal && modal.classList.contains('active')) {
+                if (!event.target.closest('.modal-content') && !event.target.closest('.btn-vermas')) {
+                    closeModal();
+                }
+            }
+        }
+        function openModal() {
+            document.getElementById('modalJigoro').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('modalJigoro').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
 </body>
 </html>

@@ -4,60 +4,305 @@
     <meta charset="UTF-8">
     <title>Lista de Clubs</title>
     <style>
+        :root {
+            --gris-navbar: #1e1e1e;
+            --gris-fondo: #232323;
+            --gris-oscuro: #323232;
+            --gris-cabecera: #404040;
+            --gris-hover: #2a2a2a;
+            --gris-claro: #e0e0e0;
+            --blanco: #fff;
+            --rojo: #e60000;
+            --rojo-hover: #cc0000;
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f3f3f3;
+            background-color: var(--gris-fondo);
             margin: 0;
             padding: 0;
+            color: var(--blanco);
+        }
+        header {
+            background-color: var(--gris-navbar);
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
+        }
 
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
         }
-        table {
-            width: 70%;
-            margin: 2rem auto;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+        .navbar-link-btn {
+            background: var(--blanco);
+            color: var(--gris-navbar);
+            border: none;
+            border-radius: 8px;
+            padding: 7px 22px;
+            font-weight: bold;
+            font-size: 1.08rem;
+            cursor: pointer;
+            transition: background 0.17s, color 0.13s;
+            text-decoration: none;
+            margin-right: 2px;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: .85em 1em;
-            text-align: left;
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
         }
-        th {
-            background: #e60000;
-            color: #fff;
+        .menu-toggle {
+            margin-left: 15px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
         }
-        tr:nth-child(even) {
-            background: #f9f9f9
+        .menu-toggle:hover {
+            background: #232323;
+        }
+        .menu-lines {
+            width: 28px;
+            height: 4px;
+            background: var(--blanco);
+            margin: 3.2px 0;
+            border-radius: 2px;
+        }
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-oscuro);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
+        }
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dropdown a {
+            color: var(--blanco);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 2.2rem auto;
+            background-color: var(--gris-oscuro);
+            padding: 2rem 1.2rem 2.5rem 1.2rem;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.16);
         }
         h1 {
             text-align: center;
-            color: #e60000;
-            margin-top: 2.5rem;
+            color: var(--blanco);
+            margin-bottom: 1.6rem;
+            letter-spacing: 1.5px;
+        }
+        .filtros-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.6rem;
+        }
+        .buscador {
+            flex: 1;
+            max-width: 300px;
+        }
+        .buscador input {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            background: #2b2b2b;
+            color: var(--blanco);
+        }
+        .alfabeto {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+        }
+        .alfabeto-btn {
+            padding: 5px 12px;
+            border-radius: 5px;
+            border: none;
+            background: var(--gris-navbar);
+            color: var(--blanco);
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.14s, color 0.13s;
+        }
+        .alfabeto-btn.active,
+        .alfabeto-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--gris-oscuro);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            margin-top: 1.3rem;
+        }
+        thead tr {
+            background-color: var(--gris-cabecera);
+        }
+        th, td {
+            padding: 1em 1.1em;
+            text-align: left;
+        }
+        th {
+            color: var(--blanco);
+            font-size: 1.08rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+            border: none;
+        }
+        td {
+            color: var(--gris-claro);
+            font-size: 1rem;
+            border-bottom: 1px solid #282828;
+        }
+        tbody tr {
+            background-color: var(--gris-oscuro);
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #282828;
+        }
+        tbody tr:hover {
+            background-color: var(--gris-hover);
+        }
+        @media (max-width: 900px) {
+            .container {padding: 1rem 0.2rem;}
+            table { font-size: 0.9rem;}
+        }
+        @media (max-width: 600px) {
+            .filtros-bar {flex-direction: column; gap: 0.7rem;}
         }
     </style>
 </head>
 <body>
-<h1>Lista de Clubs</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Sensei</th>
-        <th>Año Fundación</th>
-        <th>Dirección</th>
-        <th>Horarios</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="club : ${clubes}">
-        <td th:text="${club.nombre}">Nombre Club</td>
-        <td th:text="${club.sensei}">Sensei</td>
-        <td th:text="${club.anoFundacion}">Año</td>
-        <td th:text="${club.direccion}">Dirección</td>
-        <td th:text="${club.horarios}">Horarios</td>
-    </tr>
-    </tbody>
-</table>
+<header>
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
+    <nav>
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+        </div>
+    </nav>
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:href="@{/perfil}">Editar perfil</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1>Lista de Clubs</h1>
+
+    <div class="filtros-bar">
+        <!-- Buscador por nombre -->
+        <form class="buscador" th:action="@{/lista}" method="get" autocomplete="off">
+            <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar club por nombre...">
+        </form>
+        <!-- Filtro alfabético -->
+        <form th:action="@{/lista}" method="get" style="margin:0;">
+            <div class="alfabeto">
+                <button type="submit" name="letra" value="" class="alfabeto-btn"
+                        th:classappend="${letra == null or letra == '' ? 'active' : ''}">Todos</button>
+                <button type="submit" name="letra" th:each="c : ${#strings.arraySplit('A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z', ',')}"
+                        th:value="${c}" th:text="${c}"
+                        th:classappend="${letra == c ? 'active' : ''}" class="alfabeto-btn"></button>
+            </div>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Sensei</th>
+            <th>Año Fundación</th>
+            <th>Dirección</th>
+            <th>Horarios</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="club : ${clubes}" th:onclick="|window.location.href='@{/club/publico/{id}(id=${club.id})}'|">
+            <td th:text="${club.nombre}"></td>
+            <td th:text="${club.sensei}"></td>
+            <td th:text="${club.anoFundacion}"></td>
+            <td th:text="${club.direccion}"></td>
+            <td th:text="${club.horarios}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    function toggleDropdown() {
+        var dd = document.getElementById('dropdown');
+        if (dd.style.display === "flex") {
+            dd.style.display = "none";
+        } else {
+            dd.style.display = "flex";
+        }
+    }
+    window.onclick = function(event) {
+        if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+            var dd = document.getElementById('dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>

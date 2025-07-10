@@ -2,153 +2,448 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio Judoka - JSCORE</title>
+    <title th:text="'Perfil de ' + ${judoka.nombre} + ' - JSCORE'">Perfil Judoka - JSCORE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --negro-suave: #1e1e1e;
-            --gris-oscuro: #3d3d3d;
-            --gris-claro: #ddd;
-            --blanco: #ffffff;
+            --gris-navbar: #1e1e1e;
+            --gris-fondo: #232323;
+            --gris-oscuro: #323232;
+            --gris-claro: #e0e0e0;
+            --blanco: #fff;
             --rojo: #e60000;
             --rojo-hover: #cc0000;
         }
-
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--negro-suave);
-            color: var(--negro-suave);
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
         }
-
-        .header {
-            background-color: var(--blanco);
-            padding: 1rem 2rem;
+        /* NAVBAR */
+        header {
+            background-color: var(--gris-navbar);
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
+        }
+        .navbar-left {
+            display: flex;
             align-items: center;
         }
-
-        .header h3 {
-            margin: 0;
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
         }
-
-        .nav-links {
+        nav {
             display: flex;
-            gap: 1.5rem;
+            align-items: center;
+            gap: 18px;
         }
-
-        .nav-links a {
+        .navbar-link-btn {
+            background: var(--blanco);
+            color: var(--gris-navbar);
+            border: none;
+            border-radius: 8px;
+            padding: 7px 22px;
+            font-weight: bold;
+            font-size: 1.08rem;
+            cursor: pointer;
+            transition: background 0.17s, color 0.13s;
             text-decoration: none;
-            color: black;
-            font-weight: bold;
+            margin-right: 2px;
+        }
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
+        .menu-toggle {
+            margin-left: 15px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
+        }
+        .menu-toggle:hover {
+            background: #232323;
+        }
+        .menu-lines {
+            width: 28px;
+            height: 4px;
+            background: var(--blanco);
+            margin: 3.2px 0;
+            border-radius: 2px;
+        }
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-oscuro);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
+        }
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dropdown a {
+            color: var(--blanco);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background: var(--rojo);
+            color: var(--blanco);
         }
 
-        .profile-icon {
-            width: 30px;
-            height: 30px;
-            background-color: var(--rojo);
-            border-radius: 50%;
+        /* FOTO PERFIL BANNER */
+        .profile-banner {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            color: white;
+            justify-content: flex-end;
+            background-color: #181a1b;
+            padding-top: 2.7rem;
+            padding-bottom: 1.7rem;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 3px 18px rgba(0,0,0,0.16);
+        }
+        .photo-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(120deg, var(--gris-claro) 70%, var(--gris-oscuro));
+            border: 5px solid var(--gris-oscuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--gris-oscuro);
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
             font-weight: bold;
         }
-
-        .banner {
-            background-color: #0f1111;
-            height: 150px;
+        .profile-banner h2 {
+            margin: 0.4rem 0 0 0;
+            font-size: 2.2rem;
+            color: var(--blanco);
+            font-weight: bold;
+            text-align: center;
+        }
+        .profile-banner p {
+            font-style: italic;
+            color: #b8b8b8;
+            margin-top: 0.2rem;
+        }
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
             display: flex;
             justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 50px;
+            gap: 2.2rem;
+            margin-top: 1.6rem;
+            margin-bottom: 0;
         }
-
-        .photo-circle {
-            width: 160px;
-            height: 160px;
+        .club-container, .profile-container {
+            background-color: var(--gris-oscuro);
+            border-radius: 18px;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.10);
+            padding: 2.2rem 2rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            min-width: 320px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .club-container {
+            align-items: center;
+            max-width: 320px;
+            min-width: 180px;
+            padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+        }
+        .club-photo {
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
-            background-color: var(--gris-claro);
-            border: 4px solid white;
+            background: var(--gris-claro);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.1rem;
+            color: #a2a2a2;
+            font-weight: bold;
+        }
+        .club-container h3 {
+            margin: 0.7rem 0 0.3rem 0;
+            font-size: 1.45rem;
+            color: var(--rojo);
+            text-align: center;
+            width: 100%;
+        }
+        .club-data {
+            width: 100%;
+            margin-top: 0.6rem;
+            font-size: 1rem;
+        }
+        .club-data p {
+            margin: 7px 0;
+            color: var(--blanco);
+            text-align: left;
+        }
+        .club-desc {
+            margin-top: 0.7rem;
+            color: #bcbcbc;
+            font-style: italic;
+            text-align: center;
+        }
+        .club-empty {
+            color: #bbbbbb;
+            font-style: italic;
+            text-align: center;
+            margin-top: 2rem;
         }
 
         .profile-container {
-            background-color: var(--blanco);
-            text-align: center;
-            padding: 3rem 1rem 2rem;
+            align-items: flex-start;
+            margin-right: 0;
+        }
+        .profile-container .info-list p {
+            margin: 14px 0;
+        }
+        .profile-container .club-name {
+            color: var(--rojo);
+            font-weight: bold;
         }
 
-        .profile-container h2 {
-            margin-bottom: 1.5rem;
-        }
-
-        .info-list {
-            text-align: left;
-            max-width: 400px;
-            margin: 0 auto 2rem;
-            font-size: 15px;
-        }
-
-        .info-list p {
-            margin: 6px 0;
-        }
-
-        .stats-section {
-            background-color: var(--gris-oscuro);
-            padding: 2rem 0;
-        }
-
-        .graphic-placeholder {
-            background-color: var(--gris-claro);
-            margin: 0 auto;
+        /* Secciones inferiores */
+        .section, .chart-section, .ranking-section {
+            background-color: #282828;
+            margin: 1.3rem auto 0.5rem auto;
+            padding: 1.1rem 1.3rem 1.5rem 1.3rem;
+            width: 92%;
             max-width: 900px;
-            min-height: 250px;
             border-radius: 10px;
-            border: 1px dashed var(--gris-oscuro);
+            box-shadow: 0 1px 13px rgba(0,0,0,0.12);
+        }
+        .section h3, .chart-section h3, .ranking-section h3 {
+            margin-top: 0;
+            margin-bottom: 1.1rem;
+            font-size: 1.28rem;
+            letter-spacing: 1px;
+            color: var(--blanco);
+            font-weight: bold;
+        }
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0.5rem;
+        }
+        .section table th, .section table td {
+            border-bottom: 1px solid #3c3c3c;
+            padding: 0.6rem 0.7rem;
+            text-align: left;
+            font-size: 15px;
+            color: var(--gris-claro);
+        }
+        .section table th {
+            color: var(--blanco);
+            font-size: 1.01rem;
+            background: #232323;
+        }
+        .section .empty-message {
+            color: #a0a0a0;
+            font-style: italic;
+            text-align: center;
+            padding: 0.6rem 0 0.7rem 0;
+        }
+        .ranking-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--gris-oscuro);
-            font-size: 14px;
+            flex-direction: column;
+            margin-bottom: 0.7rem;
+        }
+        .ranking-spot {
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: var(--rojo);
+            margin-bottom: 0.5rem;
+        }
+        .chart-section {
+            text-align: center;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: none;
+        }
+        @media (max-width: 950px) {
+            .main-content { flex-direction: column; align-items: center; gap: 2.2rem;}
+            .profile-container, .club-container { max-width: 95vw; }
         }
     </style>
 </head>
 <body>
+<header>
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
+    <nav>
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+            <div class="menu-lines"></div><div class="menu-lines"></div><div class="menu-lines"></div>
+        </div>
+    </nav>
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:href="@{/perfil}">Editar perfil</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</header>
 
-<!-- Encabezado -->
-<div class="header">
-    <h3>JSCORE</h3>
-    <div class="nav-links">
-        <a th:href="@{/index}">Inicio</a>
-        <a th:href="@{/clubs}">Clubs</a>
-        <a th:href="@{/rankings}">Rankings</a>
-        <div class="profile-icon">👤</div>
+<div class="profile-banner">
+    <div class="photo-circle">
+        <span th:text="${judoka.nombre != null ? judoka.nombre.substring(0,1) : 'J'}"></span>
+    </div>
+    <h2 th:text="${judoka.nombre + ' ' + judoka.apellido}">NOMBRE DEL JUDOKA</h2>
+    <p th:if="${judoka.descripcion != null and not #strings.isEmpty(judoka.descripcion)}" th:text="${judoka.descripcion}"></p>
+</div>
+
+<div class="main-content">
+    <div class="profile-container" th:if="${judoka != null}">
+        <div class="info-list">
+            <p><strong>Años de entrenamiento:</strong>
+                <span th:text="${judoka.aniosEntrenamiento != null ? judoka.aniosEntrenamiento : '-'}"></span>
+            </p>
+            <p><strong>Oficio/Profesión:</strong>
+                <span th:text="${judoka.oficio != null and not #strings.isEmpty(judoka.oficio) ? judoka.oficio : '-'}"></span>
+            </p>
+            <p><strong>Edad:</strong>
+                <span th:if="${judoka.fechaNacimiento != null}"
+                      th:text="${#temporals.year(T(java.time.LocalDate).now()) - T(java.lang.Integer).parseInt(#strings.substring(judoka.fechaNacimiento, 0, 4))}"></span>
+                <span th:unless="${judoka.fechaNacimiento != null}">-</span>
+            </p>
+            <p><strong>Categoría:</strong> <span th:text="${judoka.categoria}">-</span></p>
+            <p><strong>Club:</strong>
+                <span th:if="${judoka.club != null}" th:text="${judoka.club.nombre}" class="club-name"></span>
+                <span th:unless="${judoka.club != null}" class="club-name">Sin club</span>
+            </p>
+        </div>
+    </div>
+    <div class="club-container" th:if="${judoka.club != null}">
+        <div class="club-photo" th:text="${judoka.club.nombre.substring(0,1)}"></div>
+        <h3 th:text="${judoka.club.nombre}"></h3>
+        <div class="club-data">
+            <p><strong>Año de creación:</strong> <span th:text="${judoka.club.anoFundacion}"></span></p>
+            <p><strong>Sensei:</strong> <span th:text="${judoka.club.sensei}"></span></p>
+            <p><strong>Dirección:</strong> <span th:text="${judoka.club.direccion}"></span></p>
+        </div>
+    </div>
+    <div class="club-container club-empty" th:if="${judoka.club == null}">
+        <span>Sin club asociado</span>
     </div>
 </div>
 
-<!-- Banner con imagen circular -->
-<div class="banner">
-    <div class="photo-circle"></div>
+<div class="section">
+    <h3>Historial de Competencias</h3>
+    <div class="empty-message">No hay competencias registradas aún.</div>
 </div>
 
-<!-- Contenido del perfil -->
-<div class="profile-container">
-    <h2 th:text="${nombre}">NOMBRE DEL JUDOKA</h2>
-    <div class="info-list">
-        <p><strong>Años de entrenamiento:</strong> <span th:text="${aniosEntrenamiento}">5</span></p>
-        <p><strong>Oficio/Profesión:</strong> <span th:text="${profesion}">Estudiante</span></p>
-        <p><strong>Edad:</strong> <span th:text="${edad}">21</span></p>
-        <p><strong>Categoría:</strong> <span th:text="${categoria}">-66kg</span></p>
-        <p><strong>Club:</strong> <span th:text="${club}">Judo Lonquimay</span></p>
+<div class="ranking-section" th:if="${rankingPuesto != null}">
+    <h3>Puesto en el Ranking</h3>
+    <div class="ranking-spot" th:text="'#' + ${rankingPuesto}"></div>
+</div>
+
+<div class="chart-section">
+    <h3>Victorias vs Derrotas</h3>
+    <div class="chart-container">
+        <canvas id="winLossChart"></canvas>
     </div>
 </div>
 
-<!-- Área para estadísticas / gráficos -->
-<div class="stats-section">
-    <div class="graphic-placeholder">
-        Aquí se mostrarán estadísticas y gráficos próximamente.
-    </div>
-</div>
+<script>
+    // Navbar dropdown
+    function toggleDropdown() {
+        var dd = document.getElementById('dropdown');
+        if (dd.style.display === "flex") {
+            dd.style.display = "none";
+        } else {
+            dd.style.display = "flex";
+        }
+    }
+    window.onclick = function(event) {
+        // Dropdown menu
+        if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+            var dd = document.getElementById('dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    }
 
+    // Chart.js gráfico de barras
+    document.addEventListener("DOMContentLoaded", function () {
+        // Puedes inyectar victoriasPodio y derrotas desde backend o Thymeleaf
+        const victorias = /*[[${victoriasPodio}]]*/ 5;
+        const derrotas = /*[[${derrotas}]]*/ 3;
+
+        const ctx = document.getElementById('winLossChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Victorias (Podio)', 'Derrotas'],
+                datasets: [{
+                    data: [victorias, derrotas],
+                    backgroundColor: [
+                        'rgba(28, 200, 138, 0.85)',
+                        'rgba(230, 0, 0, 0.85)'
+                    ],
+                    borderRadius: 10,
+                    maxBarThickness: 70
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#ddd', stepSize: 1 }
+                    },
+                    x: {
+                        ticks: { color: '#fff' }
+                    }
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

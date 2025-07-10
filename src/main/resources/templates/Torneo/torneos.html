@@ -6,109 +6,236 @@
     <style>
         :root {
             --negro-suave: #1e1e1e;
-            --gris-oscuro: #3d3d3d;
-            --gris-claro: #ddd;
-            --blanco: #ffffff;
+            --gris-navbar: #1e1e1e;
+            --gris-fondo: #232323;
+            --gris-tabla: #323232;
+            --gris-cabecera: #404040;
+            --gris-hover: #2a2a2a;
+            --gris-claro: #e0e0e0;
+            --blanco: #fff;
             --rojo: #e60000;
             --rojo-hover: #cc0000;
-            --azul-link: #0866fd;
         }
-
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--negro-suave);
-            color: var(--gris-claro);
+            background-color: var(--gris-fondo);
+            color: var(--blanco);
         }
-
-        .header {
-            background-color: var(--blanco);
-            padding: 1rem 2rem;
+        header {
+            background-color: var(--gris-navbar);
+            padding: 0.7rem 1.5rem 0.7rem 2.2rem;
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            position: relative;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.13);
+            z-index: 2;
+        }
+        .navbar-left {
+            display: flex;
             align-items: center;
         }
-
-        .header h1 {
-            margin: 0;
+        .navbar-logo {
+            height: 34px;
+            margin-right: 13px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .navbar-link-btn {
+            background: var(--blanco);
             color: var(--negro-suave);
-        }
-
-        .btn {
-            background-color: var(--rojo);
-            color: var(--blanco);
-            padding: 10px 16px;
             border: none;
-            border-radius: 6px;
-            text-decoration: none;
+            border-radius: 8px;
+            padding: 7px 22px;
             font-weight: bold;
+            font-size: 1.08rem;
             cursor: pointer;
+            transition: background 0.17s, color 0.13s;
+            text-decoration: none;
+            margin-right: 2px;
         }
-
-        .btn:hover {
-            background-color: var(--rojo-hover);
+        .navbar-link-btn:hover {
+            background: var(--rojo);
+            color: var(--blanco);
         }
-
+        .menu-toggle {
+            margin-left: 15px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 7px;
+            transition: background 0.18s;
+        }
+        .menu-toggle:hover {
+            background: #232323;
+        }
+        .menu-lines {
+            width: 28px;
+            height: 4px;
+            background: var(--blanco);
+            margin: 3.2px 0;
+            border-radius: 2px;
+        }
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 57px;
+            right: 30px;
+            background: var(--gris-tabla);
+            box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+            border-radius: 10px;
+            min-width: 180px;
+            z-index: 10;
+            padding: 10px 0;
+            animation: dropdownAnim 0.20s;
+        }
+        @keyframes dropdownAnim {
+            from { opacity: 0; transform: translateY(-14px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dropdown a {
+            color: var(--blanco);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            background: none;
+            border-bottom: 1px solid #353535;
+            transition: background 0.11s;
+            border-radius: 0;
+            display: block;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background: var(--rojo);
+            color: var(--blanco);
+        }
         .container {
             max-width: 900px;
             margin: 2rem auto;
-            background-color: var(--gris-oscuro);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            background-color: var(--gris-tabla);
+            padding: 2rem 1.2rem 2.2rem 1.2rem;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.17);
+            position: relative;
         }
-
+        .title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--blanco);
+            letter-spacing: 1.5px;
+            font-size: 2rem;
+        }
+        .title-roja {
+            color: var(--rojo);
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
+            background: var(--gris-tabla);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
         }
-
+        thead tr {
+            background-color: var(--gris-cabecera);
+        }
         th, td {
-            padding: 12px 15px;
+            padding: 13px 16px;
             text-align: left;
         }
-
-        thead {
-            background-color: #444;
+        th {
             color: var(--blanco);
+            font-size: 1.08rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+            border: none;
         }
-
-        tbody tr:nth-child(even) {
-            background-color: #2a2a2a;
-        }
-
-        tbody tr:hover {
-            background-color: #383838;
-        }
-
         td {
             color: var(--gris-claro);
+            font-size: 1rem;
+            border-bottom: 1px solid #282828;
         }
-
-        .title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--gris-claro);
+        tbody tr {
+            background-color: var(--gris-tabla);
+            transition: background 0.15s;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #282828;
+        }
+        tbody tr:hover {
+            background-color: var(--gris-hover);
+        }
+        /* Botón Volver */
+        .volver-btn {
+            background-color: var(--rojo);
+            color: var(--blanco);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 1.07rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-top: 2.1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.7px;
+        }
+        .volver-btn:hover {
+            background-color: var(--rojo-hover);
+        }
+        @media (max-width: 700px) {
+            nav { gap: 7px;}
+            .navbar-link-btn { padding: 6px 11px; font-size: 1rem;}
+            .navbar-title { font-size: 1rem;}
+            header {padding: 0.7rem 7px 0.7rem 13px;}
+            table { font-size: 0.9rem;}
+            .container {padding: 1.3rem 0.3rem;}
         }
     </style>
 </head>
 <body>
-
-<div class="header">
-    <h1>JScore</h1>
-    <a href="/static" class="btn">Inicio</a>
-</div>
+<header>
+    <div class="navbar-left">
+        <img src="/img/logo.png" alt="JSCORE Logo" class="navbar-logo">
+    </div>
+    <nav>
+        <a class="navbar-link-btn" th:href="@{/index}">Inicio</a>
+        <a class="navbar-link-btn" th:href="@{/lista}">Clubs</a>
+        <a class="navbar-link-btn" th:href="@{/ranking}">Rankings</a>
+        <div th:if="${session.username != null}" class="menu-toggle" onclick="toggleDropdown()" tabindex="0" aria-label="Menú usuario">
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+            <div class="menu-lines"></div>
+        </div>
+    </nav>
+    <div id="dropdown" class="dropdown" th:if="${session.username != null}">
+        <a th:href="@{/perfil}">Editar perfil</a>
+        <a th:href="@{/terminos}">Términos y condiciones</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</header>
 
 <div class="container">
-    <h2 class="title">Lista de Torneos</h2>
-
+    <h2 class="title title-roja">Lista de Torneos</h2>
     <table>
         <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Fecha</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -116,10 +243,29 @@
             <td th:text="${torneo.id}">1</td>
             <td th:text="${torneo.nombre}">Torneo Nacional</td>
             <td th:text="${torneo.fecha}">2025-06-10</td>
+            <td>
+                <a th:href="@{'/torneos/' + ${torneo.id}}" style="color: var(--blanco); text-decoration: underline;">Ver</a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <button class="volver-btn" onclick="window.location.href='/'">← Volver al inicio</button>
 </div>
-
+<script>
+    function toggleDropdown() {
+        var dd = document.getElementById('dropdown');
+        if (dd.style.display === "flex") {
+            dd.style.display = "none";
+        } else {
+            dd.style.display = "flex";
+        }
+    }
+    window.onclick = function(event) {
+        if (!event.target.closest('.menu-toggle') && !event.target.closest('.dropdown')) {
+            var dd = document.getElementById('dropdown');
+            if (dd) dd.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>

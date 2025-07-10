@@ -6,18 +6,43 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Logger manager.
+ * Clase utilitaria para obtener instancias de {@link Logger} con configuración personalizada.
+ * <p>
+ * Configura un logger con salida a consola (formato con colores) y archivo (formato detallado),
+ * aplicando los formateadores {@link ColorFormatter} y {@link FileFormatter}.
+ * </p>
+ * <p>
+ * El archivo de logs generado es {@code competencias.log}, y el nivel de log es {@code Level.ALL}.
+ * Esta clase sigue el patrón de utilidad (constructor privado + métodos estáticos).
+ * </p>
+ *
+ * Ejemplo de uso:
+ * <pre>{@code
+ * private static final Logger logger = LoggerManager.getLogger(MiClase.class);
+ * }</pre>
+ *
+ * @author Benjamin Beroiza, Alonso Romero, Ignacio Essus
  */
-public final class LoggerManager {  //
+public final class LoggerManager {
 
+    /**
+     * Constructor privado para evitar instanciación.
+     */
     private LoggerManager() {
     }
 
     /**
-     * Gets logger.
+     * Devuelve una instancia de {@link Logger} asociada a la clase indicada.
+     * <p>
+     * Si el logger aún no tiene handlers, se le agregan:
+     * <ul>
+     *   <li>Un {@link FileHandler} con {@link FileFormatter} para persistir en archivo.</li>
+     *   <li>Un {@link ConsoleHandler} con {@link ColorFormatter} para imprimir en consola.</li>
+     * </ul>
+     * </p>
      *
-     * @param clazz the clazz
-     * @return the logger
+     * @param clazz la clase desde la cual se solicita el logger
+     * @return el logger configurado para la clase dada
      */
     public static Logger getLogger(Class<?> clazz) {
         Logger logger = Logger.getLogger(clazz.getName());
@@ -26,11 +51,11 @@ public final class LoggerManager {  //
         if (logger.getHandlers().length == 0) {
             try {
                 FileHandler fileHandler = new FileHandler("competencias.log", true);
-                fileHandler.setFormatter(new FileFormatter());
+                fileHandler.setFormatter(new org.example.model.logger.FileFormatter());
                 logger.addHandler(fileHandler);
 
                 ConsoleHandler consoleHandler = new ConsoleHandler();
-                consoleHandler.setFormatter(new ColorFormatter());
+                consoleHandler.setFormatter(new org.example.model.logger.ColorFormatter());
                 logger.addHandler(consoleHandler);
 
                 logger.setLevel(Level.ALL);

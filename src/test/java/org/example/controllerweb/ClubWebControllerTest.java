@@ -1,15 +1,20 @@
 package org.example.controllerweb;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.example.dto.ClubRegistroDTO;
 import org.example.model.user.Club;
 import org.example.service.ClubService;
+import org.example.service.JudokaService; // Importar el servicio que falta
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +28,10 @@ class ClubWebControllerTest {
     @Mock
     private ClubService clubService;
 
+    // Añadido: Mock para el servicio de Judoka
+    @Mock
+    private JudokaService judokaService;
+
     @Mock
     private HttpSession session;
 
@@ -35,7 +44,8 @@ class ClubWebControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        clubWebController = new ClubWebController(clubService);
+        // Corregido: Pasar ambos mocks al constructor
+        clubWebController = new ClubWebController(clubService, judokaService);
     }
 
     /**
@@ -53,7 +63,7 @@ class ClubWebControllerTest {
     }
 
     /**
-     * Prueba que el método clubHome muestra el nombre del club correctamente cuando
+     * Prueba que el método clubHome muestra los datos del club correctamente cuando
      * un club válido está logueado.
      */
     @Test
@@ -68,23 +78,26 @@ class ClubWebControllerTest {
         String result = clubWebController.clubHome(session, model);
 
         assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "Club ABC");
+
+        // Corregido: Verificar que se añade el objeto "club" completo al modelo.
+        verify(model).addAttribute("club", club);
     }
 
     /**
-     * Prueba que el método clubHome utiliza el nombre de usuario como fallback
-     * si no encuentra el club.
+     * Prueba que el método clubHome redirige al login si el usuario de la sesión
+     * no corresponde a un club existente en la base de datos.
      */
     @Test
-    void TestClubHomeNombreUsuarioComoFallback() {
+    void testClubHomeRedirigeAlLoginSiClubNoExiste() {
         when(session.getAttribute("username")).thenReturn("club123");
-        when(session.getAttribute("tipo")).thenReturn("club");
         when(clubService.findByUsername("club123")).thenReturn(Optional.empty());
 
         String result = clubWebController.clubHome(session, model);
 
-        assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "club123");
+        // Corregido: Verificar que se redirige al login
+        assertEquals("redirect:/login", result);
+        // Corregido: Verificar que NO se añade ningún atributo al modelo
+        verify(model, never()).addAttribute(anyString(), any());
     }
 
     /**
@@ -92,13 +105,17 @@ class ClubWebControllerTest {
      */
     @Test
     void testListarClubes() {
-        List<Club> clubes = List.of(new Club(), new Club());
-        when(clubService.getAllClubs()).thenReturn(clubes);
+        // Given
+        List<Club> clubes = Collections.singletonList(new Club());
+        when(clubService.getAllClubs(Sort.by("nombre"))).thenReturn(clubes);
 
-        String result = clubWebController.listarClubes(model);
+        // When
+        String result = clubWebController.listarClubes(null, null, model);
 
+        // Then
         assertEquals("Club/club_lista", result);
-        verify(model).addAttribute("clubes", clubes);
+        verify(model, times(1)).addAttribute("clubes", clubes);
+
     }
 
     /**
@@ -179,4 +196,43 @@ class ClubWebControllerTest {
         verify(clubService, never()).guardarClub(any(Club.class));
 
     }
+
+    /**
+     * Prueba que se muestre correctamente la vista de confirmación para eliminar el club.
+     */
+    @Test
+    void testMostrarConfirmacionEliminarCuenta() {
+        String result = clubWebController.mostrarConfirmacionEliminarCuenta(session, model);
+        assertEquals("Club/confirmar_eliminacion", result);
+    }
+
+    /**
+     * Prueba que se elimine correctamente la cuenta del club y se invalide la sesión.
+     */
+    @Test
+    void testEliminarCuentaClubExitosamente() {
+        when(session.getAttribute("username")).thenReturn("club123");
+
+        String result = clubWebController.eliminarCuentaClub(session);
+
+        assertEquals("redirect:/login?eliminado=true", result);
+        verify(clubService).eliminarCuentaClub("club123");
+        verify(session).invalidate();
+    }
+
+    /**
+     * Prueba que se redirija al error si la cuenta del club no existe.
+     */
+    @Test
+    void testEliminarCuentaClubCuandoNoExiste() {
+        when(session.getAttribute("username")).thenReturn("clubInexistente");
+        doThrow(new EntityNotFoundException("Club no encontrado")).when(clubService).eliminarCuentaClub("clubInexistente");
+
+        String result = clubWebController.eliminarCuentaClub(session);
+
+        assertEquals("redirect:/error?mensaje=Club no encontrado", result);
+        verify(clubService).eliminarCuentaClub("clubInexistente");
+        verify(session, never()).invalidate();
+    }
+
 }

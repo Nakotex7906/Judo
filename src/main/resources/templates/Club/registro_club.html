@@ -5,11 +5,11 @@
   <title>Registrar Club</title>
   <style>
     :root {
-      --negro-suave: #1e1e1e;
+      --negro-suave: #333232;
       --gris-fondo: #121212;
       --gris-oscuro: #2b2b2b;
       --gris-claro: #ccc;
-      --blanco: #ffffff;
+      --blanco: #fff;
       --rojo: #e60000;
       --rojo-hover: #cc0000;
     }
@@ -67,12 +67,14 @@
     .form-container h2 {
       text-align: center;
       margin-bottom: 1.5rem;
+      color: var(--blanco);
     }
 
     form {
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      color: var(--blanco);
     }
 
     input {
@@ -85,7 +87,12 @@
     }
 
     input::placeholder {
-      color: #aaa;
+      color: var(--blanco); /* Cambiado a blanco */
+      opacity: 0.7;
+    }
+
+    label {
+      color: var(--blanco);
     }
 
     button[type="submit"] {
@@ -138,11 +145,8 @@
       <input type="text" th:field="*{sensei}" placeholder="Nombre del sensei" required/>
       <input type="text" th:field="*{anoFundacion}" placeholder="Año de fundación" required/>
       <input type="text" th:field="*{direccion}" placeholder="Dirección del club" required/>
-      <input type="text" th:field="*{horarios}" placeholder="Horarios de entrenamiento" required/>
       <button type="submit">Registrar Club</button>
     </form>
-    <div th:if="${error != null}" th:text="${error}" class="error-message"></div>
-    <div th:if="${success != null}" th:text="${success}" class="success-message"></div>
   </div>
 </div>
 </body>
