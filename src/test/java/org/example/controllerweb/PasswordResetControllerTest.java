@@ -13,7 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Pruebas unitarias base para el controlador PasswordResetController.
+ * Pruebas unitarias para la clase {@link PasswordResetController}.
+ * <p>
+ * Se testean los métodos de recuperación y restablecimiento de contraseña tanto para judokas como para clubes.
+ * </p>
  */
 class PasswordResetControllerTest {
 
@@ -22,7 +25,11 @@ class PasswordResetControllerTest {
     private PasswordResetJudokaService judokaService;
     private PasswordResetClubService clubService;
 
-
+    /**
+     * Inicializa el entorno de pruebas con inyección de dependencias mediante reflexión.
+     *
+     * @throws Exception si ocurre un error al establecer campos privados
+     */
     @BeforeEach
     void setUp() throws Exception {
         controller = Mockito.mock(PasswordResetController.class, CALLS_REAL_METHODS);
@@ -37,42 +44,51 @@ class PasswordResetControllerTest {
         Field clubServiceField = PasswordResetController.class.getDeclaredField("clubService");
         clubServiceField.setAccessible(true);
         clubServiceField.set(controller, clubService);
-
     }
 
+    /**
+     * Verifica que la vista para solicitar recuperación del judoka se cargue correctamente.
+     */
     @Test
     void testMostrarFormularioRecuperarJudoka() {
         String resultado = controller.mostrarFormularioRecuperarJudoka();
         assertEquals("ResetPassword/recuperar-judoka", resultado);
     }
 
+    /**
+     * Verifica que la vista para solicitar recuperación del club se cargue correctamente.
+     */
     @Test
     void testMostrarFormularioRecuperarClub() {
         String resultado = controller.mostrarFormularioRecuperarClub();
         assertEquals("ResetPassword/recuperar-club", resultado);
     }
 
+    /**
+     * Verifica que se muestra el formulario para restablecer contraseña de judoka si el token es válido.
+     */
     @Test
     void testMostrarFormularioRestablecerJudoka() {
         String token = "abc123";
-
-        // simula un token válido
         when(judokaService.validarToken(token)).thenReturn(true);
-
         String resultado = controller.mostrarFormularioRestablecerJudoka(token, model);
         assertEquals("ResetPassword/restablecer-judoka", resultado);
-
     }
 
+    /**
+     * Verifica que se muestra el formulario para restablecer contraseña del club si el token es válido.
+     */
     @Test
     void testMostrarFormularioRestablecerClub() {
         String token = "xyz789";
         when(clubService.validarToken(token)).thenReturn(true);
         String resultado = controller.mostrarFormularioRestablecerClub(token, model);
         assertEquals("ResetPassword/restablecer-club", resultado);
-
     }
 
+    /**
+     * Verifica que la solicitud de recuperación para judoka devuelve una vista válida.
+     */
     @Test
     void testProcesarSolicitudJudoka() {
         String result = controller.procesarSolicitudJudoka("usuario@correo.es", model);
@@ -80,6 +96,9 @@ class PasswordResetControllerTest {
                 result.equals("Model/login"));
     }
 
+    /**
+     * Verifica que la solicitud de recuperación para club devuelve una vista válida.
+     */
     @Test
     void testProcesarSolicitudClub() {
         String result = controller.procesarSolicitudClub("club@correo.es", model);
@@ -87,12 +106,18 @@ class PasswordResetControllerTest {
                 result.equals("Model/login"));
     }
 
+    /**
+     * Verifica que se procesa correctamente el cambio de contraseña para judoka.
+     */
     @Test
     void testProcesarNuevaPasswordJudoka() {
         String result = controller.procesarNuevaPasswordJudoka("algunToken", "nuevaPass", model);
-        assertNotNull(result); // Según flujo, puede ser login, mensaje de error o exito en la vista.
+        assertNotNull(result); // Puede ser login, mensaje de éxito o error.
     }
 
+    /**
+     * Verifica que se procesa correctamente el cambio de contraseña para club.
+     */
     @Test
     void testProcesarNuevaPasswordClub() {
         String result = controller.procesarNuevaPasswordClub("algunToken", "nuevaPass", model);
